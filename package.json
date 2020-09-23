@@ -1,7 +1,7 @@
 {
   "name": "pixelparty",
   "version": "1.0.0",
-  "description": "",
+  "description": "Pixel Party App",
   "main": "index.js",
   "scripts": {
     "watch-server": "npx nodemon index.js",
