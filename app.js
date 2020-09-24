@@ -15,6 +15,10 @@ module.exports = function (deps) {
   io.on('connection', (socket) => {
     console.log('connection established')
 
+    socket.on('test', () => {
+        io.emit('test')
+    })
+    
     socket.on('disconnect', () => {
       console.log('connection ended')
     })
