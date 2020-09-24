@@ -27,7 +27,7 @@ export default class Canvas extends React.Component {
     }
   }
   
-  componentDidMount = () => {
+  componentDidMount = (socket = this.props.socket) => {
     // make the drawing context part of state
     // ask Evan about using document.querySelector in this case
     this.setState({
@@ -39,7 +39,7 @@ export default class Canvas extends React.Component {
     // create a listener for the guesser
     socket.on('drawing', pixels => {
       console.log('no if statement')
-      if (!this.props.drawer) {
+      if (!this.props.drawing) {
         console.log(pixels)
         this.setState({ pixels }, () => this.drawPixels())
       }
@@ -81,7 +81,7 @@ export default class Canvas extends React.Component {
   }
 
   // this Canvas method handles drawing a pixel for a single click
-  handleDrawPixel = _evt => {
+  handleDrawPixel = (_evt, socket = this.props.socket) => {
     const pixels = this.state.pixels.slice()
     const x = this.state.pixel[0]
     const y = this.state.pixel[1]
@@ -91,7 +91,7 @@ export default class Canvas extends React.Component {
     this.setState({
       pixels
     }, this.drawPixels)
-    if (this.props.drawer) {
+    if (this.props.drawing) {
       console.log('socket')
       socket.emit('drawing', pixels)
     }
@@ -99,7 +99,7 @@ export default class Canvas extends React.Component {
 
   // this Canvas method handles drawing multiple pixels for a click and drag
   // ask Evan about try... catch here
-  handleDrawPixelMoving = _evt => {
+  handleDrawPixelMoving = (_evt, socket = this.props.socket) => {
     try {
       const pixels = this.state.pixels.slice()
       const x = this.state.pixel[0]
@@ -110,7 +110,7 @@ export default class Canvas extends React.Component {
       this.setState({
         pixels
       }, this.drawPixels)
-      if (this.props.drawer) {
+      if (this.props.drawing) {
         console.log('socket')
         socket.emit('drawing', pixels)
       }
@@ -137,15 +137,21 @@ export default class Canvas extends React.Component {
   render () {
     return (
       <div>
-        <canvas
-          height={this.state.h}
-          width={this.state.w}
-          onMouseMove={this.handleMouseMove}
-          onClick={this.handleDrawPixel}
-          onMouseDown={() => this.setState({ drawing: true })}
-          onMouseUp={() => this.setState({ drawing: false })}
-          onMouseLeave={() => this.setState({ drawing: false })}
-        />
+        {this.props.drawing
+        ? <canvas
+            height={this.state.h}
+            width={this.state.w}
+            onMouseMove={this.handleMouseMove}
+            onClick={this.handleDrawPixel}
+            onMouseDown={() => this.setState({ drawing: true })}
+            onMouseUp={() => this.setState({ drawing: false })}
+            onMouseLeave={() => this.setState({ drawing: false })}
+          />
+        : <canvas
+            height={this.state.h}
+            width={this.state.w}
+          />
+      }
         <Palette onClick={this.handlePalette} palettes={this.state.palettes} />
       </div>
     )

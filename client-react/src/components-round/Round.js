@@ -3,18 +3,42 @@ import io from 'socket.io-client'
 import Canvas from './Canvas'
 import Chat from './Chat'
 import Timer from './Timer'
-const socket = io()
+// const socket = io()
 
 export default class Round extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
+      socket: io(),
+      win: false,
+      winner: '',
       word: ''
     }
   }
   
-  // componentDidMount () {
-  // }
+  componentDidMount (socket = this.state.socket) {
+    const user = {
+      drawing: this.props.drawing,
+      word: this.props.word
+    }
+    // I need to get this working with app.js
+    if (this.props.drawing) {
+      console.log(this.props.word)
+      socket.emit('start round', this.props.word)
+      socket.on('win', (message, word) => {
+        console.log(message, word)
+        this.setState({ win: true, winner: message.user, word })
+      })
+    // I need to get this working with app.js
+    } else {
+      socket.emit('join round')
+        socket.on('win', (message, word) => {
+          console.log(message, word)
+          this.setState({ win: true, winner: message.user, word })
+      })
+    }
+  }
+
 
   handleRoundEnd = () => {
     console.log('round end')
@@ -23,10 +47,24 @@ export default class Round extends React.Component {
   render () {
     return (
       <div id='round'>
-        <Timer socket={socket} />
+        {this.state.winner
+          ? <div>Congrats, {this.state.winner.message.user} guessed {this.state.word} correctly!</div>
+          : this.props.drawing
+            ? <div>Your word is "{this.props.word}"</div>
+            : null
+        }
+        <Timer socket={this.state.socket} />
         <div id='chat-and-canvas'>
-          <Canvas drawing={this.props.drawing} socket={socket} />
-          <Chat word={this.props.word} onRoundEnd={this.handleRoundEnd} socket={socket} />
+          <Canvas
+           drawing={this.props.drawing}
+           socket={this.state.socket}
+          />
+          <Chat
+            word={this.props.word}
+            onRoundEnd={this.handleRoundEnd}
+            socket={this.state.socket}
+            drawing={this.props.drawing}
+          />
         </div>
       </div>
     )

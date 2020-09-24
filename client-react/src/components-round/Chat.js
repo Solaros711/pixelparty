@@ -12,19 +12,22 @@ class NewMessage extends React.Component {
   handleChange = evt => this.setState({ text: evt.target.value })
 
   handleSubmit = (evt, text = this.state.text) => {
-    this.props.socket.emit('message')
-    if (text.toLowerCase === this.props.word)
-    // this.props.onSubmit(text)
-    // this.setState({ text: '' })
-    // if (text.toLowerCase() === this.props.word.toLowerCase()) this.props.onWin()
-    // evt.preventDefault()
+    console.log('hey')
+    const message = { text, user: null }
+    this.props.socket.emit('message', message)
+    this.setState({ text: '' })
+    evt.preventDefault()
   }
 
   render () {
     return (
       <form onSubmit={this.handleSubmit}>
-        <input onChange={this.handleChange} value={this.state.text} />
-        <button>Send</button>
+        <input
+          onChange={this.handleChange}
+          value={this.state.text}
+          disabled={this.props.drawing ? true : false}
+        />
+        <button disabled={this.props.drawing ? true : false}>Send</button>
       </form>
     )
   }
@@ -39,7 +42,8 @@ export default class Chat extends React.Component {
   }
 
   componentDidMount () {
-    this.props.socket.on('message', messages => {
+    this.props.socket.on('messages', messages => {
+      console.log({ messages })
       this.setState({ messages })
     })
   }
@@ -65,6 +69,7 @@ export default class Chat extends React.Component {
           word={this.props.word}
           onWin={this.handleWin}
           socket={this.props.socket}
+          drawing={this.props.drawing}
         />
       </div>
     )

@@ -37,6 +37,8 @@ canvas {
   background: rgb(143, 121, 121);
   height: 80vh;
   overflow-y: auto;
+  border-radius: 1%;
+  border: 1px solid black;
 }
 
 #messages > div {
