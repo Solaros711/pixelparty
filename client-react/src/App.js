@@ -125,13 +125,16 @@ class App extends React.Component {
         <div id="menu-outer"> 
           <div className="table">
             <ul id="horizontal-list">
+              {this.state.loggedIn
+                ?
               <li>
                 <Link to="/"><button>Lobby</button></Link>
               </li>
+                : ''}
               {this.state.loggedIn
-              ?
-              ''
-              :
+                ?
+                ''
+                :
               <li>
                 <Link to="/signup"><button>Sign Up</button></Link>
               </li>}
@@ -142,24 +145,31 @@ class App extends React.Component {
               </li> 
                 : ''}
               {this.state.loggedIn
-              ?
+                ?
               <li>
                 <Link to="/profile/user"><button>Profile</button></Link>
               </li>
-              : ''}
+                : ''}
               {this.state.loggedIn
-              ?
-              ''
-              : 
+                ?
+                ''
+                : 
               <li>
                 <Link to="/login"><button>Log In</button></Link>
               </li>}
               {this.state.loggedIn
-              ?
+                ?
               <li>
                 <Link to="/chat/general"><button>Chat</button></Link>
               </li>
-              : ''}
+                : ''}
+              {this.state.loggedIn
+                ?
+                ''
+                : 
+              <li>
+                <Link to="/guest"><button>Guest</button></Link>
+              </li>}
             </ul>
           </div>
         </div>
@@ -198,6 +208,11 @@ class App extends React.Component {
 
           <Route path="/profile/user" >
             <Profile formValue={this.state.nick}/>
+          </Route>
+
+          <Route path="/guest" >
+            <Lobby rooms={this.getRooms()}
+            handleAddRoom={this.handleAddRoom.bind(this)}/>
           </Route>
 
           <Route path="/">
