@@ -1,26 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import io from 'socket.io-client'
+import Canvas from './Canvas'
+import Chat from './Chat'
+import './App.css'
+// const socket = io()
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      word: '',
+      words: ['dog', 'house', 'tree'],
+      win: false,
+      drawer: false
+    }
+  }
+
+  componentDidMount (words = this.state.words) {
+    this.setState({
+      word: words[Math.floor(Math.random() * words.length)]
+    })
+  }
+
+  handleWin = () => {
+    this.setState({ win: true })
+  }
+
+  render () {
+    return (
+      <main>
+        <link href='https://fonts.googleapis.com/css2?family=Righteous&display=swap' rel='stylesheet' />
+        <div>
+          <button onClick={() => this.setState({ drawer: true })}>Drawer</button>
+          <button onClick={() => this.setState({ drawer: false })}>Player</button>
+        </div>
+        <h2 style={{ marginBottom: '30px' }}>
+          {this.state.win
+            ? `Congrats, you guessed ${this.state.word}`
+            : `Your word is ${this.state.word}`
+          }
+        </h2>
+        <div id='chat-and-canvas'>
+          <Canvas drawer={this.state.drawer} />
+          <Chat word={this.state.word} onWin={this.handleWin} />
+        </div>
+      </main>
+    )
+  }
 }
-
-export default App;

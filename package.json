@@ -1,35 +1,18 @@
 {
-  "name": "pixelparty",
+  "name": "pixel-party",
   "version": "1.0.0",
-  "description": "Pixel Party App",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "watch-server": "npx nodemon index.js",
-    "watch-client": "npx watchify client/main.js -o static/bundle.js --debug --verbose",
-    "start": "node index.js",
-    "heroku-postbuild": "cd client-react && npm install && npm run build"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Solaros711/pixelparty.git"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx nodemon index.js"
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "nodemon": "^2.0.4"
-  },
   "dependencies": {
-    "bcrypt": "^5.0.0",
     "express": "^4.17.1",
-    "http-hash-router": "^2.0.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.5",
-    "socket.io": "^2.3.0",
-    "st": "^2.0.0",
-    "watchify": "^3.11.1"
-  },
-  "bugs": {
-    "url": "https://github.com/Solaros711/pixelparty/issues"
-  },
-  "homepage": "https://github.com/Solaros711/pixelparty#readme"
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.4",
+    "socket.io": "^2.3.0"
+  }
 }
