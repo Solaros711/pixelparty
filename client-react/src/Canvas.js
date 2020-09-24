@@ -32,11 +32,17 @@ export default class Canvas extends React.Component {
     }, () => {
       this.drawGrid()
     })
+
     socket.on('drawing', pixels => {
+      console.log('no if statement')
       if (!this.props.drawer) {
         console.log(pixels)
         this.setState({ pixels }, () => this.drawPixels())
       }
+    })
+
+    socket.on('test', () => {
+      console.log('test')
     })
   }
 
@@ -81,6 +87,7 @@ export default class Canvas extends React.Component {
       pixels
     }, this.drawPixels)
     if (this.props.drawer) {
+      console.log('socket')
       socket.emit('drawing', pixels)
     }
   }
@@ -114,9 +121,14 @@ export default class Canvas extends React.Component {
   handleDrawingTrue = () => this.setState({ drawing: true })
   handleDrawingFalse = () => this.setState({ drawing: false })
 
+  socketTest = () => {
+    socket.emit('test')
+  }
+
   render () {
     return (
       <div>
+        <button onClick={this.socketTest}>Test</button>
         <canvas
           height={this.state.h}
           width={this.state.w}

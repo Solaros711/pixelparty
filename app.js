@@ -9,9 +9,15 @@ app.use(morgan('dev'))
 
 io.on('connection', socket => {
   console.log('socket connected')
+
   socket.on('drawing', pixels => {
-    socket.emit('drawing', pixels)
+    console.log('it got here')
+    console.log(pixels)
+    io.emit('drawing', pixels)
   })
+
+  socket.on('test', () => io.emit('test'))
+  socket.on('test2', () => io.emit('test2'))
 })
 
 const startServer = port => {
