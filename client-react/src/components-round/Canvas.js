@@ -1,7 +1,7 @@
 import React from 'react'
 import Palette from './Palette'
 import io from 'socket.io-client'
-const socket = io() // where should this line go? in componentDidMount?
+// const socket = io() // where should this line go? in componentDidMount?
 
 
 

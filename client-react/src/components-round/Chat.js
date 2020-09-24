@@ -12,10 +12,12 @@ class NewMessage extends React.Component {
   handleChange = evt => this.setState({ text: evt.target.value })
 
   handleSubmit = (evt, text = this.state.text) => {
-    this.props.onSubmit(text)
-    this.setState({ text: '' })
-    if (text.toLowerCase() === this.props.word.toLowerCase()) this.props.onWin()
-    evt.preventDefault()
+    this.props.socket.emit('message')
+    if (text.toLowerCase === this.props.word)
+    // this.props.onSubmit(text)
+    // this.setState({ text: '' })
+    // if (text.toLowerCase() === this.props.word.toLowerCase()) this.props.onWin()
+    // evt.preventDefault()
   }
 
   render () {
@@ -36,6 +38,12 @@ export default class Chat extends React.Component {
     }
   }
 
+  componentDidMount () {
+    this.props.socket.on('message', messages => {
+      this.setState({ messages })
+    })
+  }
+
   handleSubmit = text => {
     this.setState({
       messages: this.state.messages.concat({ text })
@@ -52,7 +60,12 @@ export default class Chat extends React.Component {
         <div id='messages'>
           {this.state.messages.map((msg, i) => <div key={i}>{msg.text}</div>)}
         </div>
-        <NewMessage onSubmit={this.handleSubmit} word={this.props.word} onWin={this.handleWin} />
+        <NewMessage
+          onSubmit={this.handleSubmit}
+          word={this.props.word}
+          onWin={this.handleWin}
+          socket={this.props.socket}
+        />
       </div>
     )
   }
