@@ -2,6 +2,7 @@
 import Chat from './Chat'
 import Game from './Game'
 import Lobby from './Lobby'
+import GuestLobby from './GuestLobby'
 import Rooms from './Rooms'
 import Profile from './Profile'
 import MessageForm from './MessageForm'
@@ -211,8 +212,7 @@ class App extends React.Component {
           </Route>
 
           <Route path="/guest" >
-            <Lobby rooms={this.getRooms()}
-            handleAddRoom={this.handleAddRoom.bind(this)}/>
+            <GuestLobby/>
           </Route>
 
           <Route path="/">
