@@ -1,7 +1,8 @@
 import React from 'react'
 import Palette from './Palette'
 import io from 'socket.io-client'
-const socket = io()
+const socket = io() // where should this line go? in componentDidMount?
+
 
 
 export default class Canvas extends React.Component {
@@ -27,12 +28,15 @@ export default class Canvas extends React.Component {
   }
   
   componentDidMount = () => {
+    // make the drawing context part of state
+    // ask Evan about using document.querySelector in this case
     this.setState({
       ctx: document.querySelector('canvas').getContext('2d'),
     }, () => {
       this.drawGrid()
     })
 
+    // create a listener for the guesser
     socket.on('drawing', pixels => {
       console.log('no if statement')
       if (!this.props.drawer) {
@@ -40,13 +44,11 @@ export default class Canvas extends React.Component {
         this.setState({ pixels }, () => this.drawPixels())
       }
     })
-
-    socket.on('test', () => {
-      console.log('test')
-    })
   }
 
+  // this Canvas method draw the grid (called after pixels are drawn... so it show up on top) so the Artist can see where the pixels are
   drawGrid = (res = this.state.res, w = this.state.w, h = this.state.h) => {
+    // ask Evan about setting the state directly, when you need to change a propert of a state object
     this.state.ctx.lineWidth = 0.5
     for (let x = res; x < w; x += res) {
       this.state.ctx.beginPath()
@@ -62,6 +64,7 @@ export default class Canvas extends React.Component {
     }
   }
 
+  // this Canvas method takes the mouse location and sets the states pixel array to the mouses coordinates in the 2D pixels array
   handleMouseMove = (evt, res = this.state.res) => {
     const x = Math.floor(evt.nativeEvent.offsetX / res)
     const y = Math.floor(evt.nativeEvent.offsetY / res)
@@ -72,10 +75,12 @@ export default class Canvas extends React.Component {
     })
   }
 
+  // this method... is pretty self explanatory
   handlePalette = color => {
     this.setState({ color: color })
   }
 
+  // this Canvas method handles drawing a pixel for a single click
   handleDrawPixel = _evt => {
     const pixels = this.state.pixels.slice()
     const x = this.state.pixel[0]
@@ -92,20 +97,31 @@ export default class Canvas extends React.Component {
     }
   }
 
+  // this Canvas method handles drawing multiple pixels for a click and drag
+  // ask Evan about try... catch here
   handleDrawPixelMoving = _evt => {
-    const pixels = this.state.pixels.slice()
-    const x = this.state.pixel[0]
-    const y = this.state.pixel[1]
-    const column = pixels[x].slice()
-    column[y] = this.state.color
-    pixels[x] = column
-    this.setState({
-      pixels
-    }, this.drawPixels)
+    try {
+      const pixels = this.state.pixels.slice()
+      const x = this.state.pixel[0]
+      const y = this.state.pixel[1]
+      const column = pixels[x].slice()
+      column[y] = this.state.color
+      pixels[x] = column
+      this.setState({
+        pixels
+      }, this.drawPixels)
+      if (this.props.drawer) {
+        console.log('socket')
+        socket.emit('drawing', pixels)
+      }
+    }
+    catch (err) {
+      console.log(err)
+    }
   }
 
+  // this Canvas method uses this.state.pixels to draw every time the image is altered
   drawPixels = (pixels = this.state.pixels, res = this.state.res, w = this.state.w, h = this.state.h) => {
-    // const pixels = this.state.pixels.slice()
     this.state.ctx.clearRect(0, 0, w, h)
     for (let x = 0; x < pixels.length; x++) {
       for (let y = 0; y < pixels[x].length; y++) {
@@ -118,25 +134,17 @@ export default class Canvas extends React.Component {
     this.drawGrid()
   }
 
-  handleDrawingTrue = () => this.setState({ drawing: true })
-  handleDrawingFalse = () => this.setState({ drawing: false })
-
-  socketTest = () => {
-    socket.emit('test')
-  }
-
   render () {
     return (
       <div>
-        <button onClick={this.socketTest}>Test</button>
         <canvas
           height={this.state.h}
           width={this.state.w}
           onMouseMove={this.handleMouseMove}
           onClick={this.handleDrawPixel}
-          onMouseDown={this.handleDrawingTrue}
-          onMouseUp={this.handleDrawingFalse}
-          // onMouseOver={this.handleDrawPixelMoving}
+          onMouseDown={() => this.setState({ drawing: true })}
+          onMouseUp={() => this.setState({ drawing: false })}
+          onMouseLeave={() => this.setState({ drawing: false })}
         />
         <Palette onClick={this.handlePalette} palettes={this.state.palettes} />
       </div>

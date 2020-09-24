@@ -1,7 +1,7 @@
 import React from 'react'
 import io from 'socket.io-client'
-import Canvas from './Canvas'
-import Chat from './Chat'
+import Canvas from './components/Canvas'
+import Chat from './components/Chat'
 import './App.css'
 const socket = io()
 
@@ -20,16 +20,10 @@ export default class App extends React.Component {
     this.setState({
       word: words[Math.floor(Math.random() * words.length)]
     })
-
-    socket.on('test2', () => console.log('test2'))
   }
 
   handleWin = () => {
     this.setState({ win: true })
-  }
-
-  socketTest2 = () => {
-    socket.emit('test2')
   }
 
   render () {
@@ -37,7 +31,6 @@ export default class App extends React.Component {
       <main>
         <link href='https://fonts.googleapis.com/css2?family=Righteous&display=swap' rel='stylesheet' />
         <div>
-          <button onClick={this.socketTest2}>Test2</button>
           <button onClick={() => this.setState({ drawer: true })}>Drawer</button>
           <button onClick={() => this.setState({ drawer: false })}>Player</button>
         </div>
