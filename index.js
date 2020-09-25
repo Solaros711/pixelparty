@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const getWords = require('./word-script')
 
-const port = 8000
+const port = process.env.PORT || 8000
 const path = 'words.json'
 
 const app = require('./app')()
