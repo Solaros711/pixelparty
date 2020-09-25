@@ -5,19 +5,19 @@ const app = express()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http)
 
-app.use(morgan('dev'))
+app.use(morgan('tiny'))
 
 const words = ['dog', 'house', 'tree']
 
 io.on('connection', socket => {
   console.log('socket connected')
-  // I need to get this working with Round.js\
-  // start a round/join a round separately, how?
-  socket.on('round', () => {
+  socket.on('round ready', () => {
     const word = words[Math.floor(Math.random() * words.length)]
     console.log({ word })
     let winner = false
     const messages = []
+
+    socket.emit('round start')
 
     socket.on('drawing', pixels => {
       console.log('it got here')

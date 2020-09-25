@@ -5,7 +5,7 @@ export default class Timer extends React.Component {
     super(props)
     this.state = {
       timer: 30,
-      disabled: true
+      disabled: false
     }
   }
 

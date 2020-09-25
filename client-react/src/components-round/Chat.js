@@ -13,7 +13,7 @@ class NewMessage extends React.Component {
 
   handleSubmit = (evt, text = this.state.text) => {
     console.log('hey')
-    const message = { text, user: null }
+    const message = { text, user: 'test user' }
     this.props.socket.emit('message', message)
     this.setState({ text: '' })
     evt.preventDefault()
