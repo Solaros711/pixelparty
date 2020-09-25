@@ -21,7 +21,6 @@ import './App.css'
 import logo from './pix_logo_4.png'
 const jwt = require('jsonwebtoken')
 
-
 const socket = io()
 
 class App extends React.Component {
@@ -56,7 +55,6 @@ class App extends React.Component {
 
   }
   loginFunc(data) {
-    
     fetch('/login', {
       method: 'POST',
       headers: {
@@ -236,5 +234,3 @@ class App extends React.Component {
 }
 
 export default App
-
-//assignment. make ternaries from rooms - sensei dustino

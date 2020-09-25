@@ -60,7 +60,6 @@ button:focus {
     padding: 5px;
     box-sizing: border-box;
     background: rgba(39, 39, 39, 0.2);
-    /* padding: 3px; */
     position: relative;
     left: 8vw;
     bottom: 0;
@@ -338,3 +337,5 @@ input:focus {
       transform: rotate(0deg);
     }
   }
+
+  
