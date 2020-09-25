@@ -135,6 +135,13 @@ class App extends React.Component {
               {this.state.loggedIn
               ?
               ''
+              : 
+              <li>
+                <Link to="/login"><button>Log In</button></Link>
+              </li>}
+              {this.state.loggedIn
+              ?
+              ''
               :
               <li>
                 <Link to="/signup"><button>Sign Up</button></Link>
@@ -151,13 +158,6 @@ class App extends React.Component {
                 <Link to="/profile/user"><button>Profile</button></Link>
               </li>
               : ''}
-              {this.state.loggedIn
-              ?
-              ''
-              : 
-              <li>
-                <Link to="/login"><button>Log In</button></Link>
-              </li>}
               {this.state.loggedIn
               ?
               <li>
@@ -227,7 +227,7 @@ class App extends React.Component {
             // rooms={this.getRooms()}
             // handleAddRoom={this.handleAddRoom.bind(this)}
             // />
-            : <Redirect to="/login" />}
+            : <Redirect to="/guest"/>}
           </Route>
         </Switch>
 
