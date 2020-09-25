@@ -3,7 +3,7 @@ const express = require('express')
 const jwt = require('jsonwebtoken')
 
 //CHANGE THIS BELOW!!!!
-const token = 'CHANGEME'
+const key = 'CHANGEME'
 
 const router = express.Router()
 
@@ -30,7 +30,7 @@ router.post('/login', (req, res) => {
 
     const token = jwt.sign({
       _id: user._id
-    }, token)
+    }, key)
 
     res.send({
       username: req.body.username,
