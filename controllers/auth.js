@@ -2,6 +2,9 @@ const User = require('../models/User')
 const express = require('express')
 const jwt = require('jsonwebtoken')
 
+//CHANGE THIS BELOW!!!!
+const token = 'CHANGEME'
+
 const router = express.Router()
 
 
@@ -27,7 +30,11 @@ router.post('/login', (req, res) => {
 
     const token = jwt.sign({
       _id: user._id
+<<<<<<< HEAD
     }, 'CHANGEME!')
+=======
+    }, token)
+>>>>>>> d902b40d78640736d73b24a4f8f15430e4a63a4e
 
     res.send({
       username: req.body.username,
@@ -35,4 +42,8 @@ router.post('/login', (req, res) => {
   })
 })
 
+<<<<<<< HEAD
 module.exports = router
+=======
+module.exports = router
+>>>>>>> d902b40d78640736d73b24a4f8f15430e4a63a4e
