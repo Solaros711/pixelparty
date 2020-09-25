@@ -13,7 +13,7 @@ function handleAddRoom () {
 
   return (
     <div id='rooms'>
-        <h5>Welcome to the <span style={{color:"firebrick", textTransform:"uppercase"}}>guest lobby</span>!</h5>
+        <h5>Enjoy a game as <span style={{color:"firebrick", textTransform:"uppercase"}}>guest</span>!</h5>
         <div id='wait-container'>
         {/* <button onClick={handleAddRoom}>Host a Game</button>
         <select onChange={(evt) => history.push("/rooms/" + evt.target.value)} name='room' id='room-select' placeholder="Change rooms...">
