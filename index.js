@@ -21,14 +21,6 @@ const connectDatabase = async (hostname, databaseName) => {
   }
 
 app.listen(port, async () => {
-<<<<<<< HEAD
-    await connectDatabase('localhost', 'message-db')
-    console.log(`server listening on port ${port}...`)
-  })
-
-console.log('server listening on port:', port)
-=======
     await connectDatabase('localhost', 'pixelparty')
     console.log(`server listening on port ${port}...`)
   })
->>>>>>> d902b40d78640736d73b24a4f8f15430e4a63a4e
