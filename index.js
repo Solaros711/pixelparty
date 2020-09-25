@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 
-const port = 8000
+// const port = 8000
+// const MESSAGES_PATH = './messages.txt'
+const port = process.env.PORT || 8000
 
 const app = require('./app')()
 
