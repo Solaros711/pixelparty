@@ -12,29 +12,29 @@ export default class Round extends React.Component {
       socket: io(),
       win: false,
       winner: '',
-      word: ''
+      word: '',
+      playing: false
     }
   }
   
   componentDidMount (socket = this.state.socket) {
-    const user = {
-      drawing: this.props.drawing,
-      word: this.props.word
-    }
     // I need to get this working with app.js
     if (this.props.drawing) {
       console.log(this.props.word)
-      socket.emit('start round', this.props.word)
+      socket.emit('round ready')
+      socket.on('round start', () => this.setState({ playing: true }))
       socket.on('win', (message, word) => {
         console.log(message, word)
         this.setState({ win: true, winner: message.user, word })
       })
+
     // I need to get this working with app.js
     } else {
-      socket.emit('join round')
-        socket.on('win', (message, word) => {
-          console.log(message, word)
-          this.setState({ win: true, winner: message.user, word })
+      // socket.emit('round')
+      socket.on('round start', () => this.setState({ playing: true }))
+      socket.on('win', (message, word) => {
+        console.log(message, word)
+        this.setState({ win: true, winner: message.user, word })
       })
     }
   }
