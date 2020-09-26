@@ -33,16 +33,3 @@ function checkWord(word, func){
         }
     })
 }
-
-async function connectDatabase() {
-    await mongoose.connect(`mongodb://localhost/pixelparty`,
-        {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useCreateIndex: true
-        })
-    console.log('Connection Established')
-    await getWords(data)
-}
-
-// connectDatabase()

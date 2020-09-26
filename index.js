@@ -15,7 +15,6 @@ const connectDatabase = async (hostname, databaseName) => {
         useCreateIndex: true
       }
     )
-
     console.log(`database connected successfully at mongodb://${hostname}/${databaseName} ...`)
     await getWords(path)
     return database
