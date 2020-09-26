@@ -4,7 +4,6 @@ class NewMessage extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      user: '',
       text: ''
     }
   }
@@ -12,7 +11,7 @@ class NewMessage extends React.Component {
   handleChange = evt => this.setState({ text: evt.target.value })
 
   handleSubmit = (evt, text = this.state.text) => {
-    const message = { text, user: 'test user' }
+    const message = { text, user: this.props.user }
     this.props.onSubmit(message)
     this.setState({ text: '' })
     evt.preventDefault()
@@ -55,6 +54,7 @@ export default class Chat extends React.Component {
           onSubmit={this.handleSubmit}
           socket={this.props.socket}
           drawing={this.props.drawing}
+          user={this.props.user}
         />
       </div>
     )

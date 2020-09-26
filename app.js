@@ -1,5 +1,6 @@
 const express = require('express')
 const morgan = require('morgan')
+const { connectDatabase, createRound, joinRound } = require('./round-db')
 
 const app = express()
 const http = require('http').createServer(app)
@@ -7,61 +8,78 @@ const io = require('socket.io')(http)
 
 app.use(morgan('tiny'))
 
-const words = ['dog', 'house', 'tree']
+const round = io.of('/round')
 
-let roles = []
-io.on('connection', socket => {
-  socket.on('test', () => console.log('test'))
+const testID = Math.random()
+const words = ['dog', 'house', 'tree']
+// const players = []
+
+round.on('connection', socket => {
+  socket.on('mounted', () => {
+    round.emit('test id', testID)
+  })
   let word
+  let timerID
   console.log('socket connected')
-  socket.on('join', (roundId, role) => {
-    roles.push(role)
-    console.log({ roles })
-    socket.join(roundId)
+  socket.on('join', (frontendRoundID, username, isHost) => {
+    isHost
+      ? createRound(frontendRoundID, username, round => {
+        if (round.verifyReady) console.log('do next thing')
+      })
+      : joinRound(frontendRoundID, username, round => {
+        if (round.verifyReady) console.log('do next thing')
+      })
+    // players.push(username)
+    // console.log({ players })
+    socket.join(frontendRoundID)
     // console.log({ word })
     let winner = false
     const messages = []
 
     // this start condition is for testing purposes
-    if (roles.length === 2) {
+    if (players.length === 2) {
+      const artist = players[Math.floor(Math.random() * players.length)]
       word = words[Math.floor(Math.random() * words.length)]
       console.log('start', word)
-      io.emit('start', role, word)
-      let timer = 5
-      io.emit('timer', timer)
-      const timerID = setInterval(() => {
+      round.to(roundId).emit('start', word, artist)
+      let timer = 30
+      round.to(roundId).emit('timer', timer)
+      timerID = setInterval(() => {
         if (timer === 0) {
           clearInterval(timerID)
-          io.emit('lose')
+          round.to(roundId).emit('lose')
         }
-        io.emit('timer', timer--)
+        round.to(roundId).emit('timer', timer--)
       }, 1000)
     }
 
     socket.on('drawing', pixels => {
-      // console.log('it got here')
-      // console.log(pixels)
-      io.emit('drawing', pixels)
+      round.to(roundId).emit('drawing', pixels)
     })
 
     socket.on('message', message => {
       console.log({ message, word })
-      // console.log(winner)
       if (message.text.toLowerCase() === word.toLowerCase() && !(winner)) {
+        clearInterval(timerID)
         console.log('win?')
-        io.emit('win', message.user, word)
+        round.emit('win', message.username, word)
         winner = true
       }
       messages.push(message)
-      io.emit('messages', messages)
+      round.to(roundId).emit('messages', messages)
     })
   })
-  socket.on('disconnect', () => { roles = [] })
+  socket.on('disconnect', () => {
+    clearInterval(timerID)
+    players.length = 0
+  })
 })
 
 const startServer = port => {
-  http.listen(port)
-  console.log(`Server is listening on port ${port}...`)
+  http.listen(port, async () => {
+    await connectDatabase()
+    console.log(`Server is listening on port ${port}...`)
+  })
 }
 
 module.exports = { startServer }

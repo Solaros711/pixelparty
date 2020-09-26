@@ -151,7 +151,7 @@ export default class Canvas extends React.Component {
             width={this.state.w}
           />
       }
-        <Palette onClick={this.handlePalette} palettes={this.state.palettes} />
+        <Palette onClick={this.handlePalette} palettes={this.state.palettes} color={this.state.color} />
       </div>
     )
   }
