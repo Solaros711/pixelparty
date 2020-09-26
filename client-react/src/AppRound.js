@@ -36,7 +36,8 @@ export default class AppRound extends React.Component {
     this.setState({ 
       drawing: true,
       playing: true,
-      role: 'artist'
+      role: 'artist',
+      user: 'Artist'
     })
 
   }
@@ -46,7 +47,8 @@ export default class AppRound extends React.Component {
     this.setState({
       drawing: false,
       playing: true,
-      role: 'guesser'
+      role: 'guesser',
+      user: 'Guesser'
     })
   }
   
@@ -59,6 +61,7 @@ export default class AppRound extends React.Component {
             word={this.state.word}
             drawing={this.state.drawing}
             role={this.state.role}
+            user={this.state.user}
           />
           : [
             <button key={1} onClick={this.handleDraw}>I want to Draw!</button>,

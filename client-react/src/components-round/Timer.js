@@ -9,15 +9,15 @@ export default class Timer extends React.Component {
     }
   }
 
-  componentDidMount () {
-    if (!this.state.disabled) {
-      setInterval(() => {
-        this.setState({ timer: this.state.timer - 1})
-      }, 1000)
-    }
-  }
+  // componentDidMount () {
+  //   if (!this.state.disabled) {
+  //     setInterval(() => {
+  //       this.setState({ timer: this.state.timer - 1})
+  //     }, 1000)
+  //   }
+  // }
 
   render () {
-    return <div id='timer'>00:{this.state.timer}</div>
+    return <div id='timer'>00:{this.props.timer.toString().padStart(2, '0')}</div>
   }
 }

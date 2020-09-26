@@ -11,13 +11,15 @@ export default class Round extends React.Component {
     this.state = {
       socket: io(),
       win: false,
+      lose: false,
+      roundEnd: false,
       winner: '',
       word: '',
       playing: false,
       roundId: 1,
       messages: [],
       pixels: [],
-      timer: 0
+      timer: 0,
     }
   }
   
@@ -29,10 +31,10 @@ export default class Round extends React.Component {
     })
     socket.on('messages', messages => this.setState({ messages }))
     socket.on('win', (user, word) => {
-      this.setState({ win: true, winner: user, word })
+      this.setState({ win: true, winner: user, word, roundEnd: true })
     })
     socket.on('timer', timer => this.setState({ timer }))
-    socket.on('disconnect', () => {socket.emit('test')})
+    socket.on('lose', () => this.setState({ timer: 0, lose: true, roundEnd: true }))
   }
 
   handleSubmitMessage = message => {
@@ -48,13 +50,15 @@ export default class Round extends React.Component {
       <div id='round'>
         {this.state.playing
           ? <div>
-            {this.state.win
-              ? <div>Congrats, {this.state.winner} guessed {this.state.word} correctly!</div>
+            {this.state.roundEnd
+              ? this.state.win
+                ? <div>Congrats, {this.state.winner} guessed {this.state.word} correctly!</div>
+                : <div>Oof, the word was "{this.state.word}"</div>
               : this.props.drawing
-              ? <div>Your word is "{this.state.word}"</div>
-              : null
+                ? <div>Your word is "{this.state.word}"</div>
+                : null
             }
-        <Timer socket={this.state.socket} />
+        <Timer timer={this.state.timer} />
         <div id='chat-and-canvas'>
           <Canvas
            drawing={this.props.drawing}

@@ -22,13 +22,20 @@ io.on('connection', socket => {
     let winner = false
     const messages = []
 
+    // this start condition is for testing purposes
     if (roles.length === 2) {
       word = words[Math.floor(Math.random() * words.length)]
       console.log('start', word)
       io.emit('start', role, word)
-      let timer = 30
+      let timer = 5
       io.emit('timer', timer)
-      setInterval(() => io.emit('timer', timer--), 1000)
+      const timerID = setInterval(() => {
+        if (timer === 0) {
+          clearInterval(timerID)
+          io.emit('lose')
+        }
+        io.emit('timer', timer--)
+      }, 1000)
     }
 
     socket.on('drawing', pixels => {
