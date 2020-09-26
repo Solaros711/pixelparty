@@ -13,19 +13,31 @@ export default class Round extends React.Component {
       win: false,
       winner: '',
       word: '',
-      playing: false
+      playing: false,
+      roundId: 1,
+      messages: [],
+      pixels: [],
+      timer: 0
     }
   }
   
   componentDidMount (socket = this.state.socket) {
-    socket.emit('round ready')
-    socket.on('round start', () => this.setState({ playing: true }))
+    socket.emit('join', this.state.roundId, this.props.role)
+    socket.on('start', (role, word) => {
+      console.log(word)
+      this.setState({ role, playing: true, word })
+    })
+    socket.on('messages', messages => this.setState({ messages }))
     socket.on('win', (user, word) => {
-      console.log(user, word)
       this.setState({ win: true, winner: user, word })
     })
+    socket.on('timer', timer => this.setState({ timer }))
+    socket.on('disconnect', () => {socket.emit('test')})
   }
 
+  handleSubmitMessage = message => {
+    this.state.socket.emit('message', message)
+  }
 
   handleRoundEnd = () => {
     console.log('round end')
@@ -39,7 +51,7 @@ export default class Round extends React.Component {
             {this.state.win
               ? <div>Congrats, {this.state.winner} guessed {this.state.word} correctly!</div>
               : this.props.drawing
-              ? <div>Your word is "{this.props.word}"</div>
+              ? <div>Your word is "{this.state.word}"</div>
               : null
             }
         <Timer socket={this.state.socket} />
@@ -51,9 +63,10 @@ export default class Round extends React.Component {
           <Chat
             word={this.props.word}
             onRoundEnd={this.handleRoundEnd}
-            socket={this.state.socket}
             drawing={this.props.drawing}
-            />
+            messages={this.state.messages}
+            onSubmit={this.handleSubmitMessage}
+          />
         </div>
         </div>
         : <div>Waiting for game to start...</div>

@@ -9,10 +9,11 @@ export default class AppRound extends React.Component {
     super(props)
     this.state = {
       word: '',
-      words: ['dog', 'house', 'tree'],
+      // words: ['dog', 'house', 'tree'],
       win: false,
       drawer: false,
-      playing: false
+      playing: false,
+      role: ''
     }
   }
 
@@ -31,20 +32,22 @@ export default class AppRound extends React.Component {
   }
 
   // hardcoded so the word is selected at this moment
-  handleDraw = (words = this.state.words) => {
-    console.log(this.state.words)
-    console.log(words) // ask why this isn't this.state.words
+  handleDraw = () => {
     this.setState({ 
-      word: this.state.words[Math.floor(Math.random() * this.state.words.length)],
       drawing: true,
-      playing: true
-    }, () => console.log(this.state))
+      playing: true,
+      role: 'artist'
+    })
 
   }
 
   // no word selected here
   handleGuess = () => {
-    this.setState({ drawing: false, playing: true})
+    this.setState({
+      drawing: false,
+      playing: true,
+      role: 'guesser'
+    })
   }
   
   render () {
@@ -55,6 +58,7 @@ export default class AppRound extends React.Component {
           ? <Round
             word={this.state.word}
             drawing={this.state.drawing}
+            role={this.state.role}
           />
           : [
             <button key={1} onClick={this.handleDraw}>I want to Draw!</button>,

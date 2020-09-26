@@ -3,8 +3,6 @@ import Palette from './Palette'
 import io from 'socket.io-client'
 // const socket = io() // where should this line go? in componentDidMount?
 
-
-
 export default class Canvas extends React.Component {
   constructor (props) {
     super(props)
@@ -71,6 +69,7 @@ export default class Canvas extends React.Component {
     this.setState({
       pixel: [x, y]
     }, () => {
+      console.log(this.state.pixel)
       if (this.state.drawing) this.handleDrawPixelMoving()
     })
   }

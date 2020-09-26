@@ -9,25 +9,37 @@ app.use(morgan('tiny'))
 
 const words = ['dog', 'house', 'tree']
 
+let roles = []
 io.on('connection', socket => {
+  socket.on('test', () => console.log('test'))
+  let word
   console.log('socket connected')
-  socket.on('round ready', () => {
-    const word = words[Math.floor(Math.random() * words.length)]
-    console.log({ word })
+  socket.on('join', (roundId, role) => {
+    roles.push(role)
+    console.log({ roles })
+    socket.join(roundId)
+    // console.log({ word })
     let winner = false
     const messages = []
 
-    socket.emit('round start')
+    if (roles.length === 2) {
+      word = words[Math.floor(Math.random() * words.length)]
+      console.log('start', word)
+      io.emit('start', role, word)
+      let timer = 30
+      io.emit('timer', timer)
+      setInterval(() => io.emit('timer', timer--), 1000)
+    }
 
     socket.on('drawing', pixels => {
-      console.log('it got here')
-      console.log(pixels)
+      // console.log('it got here')
+      // console.log(pixels)
       io.emit('drawing', pixels)
     })
 
     socket.on('message', message => {
-      console.log({ message })
-      console.log(winner)
+      console.log({ message, word })
+      // console.log(winner)
       if (message.text.toLowerCase() === word.toLowerCase() && !(winner)) {
         console.log('win?')
         io.emit('win', message.user, word)
@@ -37,6 +49,7 @@ io.on('connection', socket => {
       io.emit('messages', messages)
     })
   })
+  socket.on('disconnect', () => { roles = [] })
 })
 
 const startServer = port => {
