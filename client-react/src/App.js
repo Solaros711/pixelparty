@@ -3,6 +3,7 @@ import Chat from './Chat'
 import Game from './Game'
 import Lobby from './Lobby'
 import GuestLobby from './GuestLobby'
+import * as Tone from 'tone'
 import Rooms from './Rooms'
 import Profile from './Profile'
 import MessageForm from './MessageForm'
@@ -115,6 +116,13 @@ class App extends React.Component {
     this.setState({loggedIn: false})
   }
 
+  playTone() {
+    Tone.start()
+    // console.log('audio is ready')
+    const synth = new Tone.Synth().toDestination()
+    return synth.triggerAttackRelease("C4", "8n")
+  }
+
   render () {
     return (
       <Router>
@@ -144,7 +152,7 @@ class App extends React.Component {
               ''
               :
               <li>
-                <Link to="/signup"><button>Sign Up</button></Link>
+                <Link to="/signup"><button onClick={this.playTone}>Sign Up</button></Link>
               </li>}
               {this.state.loggedIn 
                 ?
