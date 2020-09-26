@@ -15,12 +15,12 @@ const connectDatabase = async (hostname, databaseName) => {
         useCreateIndex: true
       }
     )
-    await getWords(path)
     console.log(`database connected successfully at mongodb://${hostname}/${databaseName} ...`)
+    await getWords(path)
     return database
   }
 
 app.listen(port, async () => {
     await connectDatabase('localhost', 'pixelparty')
     console.log(`server listening on port ${port}...`)
-  })
+})

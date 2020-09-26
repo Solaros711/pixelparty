@@ -26,7 +26,7 @@ router.post('/login', (req, res) => {
 
     const matchingPassword = await user.comparePassword(req.body.password)
 
-    if (!user || !matchingPassword) return res.status(400).send({"error": "Username or password is not one registered with the Signup form - use something that has been submitted previously"}) //cannot parse this as JSON on the front-end
+    if (!user || !matchingPassword) return res.status(400).send({"error": "Username or password is not correct"})
 
     const token = jwt.sign({
       _id: user._id
