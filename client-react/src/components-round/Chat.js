@@ -11,7 +11,7 @@ class NewMessage extends React.Component {
   handleChange = evt => this.setState({ text: evt.target.value })
 
   handleSubmit = (evt, text = this.state.text) => {
-    const message = { text, user: this.props.user }
+    const message = { text, username: this.props.username }
     this.props.onSubmit(message)
     this.setState({ text: '' })
     evt.preventDefault()
@@ -48,13 +48,13 @@ export default class Chat extends React.Component {
     return (
       <div id='messages-container'>
         <div id='messages'>
-          {this.props.messages.map((msg, i) => <div key={i}>{msg.user}: {msg.text}</div>)}
+          {this.props.messages.map((msg, i) => <div key={i}>{msg.username}: {msg.text}</div>)}
         </div>
         <NewMessage
           onSubmit={this.handleSubmit}
           socket={this.props.socket}
           drawing={this.props.drawing}
-          user={this.props.user}
+          username={this.props.username}
         />
       </div>
     )

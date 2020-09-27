@@ -11,67 +11,53 @@ app.use(morgan('tiny'))
 const round = io.of('/round')
 
 const testID = Math.random()
-const words = ['dog', 'house', 'tree']
-// const players = []
 
 round.on('connection', socket => {
   socket.on('mounted', () => {
+    console.log('component mounted')
     round.emit('test id', testID)
   })
-  let word
-  let timerID
-  console.log('socket connected')
+  console.log('socket connected on room namespace')
+
   socket.on('join', (frontendRoundID, username, isHost) => {
+    console.log({ frontendRoundID, username, isHost })
     isHost
-      ? createRound(frontendRoundID, username, round => {
-        if (round.verifyReady) console.log('do next thing')
-      })
-      : joinRound(frontendRoundID, username, round => {
-        if (round.verifyReady) console.log('do next thing')
-      })
-    // players.push(username)
-    // console.log({ players })
-    socket.join(frontendRoundID)
-    // console.log({ word })
-    let winner = false
-    const messages = []
-
-    // this start condition is for testing purposes
-    if (players.length === 2) {
-      const artist = players[Math.floor(Math.random() * players.length)]
-      word = words[Math.floor(Math.random() * words.length)]
-      console.log('start', word)
-      round.to(roundId).emit('start', word, artist)
-      let timer = 30
-      round.to(roundId).emit('timer', timer)
-      timerID = setInterval(() => {
-        if (timer === 0) {
-          clearInterval(timerID)
-          round.to(roundId).emit('lose')
+      ? createRound(frontendRoundID, username, roundDB => {
+        if (roundDB.verifyReady()) {
+          roundDB.start(frontendRoundID, round, timerID => {
+          })
         }
-        round.to(roundId).emit('timer', timer--)
-      }, 1000)
-    }
+        socket.on('drawing', pixels => {
+          round.to(frontendRoundID).emit('drawing', pixels)
+        })
+        socket.on('message', async message => {
+          console.log({ message })
+          const messages = await roundDB.logMessage(round, frontendRoundID, message, timerID)
+          round.to(frontendRoundID).emit('messages', messages)
+        })
+      })
 
-    socket.on('drawing', pixels => {
-      round.to(roundId).emit('drawing', pixels)
-    })
+      : joinRound(frontendRoundID, username, roundDB => {
+        if (roundDB.verifyReady()) {
+          roundDB.start(frontendRoundID, round, timerID => {
+          })
+        }
+        socket.on('drawing', pixels => {
+          round.to(frontendRoundID).emit('drawing', pixels)
+        })
+        socket.on('message', async message => {
+          console.log({ message })
+          const messages = await roundDB.logMessage(round, frontendRoundID, message)
+          round.to(frontendRoundID).emit('messages', messages)
+        })
+      })
 
-    socket.on('message', message => {
-      console.log({ message, word })
-      if (message.text.toLowerCase() === word.toLowerCase() && !(winner)) {
-        clearInterval(timerID)
-        console.log('win?')
-        round.emit('win', message.username, word)
-        winner = true
-      }
-      messages.push(message)
-      round.to(roundId).emit('messages', messages)
-    })
-  })
-  socket.on('disconnect', () => {
-    clearInterval(timerID)
-    players.length = 0
+    socket.join(frontendRoundID)
+
+    // socket.on('disconnect', () => {
+    //   clearInterval(timerID)
+    //   players.length = 0
+    // })
   })
 })
 
@@ -83,3 +69,34 @@ const startServer = port => {
 }
 
 module.exports = { startServer }
+// if (players.length === 2) {
+//   const artist = players[Math.floor(Math.random() * players.length)]
+//   word = words[Math.floor(Math.random() * words.length)]
+//   console.log('start', word)
+//   round.to(roundId).emit('start', word, artist)
+//   let timer = 30
+//   round.to(roundId).emit('timer', timer)
+//   timerID = setInterval(() => {
+//     if (timer === 0) {
+//       clearInterval(timerID)
+//       round.to(roundId).emit('lose')
+//     }
+//     round.to(roundId).emit('timer', timer--)
+//   }, 1000)
+// }
+
+//   socket.on('message', message => {
+//     console.log({ message, word })
+//     if (message.text.toLowerCase() === word.toLowerCase() && !(winner)) {
+//       clearInterval(timerID)
+//       console.log('win?')
+//       round.emit('win', message.username, word)
+//       winner = true
+//     }
+//     messages.push(message)
+//     round.to(frontendRoundID).emit('messages', messages)
+//   })
+// socket.on('drawing', pixels => {
+//   round.to(frontendRoundID).emit('drawing', pixels)
+// })
+// })

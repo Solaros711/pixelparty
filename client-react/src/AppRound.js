@@ -25,7 +25,7 @@ export default class AppRound extends React.Component {
   componentDidMount (socket = this.state.socket) {
     socket.emit('mounted')
     socket.on('test id', testID => {
-      this.setState({ roundID: testID })
+      this.setState({ roundID: testID }, () => console.log(this.state))
     })
   }
 
@@ -50,10 +50,15 @@ export default class AppRound extends React.Component {
     })
   }
 
-  joinAsGuest = () => this.setState({ isHost: false }, () => this.roundReady())
+  join = () => this.setState({ isHost: false }, () => this.roundReady())
   
   joinAsHost = () => this.setState({ isHost: true }, () => this.roundReady())
   
+  handleSubmitMessage = message => {
+    console.log({ message })
+    this.state.socket.emit('message', message)
+  }
+
   render () {
     return (
       <main>

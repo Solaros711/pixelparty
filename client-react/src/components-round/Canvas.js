@@ -36,9 +36,9 @@ export default class Canvas extends React.Component {
 
     // create a listener for the guesser
     socket.on('drawing', pixels => {
-      console.log('no if statement')
+      // console.log('no if statement')
       if (!this.props.drawing) {
-        console.log(pixels)
+        // console.log(pixels)
         this.setState({ pixels }, () => this.drawPixels())
       }
     })
@@ -69,7 +69,7 @@ export default class Canvas extends React.Component {
     this.setState({
       pixel: [x, y]
     }, () => {
-      console.log(this.state.pixel)
+      // console.log(this.state.pixel)
       if (this.state.drawing) this.handleDrawPixelMoving()
     })
   }
@@ -91,7 +91,7 @@ export default class Canvas extends React.Component {
       pixels
     }, this.drawPixels)
     if (this.props.drawing) {
-      console.log('socket')
+      // console.log('socket')
       socket.emit('drawing', pixels)
     }
   }
@@ -110,12 +110,12 @@ export default class Canvas extends React.Component {
         pixels
       }, this.drawPixels)
       if (this.props.drawing) {
-        console.log('socket')
+        // console.log('socket')
         socket.emit('drawing', pixels)
       }
     }
     catch (err) {
-      console.log(err)
+      // console.log(err)
     }
   }
 

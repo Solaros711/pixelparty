@@ -57,7 +57,7 @@ export default class Round extends React.Component {
   render () {
     return (
       <div id='round'>
-        <div>Player: {this.props.user}</div>
+        <div>Player: {this.props.username}</div>
         {this.props.playing
           ? <div>
             {this.props.roundEnd
@@ -80,7 +80,7 @@ export default class Round extends React.Component {
             drawing={this.props.drawing}
             messages={this.props.messages}
             onSubmit={this.handleSubmitMessage}
-            user={this.props.user}
+            username={this.props.username}
           />
         </div>
         </div>

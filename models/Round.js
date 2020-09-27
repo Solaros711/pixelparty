@@ -24,6 +24,10 @@ const playerScema = new Schema({
   isArtist: {
     type: Boolean,
     default: false
+  },
+  isWinner: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -45,6 +49,10 @@ const roundSchema = new Schema({
   },
   winners: {
     type: Array
+  },
+  inProgress: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -53,6 +61,7 @@ roundSchema.methods.verifyReady = function () {
 }
 
 roundSchema.methods.start = function (frontendRoundID, roundNameSpace, cb) {
+  this.inProgress = true
   const artist = this.players[Math.floor(Math.random() * this.players.length)]
   artist.isArtist = true
   roundNameSpace.to(frontendRoundID).emit('start', this.word, artist.username)
@@ -69,9 +78,24 @@ roundSchema.methods.start = function (frontendRoundID, roundNameSpace, cb) {
   cb(timerID)
 }
 
-roundSchema.methods.logMessage = async function (message) {
+// roundSchema.methods.manage = function (roundNameSpace, frontendRoundID, timerID) {
+
+// }
+
+roundSchema.methods.logMessage = async function (roundNameSpace, frontentRoundID, message, cb) {
   await this.messages.push(message)
   await this.save()
+  if (message.text.toLowerCase() === this.word.toLowerCase()) {
+    const winner = this.players.filter(player => player.username === message.username)[0]
+    const artist = this.players.filter(player => player.isArtist)
+    winner.isWinner = true
+    artist.isWinner = true
+    this.winners = [winner, artist]
+    this.win = true
+    this.inProgress = false
+    this.save()
+    roundNameSpace.to(frontentRoundID).emit('win', this.winner, this.artist, this.word)
+  }
   return this.messages
 }
 
