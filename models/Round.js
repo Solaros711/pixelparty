@@ -16,7 +16,7 @@ const messageSchema = new Schema({
   }
 })
 
-const playerScema = new Schema({
+const playerSchema = new Schema({
   username: {
     type: String,
     required: true
@@ -33,7 +33,7 @@ const playerScema = new Schema({
 
 const roundSchema = new Schema({
   messages: [messageSchema],
-  players: [playerScema],
+  players: [playerSchema],
   frontendID: {
     type: String,
     required: true
