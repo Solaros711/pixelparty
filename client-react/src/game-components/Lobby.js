@@ -1,6 +1,7 @@
 import React from 'react'
 import io from 'socket.io-client'
-import Game from './game-components/Game'
+import Game from './Game'
+import './Game.css'
 
 const socket = io('/game')
 const names = ['kermit', 'miss piggy', 'fozzy', 'gonzo', 'rizzo', 'animal', 'swedish chef', 'sam eagle', 'statler', 'waldorf']

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import AppRound from './AppRound'
-import Lobby from './Lobby'
+import Lobby from './game-components/Lobby'
 import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
