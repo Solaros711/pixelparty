@@ -1,5 +1,6 @@
 import React from 'react'
 import { useHistory } from "react-router-dom"
+import Lobby2 from './game-components/Lobby2'
 
 export default function GuestLobby (props) {  
 let history = useHistory()
@@ -20,6 +21,7 @@ function handleAddRoom () {
             <option value=''>--Join a Game--</option>
             {props.rooms.map(room => <option key={room} value={room}>{room}</option>)}
         </select> */}
+        <Lobby2 />
         </div>
     </div>
   )

@@ -6,24 +6,26 @@ const { userInfo } = require('os')
 const jwt = require('jsonwebtoken')
 const User = require('./models/User')
 const path = require('path')
+const gameIO = require('./sockets/game-socket')
 
 module.exports = function (deps) {
   const express = require('express')
 
   const app = express()
-
+  
   app.use(express.static(path.join(__dirname, 'client-react/build')))
   app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname, 'client-react/build', 'index.html'))
   })
-
+  
   app.use(express.json())
   app.use('/', AuthController)
   app.use('/', GetController)
-
+  
   const http = require('http').createServer(app)
   const io = require('socket.io')(http)
-
+  gameIO(io)
+  
   io.on('connection', (socket) => {
     console.log('a user connected')
 
