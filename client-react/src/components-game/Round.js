@@ -9,52 +9,16 @@ export default class Round extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      // socket: io('/round'),
-      // win: false,
-      // lose: false,
-      // roundEnd: false,
-      // winner: '',
-      // word: '',
-      // playing: false,
-      // roundId: 0, // Math.random(), //different for testing purposes
-      // messages: [],
-      // pixels: [],
-      // timer: 0
     }
   }
   
-  // componentDidMount (socket = this.state.socket) {
-    
-  //   socket.emit('join', this.state.roundId, this.props.user, this.props.isHost)
-  //   socket.on('start', (word, artist) => {
-  //     console.log(word)
-  //     console.log(artist, this.props.user)
-      
-  //     this.setState({
-  //       artist,
-  //       playing: true,
-  //       word,
-  //       drawing: (artist === this.props.user) ? true : false
-  //     }, () => console.log(this.state))
-  //   })
-  //   socket.on('messages', messages => this.setState({ messages }))
-  //   socket.on('win', (user, word) => {
-  //     this.setState({ win: true, winner: user, word, roundEnd: true })
-  //   })
-  //   socket.on('timer', timer => this.setState({ timer }))
-  //   socket.on('lose', () => this.setState({ timer: 0, lose: true, roundEnd: true }))
-  // }
-
   handleSubmitMessage = message => {
     this.props.onSubmitMessage(message)
-    // this.state.socket.emit('message', message)
   }
 
-  // handleRoundEnd = () => {
-  //   console.log('round end')
-  // }
-
   render () {
+    const gameData = this.props.gameData
+    const roundData = this.props.roundData
     return (
       <div id='round'>
         <div>Player: {this.props.username}</div>

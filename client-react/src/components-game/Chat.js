@@ -11,21 +11,24 @@ class NewMessage extends React.Component {
   handleChange = evt => this.setState({ text: evt.target.value })
 
   handleSubmit = (evt, text = this.state.text) => {
-    const message = { text, username: this.props.username }
-    this.props.onSubmit(message)
+    const message = { text, username: this.props.username, gameID: this.props.gameID }
+    console.log(message)
+    this.props.socket.emit('message', message)
+    // this.props.onSubmit(message) // to delete?
     this.setState({ text: '' })
     evt.preventDefault()
   }
 
   render () {
+    const isArtist = this.props.isArtist
     return (
       <form onSubmit={this.handleSubmit}>
         <input
           onChange={this.handleChange}
           value={this.state.text}
-          disabled={this.props.drawing ? true : false}
+          disabled={isArtist ? true : false}
         />
-        <button disabled={this.props.drawing ? true : false}>Send</button>
+        <button disabled={isArtist ? true : false}>Send</button>
       </form>
     )
   }
@@ -39,22 +42,29 @@ export default class Chat extends React.Component {
     }
   }
 
-  handleSubmit = message => {
-    this.props.onSubmit(message)
-  }
+  // handleSubmit = message => {  // to delete?
+  //   this.props.onSubmit(message)
+  // }
 
 
   render () {
+    console.log(this.props.roundData) // undefined?
+    const socket = this.props.socket
+    const messages = this.props.gameData.messages
+    const isArtist = this.props.roundData.artist === this.props.username
+    const gameID = this.props.gameData._id
     return (
       <div id='messages-container'>
         <div id='messages'>
-          {this.props.messages.map((msg, i) => <div key={i}>{msg.username}: {msg.text}</div>)}
+          {messages.map((msg, i) => <div key={i}>{msg.username}: {msg.text}</div>)}
         </div>
         <NewMessage
           onSubmit={this.handleSubmit}
-          socket={this.props.socket}
-          drawing={this.props.drawing}
+          socket={socket}
+          // drawing={this.props.drawing} // to delete?
+          isArtist={isArtist}
           username={this.props.username}
+          gameID={gameID}
         />
       </div>
     )

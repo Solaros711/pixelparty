@@ -58,11 +58,16 @@ const gameSchema = new Schema({
   },
   points: {
     type: Array
+  },
+  host: {
+    type: String,
+    required: true
   }
 })
 
 gameSchema.statics.create = async function (hostUsername, numOfPlayers) {
   const game = new this()
+  game.host = hostUsername
   game.players = [hostUsername]
   // numOfPlayers = numOfRounds for now
   game.numOfPlayers = numOfPlayers

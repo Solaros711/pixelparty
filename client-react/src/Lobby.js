@@ -1,5 +1,6 @@
 import React from 'react'
 import io from 'socket.io-client'
+import Game from './components-game/Game'
 
 const socket = io('/game')
 const names = ['kermit', 'miss piggy', 'fozzy', 'gonzo', 'rizzo', 'animal', 'swedish chef', 'sam eagle', 'statler', 'waldorf']
@@ -10,7 +11,8 @@ export default class AppGame extends React.Component {
     this.state = {
       username: names[Math.floor(Math.random() * names.length)],
       isHost: false,
-      games: []
+      games: [],
+      joinedGame: false,
     }
   }
 
@@ -21,12 +23,22 @@ export default class AppGame extends React.Component {
         games: this.state.games.concat({ gameID, hostUsername })
       }, () => console.log(this.state))
     })
-    socket.on('game state', data => this.setState(data))
+    socket.on('game state', data => this.setState({ gameData: data }))
     socket.on('drawing', pixels => this.setState(pixels))
     socket.on('timer', timer => this.setState(timer))
+    socket.on('join game', data => {
+      console.log(this.state)
+      this.setState({ gameDataStr: JSON.stringify(data), gameData: data, joinedGame: true })
+    })
     socket.on('game ready', gameID => {
       if (this.state.isHost) socket.emit('game ready', gameID)
     })
+    socket.on('game full', gameID => {
+      const games = this.state.games.slice()
+      games.splice(games.indexOf(gameID), 1)
+      this.setState({ games })
+    })
+    socket.on('game start', () => this.setState({ gameStart: true }))
   }
 
   handleHostGame = () => {
@@ -36,6 +48,9 @@ export default class AppGame extends React.Component {
     socket.on('join created game', (gameID, username) => {
       const { isHost } = this.state
       socket.emit('join game', { gameID, username, isHost })
+    })
+    socket.on('game ready', gameID => {
+      socket.emit('game start', gameID)
     })
   }
 
@@ -48,8 +63,24 @@ export default class AppGame extends React.Component {
     return (
       <main>
         <link href='https://fonts.googleapis.com/css2?family=Righteous&display=swap' rel='stylesheet' />
-        <button onClick={this.handleHostGame}>Host a Game!</button>
-        {this.state.games.map(game => <button key={game.gameID} onClick={() => this.handleJoinGame(game.gameID)}>Join {game.hostUsername}'s Game!</button>)}
+        <div>User: {this.state.username}</div>
+        {this.state.joinedGame
+        ? this.state.gameStart
+          ? <Game gameData={this.state.gameData} username={this.state.username} socket={socket} />
+          : <div>
+            <div>{this.state.gameData.host}'s game</div>
+            <div>{this.state.gameData.players.length} of {this.state.gameData.numOfPlayers} joined</div>
+          </div>
+        : <div>
+            <button onClick={this.handleHostGame}>Host a Game!</button>
+            {this.state.games.map(game => <button key={game.gameID} onClick={() => this.handleJoinGame(game.gameID)}>Join {game.hostUsername}'s Game!</button>)}
+          </div>
+        }
+        {this.state.gameDataStr
+        ? [<div>Game Data:</div>,
+          <div>{this.state.gameDataStr}</div>]
+        : null
+      }
       </main>
     )
   }

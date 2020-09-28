@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "colors": "^1.4.0",
     "express": "^4.17.1",
     "mongoose": "^5.10.7",
     "morgan": "^1.10.0",
