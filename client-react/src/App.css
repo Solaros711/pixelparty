@@ -27,7 +27,7 @@ canvas {
   border-radius: 5%;
 }
 
-#chat-and-canvas {
+#chat-and-canvas, #round-and-chat {
   width: 80vw;
   display: flex;
   justify-content: space-around;
@@ -53,4 +53,15 @@ canvas {
 #timer {
   font-size: 2rem;
   text-align: center;
+}
+
+#round-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#round-info {
+  display: flex;
+  flex-direction: column;
 }

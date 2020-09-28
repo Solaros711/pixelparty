@@ -86,9 +86,10 @@ module.exports = io => { // this takes in the io from the main app.js
       const message = { username: data.username, text: data.text }
       Game.findOne({ _id: data.gameID }, async (err, gameDB) => {
         if (err) return console.log(err)
-        console.log({ gameDB })
+        // console.log({ gameDB })
         await gameDB.logMessage(message)
         console.log({ gameDB })
+        console.log(gameDB.rounds)
         // data = { game state from backend }
         // emit to all clients in room
         game.to(data.gameID).emit('game state', gameDB)
@@ -102,9 +103,10 @@ module.exports = io => { // this takes in the io from the main app.js
 
     socket.on('drawing', data => {
       // data = { gameID, pixels }
-      console.log('\n\'drawing\' event recieved from client ... this event will:\nOn the frontend:\n\tDraw pixels on all clients except for artist')
+      // console.log('\n\'drawing\' event recieved from client ... this event will:\nOn the frontend:\n\tDraw pixels on all clients except for artist')
+      console.log(`\n\'drawing\' event received in gameID: ${data.gameID}`.magenta)
       // emit to all clients in the room except sender
-      socket.to(data.gameID).emit('drawing', data.pixels)
+      game.to(data.gameID).emit('drawing', data.pixels)
     })
 
     socket.on('start game', data => {

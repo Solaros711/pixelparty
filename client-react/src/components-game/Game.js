@@ -16,7 +16,7 @@ export default class Game extends React.Component {
     console.log({ gameData, roundData, username })
     return (
       <div id='round-and-chat'>
-        <Round gameData={gameData} roundData={roundData} username={this.props.username} />
+        <Round gameData={gameData} roundData={roundData} username={this.props.username} socket={this.props.socket} />
         <Chat gameData={gameData} username={this.props.username} socket={socket} gameId={gameData._id} roundData={roundData} />
       </div>
     )

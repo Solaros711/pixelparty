@@ -23,11 +23,13 @@ export default class AppGame extends React.Component {
         games: this.state.games.concat({ gameID, hostUsername })
       }, () => console.log(this.state))
     })
-    socket.on('game state', data => this.setState({ gameData: data }))
+    socket.on('game state', data => {
+      console.log('game state', data)
+      this.setState({ gameData: data, gameDataStr: JSON.stringify(data) })
+    })
     socket.on('drawing', pixels => this.setState(pixels))
     socket.on('timer', timer => this.setState(timer))
     socket.on('join game', data => {
-      console.log(this.state)
       this.setState({ gameDataStr: JSON.stringify(data), gameData: data, joinedGame: true })
     })
     socket.on('game ready', gameID => {

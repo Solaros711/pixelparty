@@ -25,23 +25,25 @@ export default class Canvas extends React.Component {
     }
   }
   
-  componentDidMount = (socket = this.props.socket) => {
+  componentDidMount = () => {
     // make the drawing context part of state
     // ask Evan about using document.querySelector in this case
     this.setState({
       ctx: document.querySelector('canvas').getContext('2d'),
+      gameID: this.props.gameID,
+      socket: this.props.socket
     }, () => {
       this.drawGrid()
+      this.state.socket.on('drawing', pixels => {
+        // console.log('no if statement')
+        if (!this.props.isArtist) {
+          // console.log(pixels)
+          this.setState({ pixels }, () => this.drawPixels())
+        }
+      })
     })
 
     // create a listener for the guesser
-    socket.on('drawing', pixels => {
-      // console.log('no if statement')
-      if (!this.props.drawing) {
-        // console.log(pixels)
-        this.setState({ pixels }, () => this.drawPixels())
-      }
-    })
   }
 
   // this Canvas method draw the grid (called after pixels are drawn... so it show up on top) so the Artist can see where the pixels are
@@ -81,6 +83,7 @@ export default class Canvas extends React.Component {
 
   // this Canvas method handles drawing a pixel for a single click
   handleDrawPixel = (_evt, socket = this.props.socket) => {
+    if (!this.props.isArtist) return
     const pixels = this.state.pixels.slice()
     const x = this.state.pixel[0]
     const y = this.state.pixel[1]
@@ -90,15 +93,14 @@ export default class Canvas extends React.Component {
     this.setState({
       pixels
     }, this.drawPixels)
-    if (this.props.drawing) {
-      // console.log('socket')
-      socket.emit('drawing', pixels)
-    }
+    const data = { pixels, gameID: this.props.gameID}
+    socket.emit('drawing', data)
   }
 
   // this Canvas method handles drawing multiple pixels for a click and drag
   // ask Evan about try... catch here
   handleDrawPixelMoving = (_evt, socket = this.props.socket) => {
+    if (!this.props.isArtist) return
     try {
       const pixels = this.state.pixels.slice()
       const x = this.state.pixel[0]
@@ -109,10 +111,8 @@ export default class Canvas extends React.Component {
       this.setState({
         pixels
       }, this.drawPixels)
-      if (this.props.drawing) {
-        // console.log('socket')
-        socket.emit('drawing', pixels)
-      }
+      const data = { pixels, gameID: this.props.gameID}
+      socket.emit('drawing', data)
     }
     catch (err) {
       // console.log(err)
@@ -136,7 +136,7 @@ export default class Canvas extends React.Component {
   render () {
     return (
       <div>
-        {this.props.drawing
+        {this.props.isArtist
         ? <canvas
             height={this.state.h}
             width={this.state.w}

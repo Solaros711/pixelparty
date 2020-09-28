@@ -4,7 +4,8 @@ const Round = require('./Round')
 const { Schema } = mongoose
 const { ObjectId } = mongoose.Schema.Types
 
-const wordsArray = ['doctor', 'moon', 'bear', 'tornado', 'waterfall', 'castle', 'knight', 'king', 'queen', 'movie', 'fire', 'volcano', 'dog', 'cat', 'horse', 'ocean', 'mountain', 'television']
+// const wordsArray = ['doctor', 'moon', 'bear', 'tornado', 'waterfall', 'castle', 'knight', 'king', 'queen', 'movie', 'fire', 'volcano', 'dog', 'cat', 'horse', 'ocean', 'mountain', 'television']
+const wordsArray = ['horse', 'horse']
 
 const roundSchema = new Schema({
   word: {
@@ -18,6 +19,10 @@ const roundSchema = new Schema({
   winner: {
     type: String,
     required: false
+  },
+  roundOver: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -57,11 +62,16 @@ const gameSchema = new Schema({
     default: 0
   },
   points: {
-    type: Array
+    type: Array,
+    default: []
   },
   host: {
     type: String,
     required: true
+  },
+  dateCreated: {
+    type: Date,
+    default: new Date()
   }
 })
 
@@ -106,7 +116,8 @@ gameSchema.methods.logMessage = async function (message) {
   this.messages.push(message) // where do you need await
   if (message.text.toLowerCase() === round.word.toLowerCase()) {
     round.winner = message.username
-    this.points.concat(round.winner, round.artist)
+    this.points.push(round.winner, round.artist)
+    round.roundOver = true
   }
   await this.save()
   return this
