@@ -1,7 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
-const gameIO = require('./sockets/game-socket')
+const gameIO = require('./sockets/game-io')
 
 const app = express()
 const http = require('http').createServer(app)
@@ -12,8 +12,7 @@ gameIO(io)
 
 const connectDatabase = async (dbName = 'pixel-party', hostname = 'localhost') => {
   console.log('trying to connect')
-  const db = await mongoose.connect(
-    process.env.MONGODB_URI || `mongodb://${hostname}/${dbName}`,
+  const db = await mongoose.connect(`mongodb://${hostname}/${dbName}`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -23,7 +22,7 @@ const connectDatabase = async (dbName = 'pixel-party', hostname = 'localhost') =
       if (err) console.log('db connection error: ', err)
     }
   )
-  console.log('Database connected at ' + process.env.MONGODB_URI || `mongodb://${hostname}/${dbName}...`)
+  console.log(`Database connected at 'mongodb://${hostname}/${dbName}...`)
   return db
 }
 

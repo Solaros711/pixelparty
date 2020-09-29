@@ -1,6 +1,6 @@
 import React from 'react'
 import io from 'socket.io-client'
-import Game from './game-components/Game'
+import Game from './components/Game'
 
 const socket = io('/game')
 const names = ['kermit', 'miss piggy', 'fozzy', 'gonzo', 'rizzo', 'animal', 'swedish chef', 'sam eagle', 'statler', 'waldorf']
@@ -13,33 +13,39 @@ export default class AppGame extends React.Component {
       isHost: false,
       games: [],
       joinedGame: false,
+      gameDataStr: '',
+      debug: true // shows stringified game data from db if true
     }
   }
 
   componentDidMount () {
-    socket.on('game created', (gameID, hostUsername) => {
-      console.log('test')
-      this.setState({
-        games: this.state.games.concat({ gameID, hostUsername })
-      }, () => console.log(this.state))
+    socket.on('games data', games => {
+      console.log({ games })
+      // this.setState({ games }, () => console.log(this.state))
     })
+
     socket.on('game state', data => {
       console.log('game state', data)
       this.setState({ gameData: data, gameDataStr: JSON.stringify(data) })
     })
+
     socket.on('drawing', pixels => this.setState(pixels))
     socket.on('timer', timer => this.setState(timer))
+
     socket.on('join game', data => {
       this.setState({ gameDataStr: JSON.stringify(data), gameData: data, joinedGame: true })
     })
+
     socket.on('game ready', gameID => {
       if (this.state.isHost) socket.emit('game ready', gameID)
     })
+
     socket.on('game full', gameID => {
       const games = this.state.games.slice()
       games.splice(games.indexOf(gameID), 1)
       this.setState({ games })
     })
+
     socket.on('game start', () => this.setState({ gameStart: true }))
   }
 
@@ -78,7 +84,7 @@ export default class AppGame extends React.Component {
             {this.state.games.map(game => <button key={game.gameID} onClick={() => this.handleJoinGame(game.gameID)}>Join {game.hostUsername}'s Game!</button>)}
           </div>
         }
-        {this.state.gameDataStr
+        {this.state.debug
         ? [<div>Game Data:</div>,
           <div>{this.state.gameDataStr}</div>]
         : null

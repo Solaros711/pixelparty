@@ -3,8 +3,7 @@ const Round = require('./models/Round')
 
 const connectDatabase = async (dbName = 'pixel-party-rounds', hostname = 'localhost') => {
   console.log('trying to connect')
-  const db = await mongoose.connect(
-    process.env.MONGODB_URI || `mongodb://${hostname}/${dbName}`,
+  const db = await mongoose.connect(`mongodb://${hostname}/${dbName}`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -14,7 +13,7 @@ const connectDatabase = async (dbName = 'pixel-party-rounds', hostname = 'localh
       if (err) console.log('db connection error: ', err)
     }
   )
-  console.log('Database connected at ' + process.env.MONGODB_URI || `mongodb://${hostname}/${dbName}...`)
+  console.log('Database connected at '`mongodb://${hostname}/${dbName}...`)
   return db
 }
 

@@ -1,8 +1,7 @@
 const mongoose = require('mongoose')
-const Round = require('./Round')
 
 const { Schema } = mongoose
-const { ObjectId } = mongoose.Schema.Types
+// const { ObjectId } = mongoose.Schema.Types
 
 // const wordsArray = ['doctor', 'moon', 'bear', 'tornado', 'waterfall', 'castle', 'knight', 'king', 'queen', 'movie', 'fire', 'volcano', 'dog', 'cat', 'horse', 'ocean', 'mountain', 'television']
 const wordsArray = ['horse', 'horse']
@@ -72,6 +71,11 @@ const gameSchema = new Schema({
   dateCreated: {
     type: Date,
     default: new Date()
+  },
+  joinable: { // maybe change to public later
+    type: Boolean,
+    required: true,
+    default: true
   }
 })
 
@@ -88,13 +92,24 @@ gameSchema.statics.create = async function (hostUsername, numOfPlayers) {
 
 gameSchema.statics.join = async function (username, gameID) {
   const game = await this.findOne({ _id: gameID })
-  console.log({ game })
   game.players.push(username)
   if (game.players.length === game.numOfPlayers) {
     game.isReady = true
   }
+  game.joinable = false
   await game.save()
   return game
+}
+
+gameSchema.statics.getJoinable = async function () {
+  const games = await this.find({ joinable: true })
+  console.log({ games }.rainbow)
+  return games
+}
+
+gameSchema.statics.clean = async function () {
+  await this.deleteMany({})
+  this.getGames()
 }
 
 gameSchema.methods.randomize = async function () {
@@ -121,10 +136,6 @@ gameSchema.methods.logMessage = async function (message) {
   }
   await this.save()
   return this
-}
-
-gameSchema.methods.start = async function (gameNameSpace, socket) {
-  // I'm trying to get this working with line 36 in game-socket.js
 }
 
 module.exports = mongoose.model('Game', gameSchema)

@@ -1,9 +1,7 @@
 import React from 'react'
 import Palette from './Palette'
 import io from 'socket.io-client'
-const socket = io() // where should this line go? in componentDidMount?
-
-
+// const socket = io() // where should this line go? in componentDidMount?
 
 export default class Canvas extends React.Component {
   constructor (props) {
@@ -32,18 +30,20 @@ export default class Canvas extends React.Component {
     // ask Evan about using document.querySelector in this case
     this.setState({
       ctx: document.querySelector('canvas').getContext('2d'),
+      gameID: this.props.gameID,
+      socket: this.props.socket
     }, () => {
       this.drawGrid()
+      this.state.socket.on('drawing', pixels => {
+        // console.log('no if statement')
+        if (!this.props.isArtist) {
+          // console.log(pixels)
+          this.setState({ pixels }, () => this.drawPixels())
+        }
+      })
     })
 
     // create a listener for the guesser
-    socket.on('drawing', pixels => {
-      console.log('no if statement')
-      if (!this.props.drawer) {
-        console.log(pixels)
-        this.setState({ pixels }, () => this.drawPixels())
-      }
-    })
   }
 
   // this Canvas method draw the grid (called after pixels are drawn... so it show up on top) so the Artist can see where the pixels are
@@ -71,6 +71,7 @@ export default class Canvas extends React.Component {
     this.setState({
       pixel: [x, y]
     }, () => {
+      // console.log(this.state.pixel)
       if (this.state.drawing) this.handleDrawPixelMoving()
     })
   }
@@ -81,7 +82,8 @@ export default class Canvas extends React.Component {
   }
 
   // this Canvas method handles drawing a pixel for a single click
-  handleDrawPixel = _evt => {
+  handleDrawPixel = (_evt, socket = this.props.socket) => {
+    if (!this.props.isArtist) return
     const pixels = this.state.pixels.slice()
     const x = this.state.pixel[0]
     const y = this.state.pixel[1]
@@ -91,15 +93,14 @@ export default class Canvas extends React.Component {
     this.setState({
       pixels
     }, this.drawPixels)
-    if (this.props.drawer) {
-      console.log('socket')
-      socket.emit('drawing', pixels)
-    }
+    const data = { pixels, gameID: this.props.gameID}
+    socket.emit('drawing', data)
   }
 
   // this Canvas method handles drawing multiple pixels for a click and drag
   // ask Evan about try... catch here
-  handleDrawPixelMoving = _evt => {
+  handleDrawPixelMoving = (_evt, socket = this.props.socket) => {
+    if (!this.props.isArtist) return
     try {
       const pixels = this.state.pixels.slice()
       const x = this.state.pixel[0]
@@ -110,13 +111,11 @@ export default class Canvas extends React.Component {
       this.setState({
         pixels
       }, this.drawPixels)
-      if (this.props.drawer) {
-        console.log('socket')
-        socket.emit('drawing', pixels)
-      }
+      const data = { pixels, gameID: this.props.gameID}
+      socket.emit('drawing', data)
     }
     catch (err) {
-      console.log(err)
+      // console.log(err)
     }
   }
 
@@ -137,16 +136,22 @@ export default class Canvas extends React.Component {
   render () {
     return (
       <div>
-        <canvas
-          height={this.state.h}
-          width={this.state.w}
-          onMouseMove={this.handleMouseMove}
-          onClick={this.handleDrawPixel}
-          onMouseDown={() => this.setState({ drawing: true })}
-          onMouseUp={() => this.setState({ drawing: false })}
-          onMouseLeave={() => this.setState({ drawing: false })}
-        />
-        <Palette onClick={this.handlePalette} palettes={this.state.palettes} />
+        {this.props.isArtist
+        ? <canvas
+            height={this.state.h}
+            width={this.state.w}
+            onMouseMove={this.handleMouseMove}
+            onClick={this.handleDrawPixel}
+            onMouseDown={() => this.setState({ drawing: true })}
+            onMouseUp={() => this.setState({ drawing: false })}
+            onMouseLeave={() => this.setState({ drawing: false })}
+          />
+        : <canvas
+            height={this.state.h}
+            width={this.state.w}
+          />
+      }
+        <Palette onClick={this.handlePalette} palettes={this.state.palettes} color={this.state.color} />
       </div>
     )
   }
