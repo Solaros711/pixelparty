@@ -1,14 +1,14 @@
 /* globals fetch prompt */
-import Chat from './Chat'
-import Game from './Game'
-import Lobby from './Lobby'
-import GuestLobby from './GuestLobby'
+import Chat from './components/Chat'
+import Game from './components/Game'
+import Lobby from './components/Lobby'
+import GuestLobby from './components/GuestLobby'
 import * as Tone from 'tone'
-import Rooms from './Rooms'
-import Profile from './Profile'
-import MessageForm from './MessageForm'
-import LoginForm from './LoginForm'
-import Signup from './Signup'
+import Rooms from './components/Rooms'
+import Profile from './components/Profile'
+import MessageForm from './components/MessageForm'
+import LoginForm from './components/LoginForm'
+import Signup from './components/Signup'
 import React from 'react'
 import io from 'socket.io-client'
 import {
@@ -49,13 +49,9 @@ class App extends React.Component {
   }
 
   componentDidMount () {
-    socket.on('chat message', msg => {
-      console.log('Got a message:', msg)
-      console.log(this.state.loggedIn, 'loggedIn state')
-      this.setState({ messages: this.state.messages.concat(msg) })
-    })
-
+    console.log('Your component mounted!')
   }
+  
   loginFunc(data) {
     
     fetch('/login', {
@@ -75,30 +71,12 @@ class App extends React.Component {
         userId: data.token
         
       })
-          // Get initial list of messages
-    fetch('/messages', {
-      headers: {
-        Authorization: `Bearer ${data.token}`
-        }
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log('fetched data from server')
-          console.log(data)
-          this.setState({ messages: data })
-        })
-    }) //this is where our custom error msg prints
+    }) 
 
     .catch (err => console.log(err))//when exception is thrown it will end up here - so error message ain't here
     
   }
   
-
-  sendMessage (text, messageRoom) {
-    const message = { text: text, nick: this.state.nick, room: messageRoom, userId: this.state.userId }
-    socket.emit('chat message', message)
-  }
-
   handleAddRoom () {
     const room = prompt('Enter a room name')
     this.setState({ room: room })
@@ -204,14 +182,14 @@ class App extends React.Component {
 
           <Route path="/rooms/:room">
           {this.state.loggedIn
-            ? <Game sendMessage={this.sendMessage.bind(this)} messages={this.state.messages}/>
+            ? <Game messages={this.state.messages}/>
             // <Chat sendMessage={this.sendMessage.bind(this)} messages={this.state.messages}/>
             : <Redirect to="/login" />}
           </Route>
 
           <Route path="/chat/general">
           {this.state.loggedIn
-            ? <Chat sendMessage={this.sendMessage.bind(this)} messages={this.state.messages}/>
+            ? <Chat messages={this.state.messages}/>
             : <Redirect to="/login" />}
           </Route>
 
