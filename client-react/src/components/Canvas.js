@@ -20,7 +20,8 @@ export default class Canvas extends React.Component {
       palettes: [
         ['#49F57A', '#F5A331', '#5A19A8'],
         ['#C6CF55', '#699FCF', '#82332F']
-      ]
+      ],
+      socket: io('/canvas')
     }
   }
   
@@ -28,8 +29,8 @@ export default class Canvas extends React.Component {
 
     this.setState({
       ctx: document.querySelector('canvas').getContext('2d'),
-      gameID: this.props.gameID,
-      socket: io('/canvas')
+      gameID: this.props.gameID
+      // socket: io('/canvas')
     }, () => {
       this.drawGrid()
       this.state.socket.emit('round start', this.state.gameID)

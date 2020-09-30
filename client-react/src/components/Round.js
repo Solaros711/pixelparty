@@ -1,9 +1,6 @@
 import React from 'react'
-import io from 'socket.io-client'
 import Canvas from './Canvas'
-import Chat from './Chat'
 import Timer from './Timer'
-// const socket = io()
 
 export default class Round extends React.Component {
   constructor (props) {
@@ -18,12 +15,12 @@ export default class Round extends React.Component {
   }
 
   render () {
-    const gameData = this.props.gameData
-    if (this.state.consoleLogs) console.log(gameData)
-    const roundData = gameData.rounds[gameData.currentRound]
-    const isArtist = gameData.gameOver
+    const gameState = this.props.gameState
+    if (this.state.consoleLogs) console.log(gameState)
+    const roundState = gameState.rounds[gameState.currentRound]
+    const isArtist = gameState.gameOver
       ? false
-      : roundData.artist === this.props.username
+      : roundState.artist === this.props.username
     return (
       <div id='round'>
           <div id='round-info'>
@@ -31,21 +28,21 @@ export default class Round extends React.Component {
               timer={this.props.timer}
               isHost={this.props.isHost}
               onTimesUp={this.props.onTimesUp}
-              gameID={gameData._id}
+              gameID={gameState._id}
             />
-            {roundData.roundOver
-              ? roundData.winner
-                ? <div>Congrats, {roundData.winner} guessed {roundData.word} correctly!</div>
-                : <div>Oof, the word was "{roundData.word}"</div>
+            {roundState.roundOver
+              ? roundState.winner
+                ? <div>Congrats, {roundState.winner} guessed {roundState.word} correctly!</div>
+                : <div>Oof, the word was "{roundState.word}"</div>
               : isArtist
-                ? <div>Your word is "{roundData.word}"</div>
-                : <div>{roundData.artist} is drawing...</div>
+                ? <div>Your word is "{roundState.word}"</div>
+                : <div>{roundState.artist} is drawing...</div>
             }
           <Canvas
-           drawing={this.props.drawing}
+          //  drawing={this.props.drawing}
            socket={this.props.socket}
            isArtist={isArtist}
-           gameID={gameData._id}
+           gameID={gameState._id}
            />
         </div>
       </div>

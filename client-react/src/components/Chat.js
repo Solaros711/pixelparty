@@ -20,15 +20,19 @@ class NewMessage extends React.Component {
   }
 
   render () {
-    const isArtist = this.props.isArtist
+    const disabled = this.props.betweenRounds ? false : this.props.isArtist ? true : false
+    // const isArtist = this.props.isArtist
     return (
       <form onSubmit={this.handleSubmit}>
         <input
           onChange={this.handleChange}
           value={this.state.text}
-          disabled={isArtist ? true : false}
+          disabled={disabled}
         />
-        <button disabled={isArtist ? true : false}>Send</button>
+        <button
+        disabled={disabled}>
+          Send
+        </button>
       </form>
     )
   }
@@ -49,16 +53,15 @@ export default class Chat extends React.Component {
 
 
   render () {
-    const gameData = this.props.gameData
-    if (this.state.consoleLogs) console.log({ gameData })
+    const gameState = this.props.gameState
+    if (this.state.consoleLogs) console.log({ gameState })
     let isArtist = false
-    if (!gameData.gameOver) {
-      const artist = gameData.rounds[gameData.currentRound].artist
+    if (!gameState.gameOver) {
+      const artist = gameState.rounds[gameState.currentRound].artist
       isArtist = artist === this.props.username
     }
     const socket = this.props.socket
-    const messages = this.props.gameData.messages
-    // const gameID = this.props.gameData._id
+    const messages = this.props.gameState.messages
     return (
       <div id='messages-container'>
         <div id='messages'>
@@ -69,7 +72,8 @@ export default class Chat extends React.Component {
           socket={socket}
           isArtist={isArtist}
           username={this.props.username}
-          gameID={gameData._id}
+          gameID={gameState._id}
+          betweenRounds={this.props.betweenRounds}
         />
       </div>
     )

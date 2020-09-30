@@ -87,6 +87,7 @@ const gameSchema = new Schema({
 })
 
 gameSchema.statics.create = async function (hostUsername, numOfPlayers) {
+  console.log('create start')
   const game = new this()
   game.host = hostUsername
   game.players = [hostUsername]
@@ -94,11 +95,13 @@ gameSchema.statics.create = async function (hostUsername, numOfPlayers) {
   game.numOfPlayers = numOfPlayers
   game.numOfRounds = numOfPlayers
   await game.save()
+  console.log('create end')
   return game
 }
 
 gameSchema.statics.join = async function (username, gameID) {
-  const game = await this.findOne({ _id: gameID })
+  console.log('join')
+  const game = await this.findOne({ _id: gameID }, err => { if (err) { return console.log(err) } })
   game.players.push(username)
   if (game.players.length === game.numOfPlayers) {
     game.isReady = true
@@ -117,7 +120,6 @@ gameSchema.statics.getJoinable = async function () {
 
 gameSchema.statics.clean = async function () {
   await this.deleteMany({})
-  this.getGames()
 }
 
 gameSchema.methods.randomize = async function () {
@@ -137,23 +139,35 @@ gameSchema.methods.randomize = async function () {
 gameSchema.methods.logMessage = async function (message) {
   const round = this.rounds[this.currentRound]
   this.messages.push(message) // where do you need await
-  if (message.text.toLowerCase() === round.word.toLowerCase()) {
+  if (message.text.toLowerCase() === round.word.toLowerCase() && !round.roundOver) {
     round.winner = message.username
     this.points.push(round.winner, round.artist)
     round.roundOver = true
-    this.currentRound++
-    if (this.currentRound >= this.rounds.length) this.gameOver = true
+    // this.currentRound++
+    if (this.currentRound === this.rounds.length - 1) this.gameOver = true
   }
   await this.save()
+  console.log('log message: '.rainbow, this)
+  return this
+}
+
+gameSchema.methods.nextRound = async function () {
+  // trigger game state data for starting the next round
+  this.currentRound++
+  // if (this.currentRound >= this.rounds.length) this.gameOver = true
+  await this.save()
+  console.log('next round: '.rainbow, this)
   return this
 }
 
 gameSchema.methods.timesUp = async function () {
   const round = this.rounds[this.currentRound]
   round.roundOver = true
-  this.currentRound++
-  if (this.currentRound >= this.rounds.length) this.gameOver = true
+  if (this.currentRound === this.rounds.length - 1) this.gameOver = true
+  // this.currentRound++
+  // if (this.currentRound >= this.rounds.length) this.gameOver = true
   await this.save()
+  console.log('time\'s up: '.rainbow, this)
   return this
 }
 
