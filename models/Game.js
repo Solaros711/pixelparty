@@ -1,7 +1,9 @@
 const mongoose = require('mongoose')
-
+const colors = require('colors')
 const { Schema } = mongoose
 // const { ObjectId } = mongoose.Schema.Types
+
+if (colors) {}
 
 // const wordsArray = ['doctor', 'moon', 'bear', 'tornado', 'waterfall', 'castle', 'knight', 'king', 'queen', 'movie', 'fire', 'volcano', 'dog', 'cat', 'horse', 'ocean', 'mountain', 'television']
 const wordsArray = ['horse', 'horse']
@@ -76,6 +78,11 @@ const gameSchema = new Schema({
     type: Boolean,
     required: true,
     default: true
+  },
+  gameOver: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 })
 
@@ -103,7 +110,8 @@ gameSchema.statics.join = async function (username, gameID) {
 
 gameSchema.statics.getJoinable = async function () {
   const games = await this.find({ joinable: true })
-  console.log({ games }.rainbow)
+  console.log('rainbow'.rainbow)
+  console.log({ games })
   return games
 }
 
@@ -133,7 +141,18 @@ gameSchema.methods.logMessage = async function (message) {
     round.winner = message.username
     this.points.push(round.winner, round.artist)
     round.roundOver = true
+    this.currentRound++
+    if (this.currentRound >= this.rounds.length) this.gameOver = true
   }
+  await this.save()
+  return this
+}
+
+gameSchema.methods.timesUp = async function () {
+  const round = this.rounds[this.currentRound]
+  round.roundOver = true
+  this.currentRound++
+  if (this.currentRound >= this.rounds.length) this.gameOver = true
   await this.save()
   return this
 }

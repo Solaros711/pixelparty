@@ -1,4 +1,7 @@
 import React from 'react'
+import io from 'socket.io-client'
+
+const socket = io('/timer')
 
 export default class Timer extends React.Component {
   constructor (props) {
@@ -9,15 +12,21 @@ export default class Timer extends React.Component {
     }
   }
 
-  // componentDidMount () {
-  //   if (!this.state.disabled) {
-  //     setInterval(() => {
-  //       this.setState({ timer: this.state.timer - 1})
-  //     }, 1000)
-  //   }
-  // }
+  componentDidMount () {
+    socket.emit('round join', this.props.gameID)
+    if (this.props.isHost) {
+      socket.emit('round start', this.props.gameID)
+      socket.on('time\'s up', gameID => {
+        console.log(gameID)
+        this.props.onTimesUp(gameID)
+      })
+    }
+    socket.on('timer', timer => {
+      this.setState({ timer })
+    })
+  }
 
   render () {
-    return <div id='timer'>00:{this.props.timer.toString().padStart(2, '0')}</div>
+    return <div id='timer'>00:{this.state.timer.toString().padStart(2, '0')}</div>
   }
 }

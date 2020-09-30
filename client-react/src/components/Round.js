@@ -9,6 +9,7 @@ export default class Round extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
+      consoleLogs: false
     }
   }
   
@@ -18,14 +19,20 @@ export default class Round extends React.Component {
 
   render () {
     const gameData = this.props.gameData
-    console.log(gameData)
-    const roundData = this.props.roundData
-    const isArtist = roundData.artist === this.props.username
+    if (this.state.consoleLogs) console.log(gameData)
+    const roundData = gameData.rounds[gameData.currentRound]
+    const isArtist = gameData.gameOver
+      ? false
+      : roundData.artist === this.props.username
     return (
       <div id='round'>
           <div id='round-info'>
-            {/* <Timer timer={this.props.timer} /> */}
-            <div id='timer'>00:30</div>
+            <Timer
+              timer={this.props.timer}
+              isHost={this.props.isHost}
+              onTimesUp={this.props.onTimesUp}
+              gameID={gameData._id}
+            />
             {roundData.roundOver
               ? roundData.winner
                 ? <div>Congrats, {roundData.winner} guessed {roundData.word} correctly!</div>

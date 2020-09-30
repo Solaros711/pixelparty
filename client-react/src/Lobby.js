@@ -14,19 +14,22 @@ export default class AppGame extends React.Component {
       games: [],
       joinedGame: false,
       gameDataStr: '',
-      debug: true // shows stringified game data from db if true
+      debug: true, // shows stringified game data from db if true
+      consoleLogs: false
     }
   }
 
   componentDidMount () {
-    socket.on('games data', games => {
-      console.log({ games })
-      // this.setState({ games }, () => console.log(this.state))
+    socket.emit('get games', this.state.username)
+    socket.on('games data', data => {
+      this.setState({ games: data.games })
     })
 
     socket.on('game state', data => {
-      console.log('game state', data)
-      this.setState({ gameData: data, gameDataStr: JSON.stringify(data) })
+      if (this.state.consoleLogs) console.log('game state', data)
+      this.setState({ gameData: data, gameDataStr: JSON.stringify(data) }, () => {
+        if (this.state.consoleLogs) console.log('this.state', this.state)
+      })
     })
 
     socket.on('drawing', pixels => this.setState(pixels))
@@ -67,6 +70,10 @@ export default class AppGame extends React.Component {
     socket.emit('join game', {gameID, username, isHost })
   }
 
+  handleTimesUp = gameID => {
+    socket.emit('time\'s up', gameID)
+  }
+
   render () {
     return (
       <main>
@@ -74,19 +81,32 @@ export default class AppGame extends React.Component {
         <div>User: {this.state.username}</div>
         {this.state.joinedGame
         ? this.state.gameStart
-          ? <Game gameData={this.state.gameData} username={this.state.username} socket={socket} />
+          ? <Game
+              gameData={this.state.gameData}
+              isHost={this.state.isHost}
+              username={this.state.username}
+              socket={socket}
+              onTimesUp={this.handleTimesUp}
+            />
           : <div>
             <div>{this.state.gameData.host}'s game</div>
             <div>{this.state.gameData.players.length} of {this.state.gameData.numOfPlayers} joined</div>
           </div>
         : <div>
             <button onClick={this.handleHostGame}>Host a Game!</button>
-            {this.state.games.map(game => <button key={game.gameID} onClick={() => this.handleJoinGame(game.gameID)}>Join {game.hostUsername}'s Game!</button>)}
+          {this.state.games.map(game =>
+              <button
+                key={game._id}
+                onClick={() => this.handleJoinGame(game._id)}
+              >
+                Join {game.host}'s Game!
+              </button>
+            )}
           </div>
         }
         {this.state.debug
-        ? [<div>Game Data:</div>,
-          <div>{this.state.gameDataStr}</div>]
+        ? [<div key={'unique1'}>Game Data:</div>,
+          <div key={'unique2'}>{this.state.gameDataStr}</div>]
         : null
       }
       </main>

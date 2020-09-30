@@ -1,7 +1,6 @@
 import React from 'react'
 import Palette from './Palette'
 import io from 'socket.io-client'
-// const socket = io() // where should this line go? in componentDidMount?
 
 export default class Canvas extends React.Component {
   constructor (props) {
@@ -21,29 +20,25 @@ export default class Canvas extends React.Component {
       palettes: [
         ['#49F57A', '#F5A331', '#5A19A8'],
         ['#C6CF55', '#699FCF', '#82332F']
-      ],
+      ]
     }
   }
   
   componentDidMount = () => {
-    // make the drawing context part of state
-    // ask Evan about using document.querySelector in this case
+
     this.setState({
       ctx: document.querySelector('canvas').getContext('2d'),
       gameID: this.props.gameID,
-      socket: this.props.socket
+      socket: io('/canvas')
     }, () => {
       this.drawGrid()
+      this.state.socket.emit('round start', this.state.gameID)
       this.state.socket.on('drawing', pixels => {
-        // console.log('no if statement')
-        if (!this.props.isArtist) {
-          // console.log(pixels)
+        // if (!this.props.isArtist) {
           this.setState({ pixels }, () => this.drawPixels())
-        }
+        // }
       })
     })
-
-    // create a listener for the guesser
   }
 
   // this Canvas method draw the grid (called after pixels are drawn... so it show up on top) so the Artist can see where the pixels are
@@ -82,7 +77,7 @@ export default class Canvas extends React.Component {
   }
 
   // this Canvas method handles drawing a pixel for a single click
-  handleDrawPixel = (_evt, socket = this.props.socket) => {
+  handleDrawPixel = (_evt, socket = this.state.socket) => {
     if (!this.props.isArtist) return
     const pixels = this.state.pixels.slice()
     const x = this.state.pixel[0]
@@ -94,12 +89,13 @@ export default class Canvas extends React.Component {
       pixels
     }, this.drawPixels)
     const data = { pixels, gameID: this.props.gameID}
+    console.log(data)
     socket.emit('drawing', data)
   }
 
   // this Canvas method handles drawing multiple pixels for a click and drag
   // ask Evan about try... catch here
-  handleDrawPixelMoving = (_evt, socket = this.props.socket) => {
+  handleDrawPixelMoving = (_evt, socket = this.state.socket) => {
     if (!this.props.isArtist) return
     try {
       const pixels = this.state.pixels.slice()
@@ -112,6 +108,7 @@ export default class Canvas extends React.Component {
         pixels
       }, this.drawPixels)
       const data = { pixels, gameID: this.props.gameID}
+      console.log(data)
       socket.emit('drawing', data)
     }
     catch (err) {

@@ -4,7 +4,8 @@ class NewMessage extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      text: ''
+      text: '',
+      consoleLogs: true
     }
   }
 
@@ -12,9 +13,8 @@ class NewMessage extends React.Component {
 
   handleSubmit = (evt, text = this.state.text) => {
     const message = { text, username: this.props.username, gameID: this.props.gameID }
-    console.log(message)
+    if (this.state.consoleLogs) console.log({ message })
     this.props.socket.emit('message', message)
-    // this.props.onSubmit(message) // to delete?
     this.setState({ text: '' })
     evt.preventDefault()
   }
@@ -38,7 +38,8 @@ export default class Chat extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      messages: []
+      messages: [],
+      consoleLogs: true
     }
   }
 
@@ -48,11 +49,16 @@ export default class Chat extends React.Component {
 
 
   render () {
-    console.log(this.props.roundData) // undefined?
+    const gameData = this.props.gameData
+    if (this.state.consoleLogs) console.log({ gameData })
+    let isArtist = false
+    if (!gameData.gameOver) {
+      const artist = gameData.rounds[gameData.currentRound].artist
+      isArtist = artist === this.props.username
+    }
     const socket = this.props.socket
     const messages = this.props.gameData.messages
-    const isArtist = this.props.roundData.artist === this.props.username
-    const gameID = this.props.gameData._id
+    // const gameID = this.props.gameData._id
     return (
       <div id='messages-container'>
         <div id='messages'>
@@ -61,10 +67,9 @@ export default class Chat extends React.Component {
         <NewMessage
           onSubmit={this.handleSubmit}
           socket={socket}
-          // drawing={this.props.drawing} // to delete?
           isArtist={isArtist}
           username={this.props.username}
-          gameID={gameID}
+          gameID={gameData._id}
         />
       </div>
     )

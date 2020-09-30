@@ -5,19 +5,36 @@ import Chat from './Chat'
 export default class Game extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {}
+    this.state = {
+      consoleLogs: false
+    }
   }
 
   render () {
-    const gameData = this.props.gameData
-    const socket = this.props.socket
-    const roundData = gameData.rounds[gameData.currentRound]
-    const username = this.props.username
-    console.log({ gameData, roundData, username })
+    // const gameData = this.props.gameData
+    // const roundData = gameData.rounds[gameData.currentRound]
+    // const username = this.props.username
+    if (this.state.consoleLogs) console.log('gameData', this.props.gameData)
     return (
       <div id='round-and-chat'>
-        <Round gameData={gameData} roundData={roundData} username={this.props.username} socket={this.props.socket} />
-        <Chat gameData={gameData} username={this.props.username} socket={socket} gameId={gameData._id} roundData={roundData} />
+        {this.props.gameData.gameOver
+          ? null
+          : (
+            <Round
+              gameData={this.props.gameData}
+              username={this.props.username}
+              isHost={this.props.isHost}
+              onTimesUp={this.props.onTimesUp}
+            />
+          )}
+
+        <Chat
+          gameData={this.props.gameData}
+          username={this.props.username}
+          socket={this.props.socket}
+          // gameId={gameData._id}
+          // roundData={roundData}
+        />
       </div>
     )
   }

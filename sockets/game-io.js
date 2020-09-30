@@ -1,12 +1,21 @@
 const Game = require('./../models/Game')
 const colors = require('colors')
-if (colors) {}
+if (colors) console.log('gameIO'.rainbow)
 
 // Game.clean() // comment in to clean db
 
 module.exports = io => { // this takes in the io from the main app.js
   const game = io.of('/game') // the game namespace of the io
   game.on('connection', socket => { // a client connects to '/game' and creates this socket between that client and the server
+    socket.on('get games', async username => {
+      console.log('\n\'get games\' event recieved'.cyan)
+      console.log(`\tclient username: ${username}`.yellow)
+      console.log('event purpose'.cyan)
+      console.log('\t* query database for joinable games\n\t* emit available games to client'.yellow)
+      const games = await Game.getJoinable()
+      socket.emit('games data', { games })
+    })
+
     socket.on('create game', async data => {
       // data = { username, numOfRounds and/or numOfPlayers }
       console.log('\n\'create game\' event recieved'.cyan)
@@ -15,7 +24,7 @@ module.exports = io => { // this takes in the io from the main app.js
       console.log('\t* create new game in the database\n\t* trigger \'game created\' and \'join created game\' events'.yellow)
 
       const gameDB = await Game.create(data.username, data.numOfPlayers)
-      const games = Game.getJoinable()
+      const games = await Game.getJoinable()
       // have host redirected to join game event
       // data = { gameID, isHost: true }
       game.emit('games data', { games })
@@ -44,9 +53,12 @@ module.exports = io => { // this takes in the io from the main app.js
         gameDB = await Game.join(data.username, data.gameID)
       }
 
-      console.log(gameDB)
+      // console.log(gameDB)
 
       socket.join(data.gameID)
+      // console.log('YOYOYOYOYOYOYOYOYOYOYOYOYOYO'.trap)
+      // console.log(socket)
+      // console.log('YOYOYOYOYOYOYOYOYOYOYOYOYOYO'.trap)
       console.log(`\nclient username: ${data.username} joined gameID: ${gameDB._id}`.magenta)
 
       game.to(data.gameID).emit('join game', gameDB)
@@ -100,26 +112,14 @@ module.exports = io => { // this takes in the io from the main app.js
       game.to(gameID).emit('game start')
     })
 
-    socket.on('drawing', data => {
-      // data = { gameID, pixels }
-      // console.log('\n\'drawing\' event recieved from client ... this event will:\nOn the frontend:\n\tDraw pixels on all clients except for artist')
-      console.log(`\n\'drawing\' event received in gameID: ${data.gameID}`.magenta)
-      // emit to all clients in the room except sender
-      game.to(data.gameID).emit('drawing', data.pixels)
-    })
-
-    socket.on('start game', data => {
-      // data = { gameID }
-      console.log('\n\'start game\' event recieved from client ... this event will:\nI\'m not sure about the organization here... This is a placeholder... The start should come from the backend.  Will handle timer')
-      let timer = 30
-      game.to(data.gameID).emit('timer', timer)
-      const timerID = setInterval(() => {
-        if (timer <= 0) {
-          clearInterval(timerID)
-          // handle round over in database
-        }
-        game.to(data.gameID).emit('timer', --timer)
-      }, 1000)
+    socket.on('time\'s up', gameID => {
+      // data = { gameID, currentRound }
+      console.log(`\ntime's up gameID: ${gameID}`.magenta)
+      Game.findOne({ _id: gameID }, async (err, gameDB) => {
+        if (err) return console.log(err)
+        await gameDB.timesUp()
+        game.to(gameID).emit('game state', gameDB)
+      })
     })
   })
 }
