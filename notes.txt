@@ -1,0 +1,2 @@
+BUGS:
+# available games are in frontend state... if a user joins after a grame is created, they won't see previous games... needs to be changed (query db for current/available games or something)
