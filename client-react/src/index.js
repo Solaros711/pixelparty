@@ -5,12 +5,12 @@ import './App.css'
 
 // import App from './App'
 // import AppRound from './AppRound'
-import Lobby from './Lobby'
+import AppLobby from './AppLobby'
 import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
   <React.StrictMode>
-    <Lobby />
+    <AppLobby />
   </React.StrictMode>,
   document.getElementById('root')
 )

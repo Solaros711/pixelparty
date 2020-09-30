@@ -5,7 +5,7 @@ import Game from './components/Game'
 const socket = io('/lobby')
 const names = ['kermit', 'miss piggy', 'fozzy', 'gonzo', 'rizzo', 'animal', 'swedish chef', 'sam eagle', 'statler', 'waldorf']
 
-export default class Lobby extends React.Component {
+export default class AppLobby extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
