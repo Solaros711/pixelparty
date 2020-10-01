@@ -28,6 +28,9 @@ const wordsPath = './words.json'
 // })
 app.use(morgan('tiny'))
 app.use(express.static(path.join(__dirname, 'client-react/build')))
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('reacc/build'))
+}
 
 app.get('/', (req, res) => {
   console.log('request')
@@ -42,7 +45,9 @@ lobbyIO(io)
 
 const connectDatabase = async (dbName = 'pixel-party', hostname = 'localhost') => {
   console.log('trying to connect')
-  const db = await mongoose.connect(`mongodb://${hostname}/${dbName}`,
+  const db = await mongoose.connect(
+    process.env.MONGODB_URI ||
+    `mongodb://${hostname}/${dbName}`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -53,7 +58,8 @@ const connectDatabase = async (dbName = 'pixel-party', hostname = 'localhost') =
     }
   )
   await getWords(wordsPath)
-  console.log(`Database connected at 'mongodb://${hostname}/${dbName}...`)
+  console.log(`Database connected at
+    ${process.env.MONGODB_URI || `mongodb://${hostname}/${dbName}...`}`)
   return db
 }
 
