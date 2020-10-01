@@ -32,11 +32,11 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static('reacc/build'))
 }
 
-app.get('/', (req, res) => {
-  console.log('request')
-  console.log(req)
-  res.send('hey?')
-})
+// app.get('/', (req, res) => { // heroku test
+//   console.log('request')
+//   console.log(req)
+//   res.send('hey?')
+// })
 app.use('/', AuthController)
 gameIO(io)
 canvasIO(io)
