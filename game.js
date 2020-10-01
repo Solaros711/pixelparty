@@ -51,7 +51,7 @@ const connectDatabase = async (dbName = 'pixel-party', hostname = 'localhost') =
 
 const startServer = port => {
   http.listen(port, async () => {
-    await connectDatabase()
+    // await connectDatabase()
     console.log(`Server is listening on port ${port}...`)
   })
 }
