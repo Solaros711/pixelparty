@@ -15,8 +15,8 @@ export default class Game extends React.Component {
       // is this good practice
       // isHost: this.props.isHost,
       gameID: this.props.gameID,
-      username: this.props.username,
-      debug: true,
+      username: this.props.username, 
+      debug: false,
       loading: true,
       socket: io('/game'),
       gameState: '',
