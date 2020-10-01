@@ -5,10 +5,12 @@ const gameIO = require('./sockets/game-io')
 const canvasIO = require('./sockets/canvas-io')
 const timerIo = require('./sockets/timer-io')
 const lobbyIO = require('./sockets/lobby-io')
+const getWords = require('./word-script')
 
 const app = express()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http)
+const path = './words.json'
 // , {
 //   handlePreflightRequest: (req, res) => {
 //     const headers = {
@@ -39,6 +41,7 @@ const connectDatabase = async (dbName = 'pixel-party', hostname = 'localhost') =
       if (err) console.log('db connection error: ', err)
     }
   )
+  await getWords(path)
   console.log(`Database connected at 'mongodb://${hostname}/${dbName}...`)
   return db
 }
