@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
+const AuthController = require('./controllers/auth')
 const gameIO = require('./sockets/game-io')
 const canvasIO = require('./sockets/canvas-io')
 const timerIo = require('./sockets/timer-io')
@@ -24,6 +25,7 @@ const path = './words.json'
 // })
 
 app.use(morgan('tiny'))
+app.use('/', AuthController)
 gameIO(io)
 canvasIO(io)
 timerIo(io)
