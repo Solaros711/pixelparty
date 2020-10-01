@@ -25,7 +25,11 @@ const path = './words.json'
 // })
 app.use(morgan('tiny'))
 
-app.get('/', (req, res) => res.send('hey?'))
+app.get('/', (req, res) => {
+  console.log('request')
+  console.log(req)
+  res.send('hey?')
+})
 app.use('/', AuthController)
 gameIO(io)
 canvasIO(io)
