@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx nodemon index.js",
     "build": "cd client-react && npm run build",
-    "heroku-postbuild": "npm run install-client && npm run build"
+    "heroku-postbuild": "npm run install-client && npm run build",
+    "install-client": "npm run install-client && npm run build"
   },
   "author": "",
   "license": "ISC",
