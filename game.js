@@ -30,6 +30,7 @@ gameIO(io)
 canvasIO(io)
 timerIo(io)
 lobbyIO(io)
+app.get('/', (req, res) => res.send('hey?'))
 
 const connectDatabase = async (dbName = 'pixel-party', hostname = 'localhost') => {
   console.log('trying to connect')
