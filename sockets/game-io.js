@@ -25,9 +25,9 @@ module.exports = io => { // this takes in the io from the main app.js
       console.log('event purpose'.cyan)
       console.log('\t* join client to waiting room on frontend'.yellow)
 
-      if (gameState.isReady) {
-        game.to(data.gameID).emit('game state', gameState)
-      }
+      // if (gameState.isReady) {
+      game.to(data.gameID).emit('game state', gameState)
+      // }
     })
 
     socket.on('message', async data => {
