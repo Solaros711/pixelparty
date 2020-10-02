@@ -4,6 +4,7 @@ import './index.css'
 import './App.css'
 
 import AppLobby from './AppLobby'
+// import Logo from './game-components/Logo'
 
 ReactDOM.render(
   <React.StrictMode>

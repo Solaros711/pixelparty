@@ -29,7 +29,7 @@ export default class Canvas extends React.Component {
   componentDidMount = () => {
 
     this.setState({
-      ctx: document.querySelector('canvas').getContext('2d'),
+      ctx: document.querySelector('#canvas').getContext('2d'),
       gameID: this.props.gameID
       // socket: io('/canvas')
     }, () => {
@@ -142,6 +142,7 @@ export default class Canvas extends React.Component {
       <div>
         {this.props.isArtist
         ? <canvas
+            id='canvas'
             height={this.state.h}
             width={this.state.w}
             onMouseMove={this.handleMouseMove}

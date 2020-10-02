@@ -1,6 +1,7 @@
 import React from 'react'
 import io from 'socket.io-client'
 import Game from './game-components/Game'
+import Logo from './game-components/Logo'
 
 const socket = io('/lobby')
 const names = ['kermit', 'miss piggy', 'fozzy', 'gonzo', 'rizzo', 'animal', 'swedish chef', 'sam eagle', 'statler', 'waldorf']
@@ -53,6 +54,7 @@ export default class AppLobby extends React.Component {
   render () {
     return (
       <main>
+        <Logo />
         <link href='https://fonts.googleapis.com/css2?family=Righteous&display=swap' rel='stylesheet' />
         <div>User: {this.state.username}</div>
         {this.state.joinedGame
