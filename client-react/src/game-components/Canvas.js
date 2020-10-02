@@ -80,18 +80,23 @@ export default class Canvas extends React.Component {
   // this Canvas method handles drawing a pixel for a single click
   handleDrawPixel = (_evt, socket = this.state.socket) => {
     if (!this.props.isArtist) return
-    const pixels = this.state.pixels.slice()
-    const x = this.state.pixel[0]
-    const y = this.state.pixel[1]
-    const column = pixels[x].slice()
-    column[y] = this.state.color
-    pixels[x] = column
-    this.setState({
-      pixels
-    }, this.drawPixels)
-    const data = { pixels, gameID: this.props.gameID}
-    console.log(data)
-    socket.emit('drawing', data)
+    try {
+      const pixels = this.state.pixels.slice()
+      const x = this.state.pixel[0]
+      const y = this.state.pixel[1]
+      const column = pixels[x].slice()
+      column[y] = this.state.color
+      pixels[x] = column
+      this.setState({
+        pixels
+      }, this.drawPixels)
+      const data = { pixels, gameID: this.props.gameID}
+      console.log(data)
+      socket.emit('drawing', data)
+    }
+    catch (err) {
+      console.log(err)
+    }
   }
 
   // this Canvas method handles drawing multiple pixels for a click and drag

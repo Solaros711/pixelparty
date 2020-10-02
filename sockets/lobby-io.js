@@ -64,6 +64,9 @@ module.exports = io => { // this takes in the io from the main app.js
       // console.log('event purpose'.cyan)
       // console.log('\t* join client to waiting room on frontend'.yellow)
     })
+    socket.on('disconnect', () => {
+      console.log('\nclient disconnected from \'/lobby\' namespace'.magenta)
+    })
   })
 }
 
