@@ -1,6 +1,7 @@
 import React from 'react'
 import Round from './Round'
 import Chat from './Chat'
+import Canvas from './Canvas'
 import io from 'socket.io-client'
 
 // const socket = io('./game')
@@ -80,7 +81,11 @@ export default class Game extends React.Component {
       this.state.gameState
         ? <div id='round-and-chat'>
           {!this.state.gameState.isReady
-          ? <div>loading</div>
+          ? <Canvas
+              socket={this.props.socket}
+              isArtist={true}
+              gameID={this.state.gameID}
+            />
           : <div>
             {this.state.gameState.gameOver
               ? (
@@ -116,8 +121,8 @@ export default class Game extends React.Component {
           ? <div>{this.state.gameStateStr}</div>
           : null
         }
-      </div>
-      : null
+        </div>
+        : null
     )
   }
 }
