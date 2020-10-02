@@ -24,5 +24,9 @@ module.exports = io => { // this will take io from the main app
         }
       }, 1000)
     })
+
+    socket.on('disconnect', () => {
+      console.log('\nclient disconnected from \'/timer\' namespace'.magenta)
+    })
   })
 }

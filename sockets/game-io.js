@@ -67,5 +67,9 @@ module.exports = io => { // this takes in the io from the main app.js
         game.to(gameID).emit('game state', gameState)
       })
     })
+
+    socket.on('disconnect', () => {
+      console.log('\nclient disconnected from \'/game\' namespace'.magenta)
+    })
   })
 }
