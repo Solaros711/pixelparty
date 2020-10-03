@@ -34,16 +34,38 @@ canvas {
 }
 
 #messages {
-  background: rgb(143, 121, 121);
+  background: #f5ffe0;
   height: 80vh;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
   overflow-y: auto;
   border-radius: 1%;
   border: 1px solid black;
+  overflow-x: hidden;
+}
+
+#messages::-webkit-scrollbar {width: 3px; height:1px;transition:all .5s;z-index:10;}
+#messages::-webkit-scrollbar-track {background-color: white;}
+#messages::-webkit-scrollbar-thumb {
+  background-color: #bec4c8; 
+  border-radius:3px;
 }
 
 #messages > div {
   color: rgb(218, 201, 201);
   font-size: 1.5rem;
+  animation: 0.2s linear MessageSlideUp 0.3s forwards;
+}
+
+/* #messages > div > div {
+  margin: 0 500px;
+} */
+
+@keyframes MessageSlideUp {
+  100% {
+    opacity: 1;
+  }
 }
 
 * {
@@ -64,4 +86,34 @@ canvas {
 #round-info {
   display: flex;
   flex-direction: column;
+}
+
+.sent-message {
+  margin-top: 4px;
+  /* background: #4294ff; */
+  background: #323da1;
+  color: #f5ffe0;
+  border-radius: 12px 12px 4px 12px;
+  padding-left: 4px;
+  line-break: anywhere;
+  text-align: right;
+  padding-right: 4px;
+}
+
+.sender-name {
+  font-size: 80%;
+  color: #f0e143;
+  position: relative; 
+  top: 2px; 
+  left: 7px;
+}
+
+.received-message {
+  margin-top: 4px;
+  /* background: #d7dde2;  */
+  background: #23574d;
+  color: #f5ffe0;
+  border-radius: 12px 12px 12px 4px;
+  padding-left: 4px;
+  line-break: anywhere;
 }

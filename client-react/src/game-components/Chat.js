@@ -66,8 +66,32 @@ export default class Chat extends React.Component {
     return (
       <div id='messages-container'>
         <div id='messages'>
-          {messages.map((msg, i) => <div key={i}>{msg.username}: {msg.text}</div>)}
+          {messages.map((msg, i) => 
+            <div
+              key = {i} 
+              style={{ justifyContent: (msg.username === this.props.username) ? 'flex-end' : 'flex-start' }}
+            >
+              <div 
+                className={msg.username == this.props.username ? 'sent-message' : 'received-message'}
+                // style={{
+                //   background: (msg.username == this.props.username) ? '#4294ff' : '#d7dde2',
+                //   color: (msg.username == this.props.username) ? 'white' : 'black',
+                //   borderRadius: (msg.username == this.props.username) ? '12px 12px 4px 12px' : '12px 12px 12px 4px',
+                //   margin: '2px 5px 3px'
+                // }}
+              >
+              {msg.username === this.props.username
+                ? null
+                : <div className='sender-name'>{msg.username}</div>
+              }
+              {msg.text}
+              </div>
+          </div>
+          )}
         </div>
+        {/* <div id='messages'>
+          {messages.map((msg, i) => <div key={i}>{msg.username}: {msg.text}</div>)}
+        </div> */}
         <NewMessage
           onSubmit={this.handleSubmit}
           socket={socket}
