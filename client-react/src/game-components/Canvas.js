@@ -21,7 +21,8 @@ export default class Canvas extends React.Component {
         ['#49F57A', '#F5A331', '#5A19A8'],
         ['#C6CF55', '#699FCF', '#82332F']
       ],
-      socket: io('/canvas')
+      socket: io('/canvas'),
+      partyMode: this.props.betweenRounds
     }
   }
   
@@ -80,18 +81,23 @@ export default class Canvas extends React.Component {
   // this Canvas method handles drawing a pixel for a single click
   handleDrawPixel = (_evt, socket = this.state.socket) => {
     if (!this.props.isArtist) return
-    const pixels = this.state.pixels.slice()
-    const x = this.state.pixel[0]
-    const y = this.state.pixel[1]
-    const column = pixels[x].slice()
-    column[y] = this.state.color
-    pixels[x] = column
-    this.setState({
-      pixels
-    }, this.drawPixels)
-    const data = { pixels, gameID: this.props.gameID}
-    console.log(data)
-    socket.emit('drawing', data)
+    try {
+      const pixels = this.state.pixels.slice()
+      const x = this.state.pixel[0]
+      const y = this.state.pixel[1]
+      const column = pixels[x].slice()
+      column[y] = this.state.color
+      pixels[x] = column
+      this.setState({
+        pixels
+      }, this.drawPixels)
+      const data = { pixels, gameID: this.props.gameID}
+      console.log(data)
+      socket.emit('drawing', data)
+    }
+    catch (err) {
+      console.log(err)
+    }
   }
 
   // this Canvas method handles drawing multiple pixels for a click and drag
@@ -133,23 +139,30 @@ export default class Canvas extends React.Component {
 
   render () {
     return (
-      <div>
-        {this.props.isArtist
-        ? <canvas
-            height={this.state.h}
-            width={this.state.w}
-            onMouseMove={this.handleMouseMove}
-            onClick={this.handleDrawPixel}
-            onMouseDown={() => this.setState({ drawing: true })}
-            onMouseUp={() => this.setState({ drawing: false })}
-            onMouseLeave={() => this.setState({ drawing: false })}
-          />
-        : <canvas
-            height={this.state.h}
-            width={this.state.w}
-          />
-      }
-        <Palette onClick={this.handlePalette} palettes={this.state.palettes} color={this.state.color} />
+      <div className="canvas-container-1">
+
+        <div className="canvas-container-1-2">
+          {this.props.isArtist
+          ? <canvas
+              height={this.state.h}
+              width={this.state.w}
+              onMouseMove={this.handleMouseMove}
+              onClick={this.handleDrawPixel}
+              onMouseDown={() => this.setState({ drawing: true })}
+              onMouseUp={() => this.setState({ drawing: false })}
+              onMouseLeave={() => this.setState({ drawing: false })}
+            />
+          : <canvas
+              height={this.state.h}
+              width={this.state.w}
+            />
+          }
+        </div>
+
+        <div className="canvas-container-1-1">
+          <Palette onClick={this.handlePalette} palettes={this.state.palettes} color={this.state.color} />
+        </div>
+
       </div>
     )
   }

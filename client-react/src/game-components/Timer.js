@@ -33,7 +33,9 @@ export default class Timer extends React.Component {
     return (
       <div>
         <span id='timer'>00:{this.state.timer.toString().padStart(2, '0')}</span>
-        <button onClick={this.handleTimesUp}>Timer's not working yet.  Just press this button to signal Time's Up</button>
+        <div>
+          <button onClick={this.handleTimesUp} style={{backgroundColor:"firebrick"}}>Test: End Round</button>
+        </div>
       </div>
     )
   }

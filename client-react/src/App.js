@@ -1,38 +1,32 @@
-/* globals fetch prompt */
-import Chat from './components/Chat'
-import Game from './components/Game'
-import Lobby from './components/Lobby'
-import GuestLobby from './components/GuestLobby'
-import * as Tone from 'tone'
-import Rooms from './components/Rooms'
-import Profile from './components/Profile'
-import MessageForm from './components/MessageForm'
-import LoginForm from './components/LoginForm'
-import Signup from './components/Signup'
 import React from 'react'
-import io from 'socket.io-client'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link,
   Redirect
-} from "react-router-dom"
+} from 'react-router-dom'
+import * as Tone from 'tone'
+
+import Profile from './components/Profile'
+import LoginForm from './components/LoginForm'
+import Signup from './components/Signup'
+import ThemeUp from './components/ThemeUp'
+import AppLobby from './AppLobby'
+
 import './App.css'
-import logo from './pix_logo_4.png'
-const jwt = require('jsonwebtoken')
+import logo from './pix_logo_50.png'
 
-
-const socket = io()
+/* globals fetch */
 
 class App extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { messages: [], nick: null, loggedIn: false, errorMessage: '', room:'Pixel Party (Room 1)', userId: ''}
+    this.state = { messages: [], nick: null, loggedIn: false, errorMessage: '', room: 'Pixel Party (Room 1)', userId: '' }
     this.register = this.register.bind(this)
   }
 
-  register(data) {
+  register (data) {
     // const data={ username: "Johnny", password: "321" }
     // Default options are marked with *
     fetch('/signup', {
@@ -42,18 +36,18 @@ class App extends React.Component {
       },
       body: JSON.stringify(data) // body data type must match "Content-Type" header
     })
-    .then (res => res.json()) 
-    .then (data => this.setState({ errorMessage: data.error, registered: data.error ? false: true }))
-    .catch (err => console.log(err))
+      .then(res => res.json())
+      .then(data => this.setState({ errorMessage: data.error, registered: !data.error }))
+      .catch(err => console.log(err))
     // return response.json(); // parses JSON response into native JavaScript objects
   }
 
   componentDidMount () {
     console.log('Your component mounted!')
   }
-  
-  loginFunc(data) {
-    
+
+  loginFunc (data) {
+    console.log(data)
     fetch('/login', {
       method: 'POST',
       headers: {
@@ -61,27 +55,24 @@ class App extends React.Component {
       },
       body: JSON.stringify(data) // body data type must match "Content-Type" header
     })
-    .then (res => res.json()) 
-    .then (data => {
-      this.setState({
-        errorMessage: data.error,
-        loggedIn: data.error 
-          ? false: true,  
-        nick: data.username,
-        userId: data.token
-        
-      })
-    }) 
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          errorMessage: data.error,
+          loggedIn: !data.error,
+          nick: data.username,
+          userId: data.token
 
-    .catch (err => console.log(err))//when exception is thrown it will end up here - so error message ain't here
-    
+        })
+      })
+
+      .catch(err => console.log(err))// when exception is thrown it will end up here - so error message ain't here
   }
-  
+
   handleAddRoom () {
     const room = prompt('Enter a room name')
     this.setState({ room: room })
   }
-
 
   getRooms () {
     const rooms = this.state.messages.map(msg => msg.room)
@@ -90,15 +81,15 @@ class App extends React.Component {
     return Array.from(new Set(filtered)) // filters out the duplicates
   }
 
-  logMeOut() {
-    this.setState({loggedIn: false})
+  logMeOut () {
+    this.setState({ loggedIn: false })
   }
 
-  playTone() {
+  playTone () {
     Tone.start()
     // console.log('audio is ready')
     const synth = new Tone.Synth().toDestination()
-    return synth.triggerAttackRelease("C4", "8n")
+    return synth.triggerAttackRelease('C4', '8n')
   }
 
   render () {
@@ -106,123 +97,105 @@ class App extends React.Component {
       <Router>
         {/* <button onClick={this.signUp}>Sign Up or Whatever</button> */}
         <div>
-          <div className="logo">
-            <img src={logo} alt="logo"/>
-          </div>
-        <div id="menu-outer"> 
-          <div className="table">
-            <ul id="horizontal-list">
-            {this.state.loggedIn
-              ?
-              <li>
-                <Link to="/"><button>Lobby</button></Link>
-              </li>
-              : ''}
-              {this.state.loggedIn
-              ?
-              ''
-              : 
-              <li>
-                <Link to="/login"><button>Log In</button></Link>
-              </li>}
-              {this.state.loggedIn
-              ?
-              ''
-              :
-              <li>
-                <Link to="/signup"><button onClick={this.playTone}>Sign Up</button></Link>
-              </li>}
-              {this.state.loggedIn 
+          <div className='navbar'>
+            <div className='container-0' id='menu-outer'>
+              <div className='container-0-1' id='logo'>
+                <div>
+                  <img src={logo} alt='logo' />
+                </div>
+              </div>
+              <div className='container-0-3'>
+                {/* <div id="themeup">
+              <ThemeUp />
+            </div>  */}
+              </div>
+              {/* <div id="themeup">
+          <ThemeUp />
+          </div> */}
+              <div className='container-0-2' id='table'>
+
+                <ul id='horizontal-list'>
+                  {/* {this.state.loggedIn
                 ?
-              <li>
-                <Link to="/logout" onClick={this.logMeOut.bind(this)}><button>Log <span style={{color:"firebrick"}}>'{this.state.nick}'</span> Out</button></Link>
-              </li> 
-                : ''}
-              {this.state.loggedIn
-              ?
-              <li>
-                <Link to="/profile/user"><button>Profile</button></Link>
-              </li>
-              : ''}
-              {this.state.loggedIn
-              ?
-              <li>
-                <Link to="/chat/general"><button>Chat</button></Link>
-              </li>
-              : ''}
-              {this.state.loggedIn
-              ?
-              ''
-              : 
-              <li>
-                <Link to="/guest"><button>Guest</button></Link>
-              </li>}
-            </ul>
+                <li>
+                  <Link to="/">Lobby</Link>
+                </li>
+                : ''} */}
+                  <li>
+                    <Link to='/'>Lobby</Link>
+
+                  </li>
+                  {this.state.loggedIn
+                    ? ''
+                    : <li>
+                      <Link to='/login'>Log In</Link>
+                      </li>}
+                  {this.state.loggedIn
+                    ? ''
+                    : <li>
+                      <Link to='/signup' onClick={this.playTone}>Sign Up</Link>
+                      </li>}
+                  {this.state.loggedIn
+                    ? <li>
+                      {/* <Link to="/logout" onClick={this.logMeOut.bind(this)}>Log <span style={{color:"firebrick"}}>'{this.state.nick}'</span> Out</Link> */}
+                      <Link to='/logout' onClick={this.logMeOut.bind(this)}>Log Out</Link>
+                    </li>
+                    : ''}
+                  {this.state.loggedIn
+                    ? <li>
+                      <Link to='/profile/user'>Profile</Link>
+                      </li>
+                    : ''}
+                </ul>
+              </div>
+            </div>
           </div>
+
+          <Switch>
+            <Route path='/signup'>
+              {this.state.loggedIn
+                ? <Redirect to='/' />
+                : this.state.registered
+                  ? <Redirect to='/login' />
+                  : [<Signup register={this.register.bind(this)} />, <div>{this.state.errorMessage}</div>]}
+            </Route>
+
+            <Route path='/logout'>
+              <Redirect to='/login' />
+            </Route>
+
+            <Route path='/login'>
+              {this.state.loggedIn
+                ? <Redirect to='/' />
+                : [<LoginForm loginFunc={this.loginFunc.bind(this)} />, <div>{this.state.errorMessage}</div>]}
+            </Route>
+
+            <Route path='/profile/user'>
+              <Profile formValue={this.state.nick} />
+            </Route>
+
+            {/* <Route path="/guest" >
+              <GuestLobby/>
+            </Route> */}
+
+            <Route path='/'>
+              {this.state.loggedIn
+              // ? <Lobby
+              // rooms={this.getRooms()}
+              // handleAddRoom={this.handleAddRoom.bind(this)}
+              // />
+                ? <AppLobby />
+              // : <Redirect to="/guest"/>}
+                : <AppLobby />}
+            </Route>
+          </Switch>
+          <ThemeUp />
         </div>
-        <Switch>
-          <Route path="/signup">
-          {this.state.loggedIn 
-            ? <Redirect to="/" />  
-            : this.state.registered 
-              ? <Redirect to="/login" /> 
-              : [<Signup register={this.register.bind(this)}/>,  <div>{this.state.errorMessage}</div>]}
-          </Route>
-
-          <Route path="/logout" >
-            <Redirect to='/login' />
-          </Route>
-
-          <Route path="/login">
-          {this.state.loggedIn 
-            ? <Redirect to="/" />
-            : [<LoginForm loginFunc={this.loginFunc.bind(this)}/>, <div>{this.state.errorMessage}</div>]}
-
-          </Route>
-
-          <Route path="/rooms/:room">
-          {this.state.loggedIn
-            ? <Game messages={this.state.messages}/>
-            // <Chat sendMessage={this.sendMessage.bind(this)} messages={this.state.messages}/>
-            : <Redirect to="/login" />}
-          </Route>
-
-          <Route path="/chat/general">
-          {this.state.loggedIn
-            ? <Chat messages={this.state.messages}/>
-            : <Redirect to="/login" />}
-          </Route>
-
-          <Route path="/profile/user" >
-            <Profile formValue={this.state.nick}/>
-          </Route>
-
-          <Route path="/guest" >
-            {/* <GuestLobby rooms={this.getRooms()}
-            handleAddRoom={this.handleAddRoom.bind(this)}/> */}
-            <GuestLobby/>
-          </Route>
-
-          <Route path="/">
-          {this.state.loggedIn
-            ? <Lobby
-            rooms={this.getRooms()}
-            handleAddRoom={this.handleAddRoom.bind(this)}
-            />
-            // <Rooms
-            // rooms={this.getRooms()}
-            // handleAddRoom={this.handleAddRoom.bind(this)}
-            // />
-            : <Redirect to="/guest"/>}
-          </Route>
-        </Switch>
-
-    </div>
-    </Router>
+      </Router>
     )
   }
 }
 
 export default App
 
-//assignment. make ternaries from rooms - sensei dustino
+// assignment. make ternaries from rooms - sensei dustino

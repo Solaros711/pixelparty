@@ -6,7 +6,7 @@ const { Schema } = mongoose
 if (colors) {}
 
 // const wordsArray = ['doctor', 'moon', 'bear', 'tornado', 'waterfall', 'castle', 'knight', 'king', 'queen', 'movie', 'fire', 'volcano', 'dog', 'cat', 'horse', 'ocean', 'mountain', 'television']
-const wordsArray = ['horse', 'horse']
+const wordsArray = ['doctor', 'moon', 'bear']
 
 const roundSchema = new Schema({
   word: {
@@ -105,8 +105,8 @@ gameSchema.statics.join = async function (username, gameID) {
   game.players.push(username)
   if (game.players.length === game.numOfPlayers) {
     game.isReady = true
+    game.joinable = false
   }
-  game.joinable = false
   await game.save()
   return game
 }
@@ -137,14 +137,16 @@ gameSchema.methods.randomize = async function () {
 }
 
 gameSchema.methods.logMessage = async function (message) {
-  const round = this.rounds[this.currentRound]
   this.messages.push(message) // where do you need await
-  if (message.text.toLowerCase() === round.word.toLowerCase() && !round.roundOver) {
-    round.winner = message.username
-    this.points.push(round.winner, round.artist)
-    round.roundOver = true
-    // this.currentRound++
-    if (this.currentRound === this.rounds.length - 1) this.gameOver = true
+  if (this.isReady) {
+    const round = this.rounds[this.currentRound]
+    if (message.text.toLowerCase() === round.word.toLowerCase() && !round.roundOver) {
+      round.winner = message.username
+      this.points.push(round.winner, round.artist)
+      round.roundOver = true
+      // this.currentRound++
+      if (this.currentRound === this.rounds.length - 1) this.gameOver = true
+    }
   }
   await this.save()
   console.log('log message: '.rainbow, this)

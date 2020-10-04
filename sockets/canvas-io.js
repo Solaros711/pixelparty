@@ -10,15 +10,17 @@ module.exports = io => { // this takes in the io from the main app/game.js
       // gameID = id from game object in db
       console.log(`somebody joined gameID: ${gameID}`.rainbow)
       socket.join(gameID)
-      // console.log('YOYOYOYOYOYOYOYOYOYOYOYOYOYO'.rainbow)
-      // console.log(socket)
-      // console.log('YOYOYOYOYOYOYOYOYOYOYOYOYOYO'.rainbow)
     })
+
     socket.on('drawing', data => {
-      console.log('somebody\'s drawing'.rainbow)
-      console.log({ data })
-      // data = { gameID, pixels }c
+      // console.log('somebody\'s drawing'.rainbow)
+      // console.log({ data })
+      // data = { gameID, pixels }
       socket.to(data.gameID).emit('drawing', data.pixels)
+    })
+
+    socket.on('disconnect', () => {
+      console.log('\nclient disconnected from \'/canvas\' namespace'.magenta)
     })
   })
 }

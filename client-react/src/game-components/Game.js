@@ -1,6 +1,7 @@
 import React from 'react'
 import Round from './Round'
 import Chat from './Chat'
+import Canvas from './Canvas'
 import io from 'socket.io-client'
 
 // const socket = io('./game')
@@ -25,7 +26,12 @@ export default class Game extends React.Component {
     }
   }
 
+  // componentDidCatch (error) {
+  //   console.log(error)
+  // }
+
   componentDidMount () {
+    console.log('component did mount game')
     console.log(this.state.username, this.state.gameID)
     this.state.socket.emit('join game', {
       username: this.state.username,
@@ -33,12 +39,17 @@ export default class Game extends React.Component {
       // isHost: this.state.isHost
     })
 
-    this.state.socket.on('game state', gameState => {
-      this.setState({ gameState, gameStateStr: JSON.stringify(gameState), isHost: this.props.username === gameState.host })
-    })
+    // this.state.socket.on('game state', gameState => {
+    //   this.setState({
+    //     gameState,
+    //     gameStateStr: JSON.stringify(gameState),
+    //     isHost: this.props.username === gameState.host
+    //   })
+    // })
 
     this.state.socket.on('game state', gameState => {
-      const betweenRounds = gameState.rounds[gameState.currentRound].roundOver || false
+      console.log('game state socket')
+      const betweenRounds = gameState.rounds.length ? gameState.rounds[gameState.currentRound].roundOver || false : false
       const score = gameState.points.
         reduce((pointsObject, name) => {
           if (name in pointsObject) pointsObject[name]++
@@ -49,7 +60,8 @@ export default class Game extends React.Component {
         gameState,
         gameStateStr: JSON.stringify(gameState),
         betweenRounds,
-        score
+        score,
+        isHost: this.props.username === gameState.host
       })
     })
     
@@ -66,45 +78,59 @@ export default class Game extends React.Component {
   render () {
     console.log('game over: ', this.state.gameState.gameOver)
     return (
-      <div>
-        {!this.state.gameState.isReady
-        ? <div>loading</div>
-        : <div id='round-and-chat'>
-          {this.state.gameState.gameOver
-            ? (
-              <div>
-                <div>Game Over</div>
-                <div>Score: {JSON.stringify(this.state.score)}</div>
-              </div>
-            )
-            : this.state.betweenRounds
-              ? <div>
-                  <button onClick={this.handleNextRound}>Timer isn't working yet, so press this button to start next round</button>
+      this.state.gameState
+        ? <div id="game-container">
+          <div className="play-container-1" id='round-and-chat'>
+          <div className="play-container-1-1">
+          {!this.state.gameState.isReady
+          ? <Canvas
+              socket={this.props.socket}
+              isArtist={true}
+              gameID={this.state.gameID}
+            />
+          : <div>
+            {this.state.gameState.gameOver
+              ? (
+                <div>
+                  <div>Game Over</div>
                   <div>Score: {JSON.stringify(this.state.score)}</div>
                 </div>
-              : (
-                <Round
-                  gameState={this.state.gameState}
-                  username={this.props.username}
-                  isHost={this.state.isHost}
-                  onTimesUp={this.handleTimesUp}
-                />
-              )}
+              )
+              : this.state.betweenRounds
+                ? <div>
+                    <button onClick={this.handleNextRound} style={{backgroundColor:"firebrick"}}>Test: Next Round</button>
+                    <div>Score: {JSON.stringify(this.state.score)}</div>
+                  </div>
+                : (
+                  <Round
+                    gameState={this.state.gameState}
+                    username={this.props.username}
+                    isHost={this.state.isHost}
+                    onTimesUp={this.handleTimesUp}
+                  />
+                )}
 
-          <Chat
-            gameState={this.state.gameState}
-            username={this.props.username}
-            socket={this.state.socket}
-            betweenRounds={this.state.betweenRounds}
-            // gameId={gameData._id}
-            // roundData={roundData}
-          />
-        </div>}
-        {this.state.debug
-        ? <div>{this.state.gameStateStr}</div>
+          </div>}
+          </div>        
+
+          <div className="play-container-1-2">     
+            <Chat
+              gameState={this.state.gameState}
+              username={this.props.username}
+              socket={this.state.socket}
+              betweenRounds={this.state.betweenRounds}
+              // gameId={gameData._id}
+              // roundData={roundData}
+            />
+          </div>
+        
+          {this.state.debug
+          ? <div>{this.state.gameStateStr}</div>
+          : null
+        }
+        </div>
+        </div>
         : null
-      }
-      </div>
     )
   }
 }

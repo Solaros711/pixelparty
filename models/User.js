@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
+const Schema = mongoose.Schema
 
 const userSchema = new mongoose.Schema({
 
@@ -8,32 +9,20 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-
     password: {
         type: String,
         required: true
     },
-    
-    // Allows for an array of objects of mixed types. This lets us use two dimensional arrays in mongoose.
     picture: {
-        type: [mongoose.Schema.Types.Mixed],
-        required: true
+        type: Schema.Types.ObjectId, ref: 'Art',
+        required: false
     }
+    
 })
 
 userSchema.statics.signUp = async function (username, password) {
     const user = new this()
-    const pic = new Array(50)
-
     user.username = username
-
-    for(i=0; i< pic.length; i++){
-        line = new Array(50)
-        line.fill('')
-        pic[i] = line
-    }
-
-    user.picture = pic
     await user.hashPassword(password)
     await user.save()
     return user
@@ -55,6 +44,13 @@ userSchema.methods.sanitize = function () {
         ...this._doc,
         password: undefined
     }
+}
+
+userSchema.methods.addPic = async function (picID) {
+    const user = this
+    user.picture = picID
+    await user.save()
+    return user
 }
   
 const User = mongoose.model("User", userSchema)

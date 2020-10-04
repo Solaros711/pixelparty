@@ -28,6 +28,7 @@ class NewMessage extends React.Component {
           onChange={this.handleChange}
           value={this.state.text}
           disabled={disabled}
+          placeholder="Take a guess..."
         />
         <button
         disabled={disabled}>
@@ -54,9 +55,10 @@ export default class Chat extends React.Component {
 
   render () {
     const gameState = this.props.gameState
+    console.log({ gameState })
     if (this.state.consoleLogs) console.log({ gameState })
     let isArtist = false
-    if (!gameState.gameOver) {
+    if (!gameState.gameOver && gameState.isReady) {
       const artist = gameState.rounds[gameState.currentRound].artist
       isArtist = artist === this.props.username
     }
