@@ -128,14 +128,9 @@ export default class Game extends React.Component {
           ? <div>{this.state.gameStateStr}</div>
           : null
         }
-<<<<<<< HEAD
-      </div>
-      </div>
-      : null
-=======
+        </div>
         </div>
         : null
->>>>>>> waiting-room
     )
   }
 }
