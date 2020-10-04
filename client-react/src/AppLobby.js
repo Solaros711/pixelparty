@@ -52,31 +52,35 @@ export default class AppLobby extends React.Component {
 
   render () {
     return (
-      <main>
-        <link href='https://fonts.googleapis.com/css2?family=Righteous&display=swap' rel='stylesheet' />
-        <div>User: {this.state.username}</div>
-        {this.state.joinedGame
-          ? <Game
-              gameID={this.state.gameID}
-              // gameData={this.state.gameData}
-              isHost={this.state.isHost}
-              username={this.state.username}
-              socket={socket}
-              onTimesUp={this.handleTimesUp}
-            />
-        : <div>
-            <button onClick={this.handleHostGame}>Host a Game!</button>
-          {this.state.games.map(game =>
-              <button
-                key={game._id}
-                onClick={() => this.handleJoinGame(game._id)}
-              >
-                Join {game.host}'s Game!  {game.players.length} of {game.numOfPlayers} joined!
-              </button>
-            )}
-          </div>
-        }
-      </main>
+      // <div id="wait-container">
+        <main>
+          <link href='https://fonts.googleapis.com/css2?family=Righteous&display=swap' rel='stylesheet' />
+          {/* <div>User: {this.state.username}</div> */}
+          {this.state.joinedGame
+            ? <Game
+                gameID={this.state.gameID}
+                // gameData={this.state.gameData}
+                isHost={this.state.isHost}
+                username={this.state.username}
+                socket={socket}
+                onTimesUp={this.handleTimesUp}
+              />
+          : <div id="wait-container">
+              <h5>Welcome to the <span style={{fontStyle:"italic", textTransform:"uppercase"}}>game lobby, </span><span style={{fontSize: "30px", color:"rgb(179, 67, 2)", textShadow:"2px 2px black"}}>{this.state.username}!</span></h5>
+              {/* <h5>Player: <span style={{color:"firebrick", textTransform:"uppercase"}}>{this.state.username}</span></h5> */}
+              <button onClick={this.handleHostGame}>Host a game!</button>
+              {this.state.games.map(game =>
+                  <button
+                    key={game._id}
+                    onClick={() => this.handleJoinGame(game._id)}
+                  >
+                    Join {game.host}'s game!  {game.players.length} of {game.numOfPlayers} joined!
+                  </button>
+                )}
+            </div>
+          }
+        </main>
+      // </div>
     )
   }
 }
