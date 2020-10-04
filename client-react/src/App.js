@@ -189,7 +189,7 @@ class App extends React.Component {
                 : <AppLobby />}
             </Route>
           </Switch>
-          <ThemeUp />
+          {/* <ThemeUp /> */}
         </div>
       </Router>
     )
