@@ -29,6 +29,7 @@ class loginForm extends React.Component {
   render () {
     return (
       <div id='login-container'>
+        <h5>Log In...</h5>
         <form id='send-message' onSubmit={this.handleSubmit.bind(this)}>
           <div>
             <input id='nickname' type='text' placeholder='Enter nickname...' value={this.state.nick} onChange={this.handleLoginChange.bind(this)} />
