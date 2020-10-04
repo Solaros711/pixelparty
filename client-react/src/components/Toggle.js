@@ -21,8 +21,6 @@ export default function Toggle ({ theme, toggleTheme }) {
       <NightIcon />
     </ToggleContainer>
 
-
-
   )
 }
 

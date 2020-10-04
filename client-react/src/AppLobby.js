@@ -17,7 +17,7 @@ export default class AppLobby extends React.Component {
       debug: true, // shows stringified game data from db if true
       consoleLogs: false,
       gameID: '',
-      numOfPlayers: 2
+      numOfPlayers: 3
     }
   }
 

@@ -1,18 +1,4 @@
-/* globals fetch prompt */
-// import Chat from './components/Chat'
-// import Game from './components/Game'
-// import Lobby from './components/Lobby'
-// import GuestLobby from './components/GuestLobby'
-import * as Tone from 'tone'
-// import Rooms from './components/Rooms'
-import Profile from './components/Profile'
-// import MessageForm from './components/MessageForm'
-import LoginForm from './components/LoginForm'
-import Signup from './components/Signup'
 import React from 'react'
-import ThemeUp from './components/ThemeUp'
-import AppLobby from './AppLobby'
-import io from 'socket.io-client'
 import {
   BrowserRouter as Router,
   Switch,
@@ -20,11 +6,18 @@ import {
   Link,
   Redirect
 } from 'react-router-dom'
+import * as Tone from 'tone'
+
+import Profile from './components/Profile'
+import LoginForm from './components/LoginForm'
+import Signup from './components/Signup'
+import ThemeUp from './components/ThemeUp'
+import AppLobby from './AppLobby'
+
 import './App.css'
 import logo from './pix_logo_50.png'
-const jwt = require('jsonwebtoken')
 
-const socket = io()
+/* globals fetch */
 
 class App extends React.Component {
   constructor (props) {
