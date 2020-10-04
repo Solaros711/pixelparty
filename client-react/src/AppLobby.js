@@ -53,7 +53,6 @@ export default class AppLobby extends React.Component {
 
   render () {
     return (
-      // <div id="wait-container">
         <main>
           <link href='https://fonts.googleapis.com/css2?family=Righteous&display=swap' rel='stylesheet' />
           {/* <div>User: {this.state.username}</div> */}
@@ -87,7 +86,6 @@ export default class AppLobby extends React.Component {
             </div>
           }
         </main>
-      // </div>
     )
   }
 }

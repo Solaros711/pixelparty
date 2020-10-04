@@ -11,10 +11,6 @@ export default function Toggle ({ theme, toggleTheme }) {
   const PartyIcon = () => <SVG src={require('../party-2.svg')} />
 
   return (
-  // <button partyTheme={isParty} onClick={toggleTheme} >
-  //   <PartyIcon />
-  //   <NightIcon />
-  // </button>
 
     <ToggleContainer partyTheme={isParty} onClick={toggleTheme}>
       <PartyIcon />

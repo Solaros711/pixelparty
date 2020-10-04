@@ -15,7 +15,6 @@ function ThemeUp () {
   }
 
   return (
-    // <div id="login-container">
     <ThemeProvider theme={themeMode}>
 
       <>
@@ -25,7 +24,6 @@ function ThemeUp () {
         <h6><span style={{ fontSize: '12px' }}>{theme === 'party' ? 'Party theme' : 'Dark theme'}!</span></h6>
       </>
     </ThemeProvider>
-    // </div>
   )
 }
 
