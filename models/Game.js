@@ -6,7 +6,7 @@ const { Schema } = mongoose
 if (colors) {}
 
 // const wordsArray = ['doctor', 'moon', 'bear', 'tornado', 'waterfall', 'castle', 'knight', 'king', 'queen', 'movie', 'fire', 'volcano', 'dog', 'cat', 'horse', 'ocean', 'mountain', 'television']
-const wordsArray = ['doctor', 'moon', 'bear']
+const wordsArray = ['doctor', 'moon', 'bear', 'volcano']
 
 const roundSchema = new Schema({
   word: {
