@@ -37,7 +37,7 @@ export default class AppLobby extends React.Component {
   
   handleHostGame = () => {
     // this.setState({ joinedGame: true })
-    const data = { username: this.state.username, numOfPlayers: 2 }
+    const data = { username: this.state.username, numOfPlayers: 3 }
     socket.emit('create game', data)
   }
 

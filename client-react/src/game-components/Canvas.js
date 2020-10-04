@@ -21,7 +21,8 @@ export default class Canvas extends React.Component {
         ['#49F57A', '#F5A331', '#5A19A8'],
         ['#C6CF55', '#699FCF', '#82332F']
       ],
-      socket: io('/canvas')
+      socket: io('/canvas'),
+      partyMode: this.props.betweenRounds
     }
   }
   
