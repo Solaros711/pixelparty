@@ -25,9 +25,7 @@ module.exports = io => { // this takes in the io from the main app.js
       console.log('event purpose'.cyan)
       console.log('\t* join client to waiting room on frontend'.yellow)
 
-      // if (gameState.isReady) {
       game.to(data.gameID).emit('game state', gameState)
-      // }
     })
 
     socket.on('message', async data => {
@@ -40,10 +38,7 @@ module.exports = io => { // this takes in the io from the main app.js
       const message = { username: data.username, text: data.text }
       Game.findOne({ _id: data.gameID }, async (err, gameState) => {
         if (err) return console.log(err)
-        // console.log({ gameState })
         await gameState.logMessage(message)
-        console.log({ gameState })
-        console.log(gameState.rounds)
         // emit to all clients in room
         game.to(data.gameID).emit('game state', gameState)
       })

@@ -1,6 +1,6 @@
 const Game = require('./../models/Game')
 const colors = require('colors')
-if (colors) console.log('colors'.rainbow)
+if (colors) console.log('game-io'.rainbow)
 
 module.exports = io => { // this takes in the io from the main app.js
   const lobby = io.of('/lobby')
@@ -34,7 +34,7 @@ module.exports = io => { // this takes in the io from the main app.js
       console.log('event purpose'.cyan)
       console.log('\t* update frontend state to make game joinable by other clients'.yellow)
 
-      console.log({ gameID: gameState._id })
+      // console.log({ gameID: gameState._id })
 
       socket.emit('joined game', gameState._id)
     })
@@ -56,47 +56,12 @@ module.exports = io => { // this takes in the io from the main app.js
 
       socket.emit('joined game', gameState._id)
 
-      // console.log(`\nclient username: ${data.username} joined gameID: ${gameDB._id}`.magenta)
+      const games = await Game.getJoinable()
 
-      // socket.emit('join game', gameDB._id)
-      // console.log('\n\'join game\' event emitted to socket'.cyan)
-      // console.log(`\tclient username: ${data.username}\n\tgameID: ${gameDB._id}`.yellow)
-      // console.log('event purpose'.cyan)
-      // console.log('\t* join client to waiting room on frontend'.yellow)
+      lobby.emit('games data', { games })
     })
     socket.on('disconnect', () => {
       console.log('\nclient disconnected from \'/lobby\' namespace'.magenta)
     })
   })
 }
-
-// console.log(gameDB)
-
-// socket.join(data.gameID)
-// console.log('YOYOYOYOYOYOYOYOYOYOYOYOYOYO'.trap)
-// console.log(socket)
-// console.log('YOYOYOYOYOYOYOYOYOYOYOYOYOYO'.trap)
-
-// if (gameDB.isReady) {
-//   game.emit('game full', gameDB._id)
-//   console.log('\n\'game full\' event emitted over game namespace'.cyan)
-//   console.log(`\tgameID: ${gameDB._id}\n\tplayers: ${gameDB.players}`.yellow)
-//   console.log('event purpose'.cyan)
-//   console.log('\t* game can no longer be joined on frontend'.yellow)
-
-//   await gameDB.randomize() // this randomly creates rounds so everybody draws once and everybody gets a different word
-//   game.to(data.gameID).emit('game state', gameDB)
-//   // console messages needed?
-
-//   game.to(data.gameID).emit('game ready', data.gameID) // emit game start to everyone in room
-//   console.log('\n\'game ready\' event emitted over game namespace to game room'.cyan)
-//   console.log(`\tgameID: ${data.gameID}\n\tclients: ${gameDB.players}`.yellow)
-//   console.log('event purpose'.cyan)
-//   console.log('\t* if game is full (gameDB.players === gameDB.numOfPlayers) send ready signal to frontend\n\t* when the host gets this signal, the \'game start\' events will begin'.yellow) // this isn't quite accurate anymore
-// }
-
-// socket.emit('join created game', gameDB._id, data.username)
-// console.log('\n\'join created game\' event emitted to socket'.cyan)
-// console.log(`\thost username: ${data.username}\n\tgameID: ${gameDB._id}`.yellow)
-// console.log('\'event purpose:\''.cyan)
-// console.log('\t* join host to created game'.yellow)
