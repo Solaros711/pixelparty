@@ -3,9 +3,9 @@ import React from 'react'
 class loginForm extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { 
-        nick: '',
-        password: ''
+    this.state = {
+      nick: '',
+      password: ''
     }
   }
 
@@ -25,7 +25,7 @@ class loginForm extends React.Component {
   handlePasswordChange (event) {
     this.setState({ password: event.target.value })
   }
-  
+
   render () {
     return (
       <div id='login-container'>
@@ -48,14 +48,14 @@ class loginForm extends React.Component {
 
 export default loginForm
 
-//this.props means it is somewhere else
+// this.props means it is somewhere else
 
-//onChange events change state
+// onChange events change state
 
-//actively re-rendering everytime
+// actively re-rendering everytime
 
-//if you need to pass data up, you do it through prop drilling
+// if you need to pass data up, you do it through prop drilling
 
-//CamelCase for React - classes and functional components
+// CamelCase for React - classes and functional components
 
-//nuggets of wisdom from Dustin
+// nuggets of wisdom from Dustin

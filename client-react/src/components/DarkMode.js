@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 export const DarkMode = () => {
   const [theme, setTheme] = useState('party')
   const [componentMounted, setComponentMounted] = useState(false)
-  
+
   const setMode = mode => {
     window.localStorage.setItem('theme', mode)
     setTheme(mode)
@@ -22,12 +22,12 @@ export const DarkMode = () => {
     if (localTheme) {
       setTheme(localTheme)
     } else {
-        setMode('party')
+      setMode('party')
     //   setTheme('party')
     //   window.localStorage.setItem('theme', 'party')
     }
     setComponentMounted(true)
   }, [])
-  
+
   return [theme, toggleTheme, componentMounted]
 }

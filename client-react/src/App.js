@@ -4,7 +4,7 @@
 // import Lobby from './components/Lobby'
 // import GuestLobby from './components/GuestLobby'
 import * as Tone from 'tone'
-import Rooms from './components/Rooms'
+// import Rooms from './components/Rooms'
 import Profile from './components/Profile'
 // import MessageForm from './components/MessageForm'
 import LoginForm from './components/LoginForm'
@@ -19,22 +19,21 @@ import {
   Route,
   Link,
   Redirect
-} from "react-router-dom"
+} from 'react-router-dom'
 import './App.css'
 import logo from './pix_logo_50.png'
 const jwt = require('jsonwebtoken')
-
 
 const socket = io()
 
 class App extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { messages: [], nick: null, loggedIn: false, errorMessage: '', room:'Pixel Party (Room 1)', userId: ''}
+    this.state = { messages: [], nick: null, loggedIn: false, errorMessage: '', room: 'Pixel Party (Room 1)', userId: '' }
     this.register = this.register.bind(this)
   }
 
-  register(data) {
+  register (data) {
     // const data={ username: "Johnny", password: "321" }
     // Default options are marked with *
     fetch('/signup', {
@@ -44,17 +43,17 @@ class App extends React.Component {
       },
       body: JSON.stringify(data) // body data type must match "Content-Type" header
     })
-    .then (res => res.json()) 
-    .then (data => this.setState({ errorMessage: data.error, registered: data.error ? false: true }))
-    .catch (err => console.log(err))
+      .then(res => res.json())
+      .then(data => this.setState({ errorMessage: data.error, registered: !data.error }))
+      .catch(err => console.log(err))
     // return response.json(); // parses JSON response into native JavaScript objects
   }
 
   componentDidMount () {
     console.log('Your component mounted!')
   }
-  
-  loginFunc(data) {
+
+  loginFunc (data) {
     console.log(data)
     fetch('/login', {
       method: 'POST',
@@ -63,22 +62,20 @@ class App extends React.Component {
       },
       body: JSON.stringify(data) // body data type must match "Content-Type" header
     })
-    .then (res => res.json()) 
-    .then (data => {
-      this.setState({
-        errorMessage: data.error,
-        loggedIn: data.error 
-          ? false: true,  
-        nick: data.username,
-        userId: data.token
-        
-      })
-    }) 
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          errorMessage: data.error,
+          loggedIn: !data.error,
+          nick: data.username,
+          userId: data.token
 
-    .catch (err => console.log(err))//when exception is thrown it will end up here - so error message ain't here
-    
+        })
+      })
+
+      .catch(err => console.log(err))// when exception is thrown it will end up here - so error message ain't here
   }
-  
+
   handleAddRoom () {
     const room = prompt('Enter a room name')
     this.setState({ room: room })
@@ -91,15 +88,15 @@ class App extends React.Component {
     return Array.from(new Set(filtered)) // filters out the duplicates
   }
 
-  logMeOut() {
-    this.setState({loggedIn: false})
+  logMeOut () {
+    this.setState({ loggedIn: false })
   }
 
-  playTone() {
+  playTone () {
     Tone.start()
     // console.log('audio is ready')
     const synth = new Tone.Synth().toDestination()
-    return synth.triggerAttackRelease("C4", "8n")
+    return synth.triggerAttackRelease('C4', '8n')
   }
 
   render () {
@@ -107,111 +104,105 @@ class App extends React.Component {
       <Router>
         {/* <button onClick={this.signUp}>Sign Up or Whatever</button> */}
         <div>
-        <div className="navbar">
-        <div className="container-0" id="menu-outer"> 
-          <div className="container-0-1" id="logo">
-            <div>
-            <img src={logo} alt="logo"/>
-            </div>
-          </div>
-          <div className="container-0-3">
-            {/* <div id="themeup">
+          <div className='navbar'>
+            <div className='container-0' id='menu-outer'>
+              <div className='container-0-1' id='logo'>
+                <div>
+                  <img src={logo} alt='logo' />
+                </div>
+              </div>
+              <div className='container-0-3'>
+                {/* <div id="themeup">
               <ThemeUp />
             </div>  */}
-          </div>  
-          {/* <div id="themeup">
+              </div>
+              {/* <div id="themeup">
           <ThemeUp />
           </div> */}
-          <div className="container-0-2" id="table">
-            
-            <ul id="horizontal-list">
-                {/* {this.state.loggedIn
+              <div className='container-0-2' id='table'>
+
+                <ul id='horizontal-list'>
+                  {/* {this.state.loggedIn
                 ?
                 <li>
                   <Link to="/">Lobby</Link>
                 </li>
                 : ''} */}
-                <li>
-                  <Link to="/">Lobby</Link>
-                  
-                </li>
-                {this.state.loggedIn
-                ?
-                ''
-                : 
-                <li>
-                  <Link to="/login">Log In</Link>
-                </li>}
-                {this.state.loggedIn
-                ?
-                ''
-                :
-                <li>
-                  <Link to="/signup" onClick={this.playTone}>Sign Up</Link>
-                </li>}
-                {this.state.loggedIn 
-                  ?
-                <li>
-                  {/* <Link to="/logout" onClick={this.logMeOut.bind(this)}>Log <span style={{color:"firebrick"}}>'{this.state.nick}'</span> Out</Link> */}
-                  <Link to="/logout" onClick={this.logMeOut.bind(this)}>Log Out</Link>
-                </li> 
-                  : ''}
-                {this.state.loggedIn
-                ?
-                <li>
-                  <Link to="/profile/user">Profile</Link>
-                </li>
-                : ''}
-              </ul>
+                  <li>
+                    <Link to='/'>Lobby</Link>
+
+                  </li>
+                  {this.state.loggedIn
+                    ? ''
+                    : <li>
+                      <Link to='/login'>Log In</Link>
+                      </li>}
+                  {this.state.loggedIn
+                    ? ''
+                    : <li>
+                      <Link to='/signup' onClick={this.playTone}>Sign Up</Link>
+                      </li>}
+                  {this.state.loggedIn
+                    ? <li>
+                      {/* <Link to="/logout" onClick={this.logMeOut.bind(this)}>Log <span style={{color:"firebrick"}}>'{this.state.nick}'</span> Out</Link> */}
+                      <Link to='/logout' onClick={this.logMeOut.bind(this)}>Log Out</Link>
+                    </li>
+                    : ''}
+                  {this.state.loggedIn
+                    ? <li>
+                      <Link to='/profile/user'>Profile</Link>
+                      </li>
+                    : ''}
+                </ul>
+              </div>
             </div>
           </div>
-          </div>
-      
+
           <Switch>
-            <Route path="/signup">
-            {this.state.loggedIn 
-              ? <Redirect to="/" />  
-              : this.state.registered 
-                ? <Redirect to="/login" /> 
-                : [<Signup register={this.register.bind(this)}/>,  <div>{this.state.errorMessage}</div>]}
+            <Route path='/signup'>
+              {this.state.loggedIn
+                ? <Redirect to='/' />
+                : this.state.registered
+                  ? <Redirect to='/login' />
+                  : [<Signup register={this.register.bind(this)} />, <div>{this.state.errorMessage}</div>]}
             </Route>
 
-            <Route path="/logout" >
+            <Route path='/logout'>
               <Redirect to='/login' />
             </Route>
 
-            <Route path="/login">
-            {this.state.loggedIn 
-              ? <Redirect to="/" />
-              : [<LoginForm loginFunc={this.loginFunc.bind(this)}/>, <div>{this.state.errorMessage}</div>]}
+            <Route path='/login'>
+              {this.state.loggedIn
+                ? <Redirect to='/' />
+                : [<LoginForm loginFunc={this.loginFunc.bind(this)} />, <div>{this.state.errorMessage}</div>]}
             </Route>
 
-            <Route path="/profile/user" >
-              <Profile formValue={this.state.nick}/>
+            <Route path='/profile/user'>
+              <Profile formValue={this.state.nick} />
             </Route>
 
             {/* <Route path="/guest" >
               <GuestLobby/>
             </Route> */}
 
-            <Route path="/">
-            {this.state.loggedIn
+            <Route path='/'>
+              {this.state.loggedIn
               // ? <Lobby
               // rooms={this.getRooms()}
               // handleAddRoom={this.handleAddRoom.bind(this)}
               // />
-              ? <AppLobby />
+                ? <AppLobby />
               // : <Redirect to="/guest"/>}
-              : <AppLobby />}
+                : <AppLobby />}
             </Route>
           </Switch>
           <ThemeUp />
-    </div>
-    </Router>
+        </div>
+      </Router>
     )
   }
 }
 
 export default App
 
-//assignment. make ternaries from rooms - sensei dustino
+// assignment. make ternaries from rooms - sensei dustino
