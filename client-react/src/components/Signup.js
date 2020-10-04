@@ -30,6 +30,7 @@ class Signup extends React.Component {
     render () {
         return (
           <div id='login-container'>
+            <h5>Register...</h5>
             <form id='signup' onSubmit={this.handleSubmit.bind(this)}>
               <div>
                 <input id='nickname' type='text' placeholder='Enter nickname...' value={this.state.nick} onChange={(evt) => {this.handleChange(evt, 'nick')}

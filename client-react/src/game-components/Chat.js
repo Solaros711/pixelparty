@@ -28,6 +28,7 @@ class NewMessage extends React.Component {
           onChange={this.handleChange}
           value={this.state.text}
           disabled={disabled}
+          placeholder="Take a guess..."
         />
         <button
         disabled={disabled}>

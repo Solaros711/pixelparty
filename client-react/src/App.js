@@ -1,15 +1,17 @@
 /* globals fetch prompt */
-import Chat from './components/Chat'
-import Game from './components/Game'
-import Lobby from './components/Lobby'
-import GuestLobby from './components/GuestLobby'
+// import Chat from './components/Chat'
+// import Game from './components/Game'
+// import Lobby from './components/Lobby'
+// import GuestLobby from './components/GuestLobby'
 import * as Tone from 'tone'
 import Rooms from './components/Rooms'
 import Profile from './components/Profile'
-import MessageForm from './components/MessageForm'
+// import MessageForm from './components/MessageForm'
 import LoginForm from './components/LoginForm'
 import Signup from './components/Signup'
 import React from 'react'
+import ThemeUp from './components/ThemeUp'
+import AppLobby from './AppLobby'
 import io from 'socket.io-client'
 import {
   BrowserRouter as Router,
@@ -19,7 +21,7 @@ import {
   Redirect
 } from "react-router-dom"
 import './App.css'
-import logo from './pix_logo_4.png'
+import logo from './pix_logo_50.png'
 const jwt = require('jsonwebtoken')
 
 
@@ -53,7 +55,7 @@ class App extends React.Component {
   }
   
   loginFunc(data) {
-    
+    console.log(data)
     fetch('/login', {
       method: 'POST',
       headers: {
@@ -82,7 +84,6 @@ class App extends React.Component {
     this.setState({ room: room })
   }
 
-
   getRooms () {
     const rooms = this.state.messages.map(msg => msg.room)
     rooms.push(this.state.room) // we have to add the currentRoom to the list, otherwise it won't be an option if there isn't already a message with that room
@@ -106,117 +107,105 @@ class App extends React.Component {
       <Router>
         {/* <button onClick={this.signUp}>Sign Up or Whatever</button> */}
         <div>
-          <div className="logo">
+        <div className="navbar">
+        <div className="container-0" id="menu-outer"> 
+          <div className="container-0-1" id="logo">
+            <div>
             <img src={logo} alt="logo"/>
+            </div>
           </div>
-        <div id="menu-outer"> 
-          <div className="table">
+          <div className="container-0-3">
+            {/* <div id="themeup">
+              <ThemeUp />
+            </div>  */}
+          </div>  
+          {/* <div id="themeup">
+          <ThemeUp />
+          </div> */}
+          <div className="container-0-2" id="table">
+            
             <ul id="horizontal-list">
-            {this.state.loggedIn
-              ?
-              <li>
-                <Link to="/"><button>Lobby</button></Link>
-              </li>
-              : ''}
-              {this.state.loggedIn
-              ?
-              ''
-              : 
-              <li>
-                <Link to="/login"><button>Log In</button></Link>
-              </li>}
-              {this.state.loggedIn
-              ?
-              ''
-              :
-              <li>
-                <Link to="/signup"><button onClick={this.playTone}>Sign Up</button></Link>
-              </li>}
-              {this.state.loggedIn 
+                {/* {this.state.loggedIn
                 ?
-              <li>
-                <Link to="/logout" onClick={this.logMeOut.bind(this)}><button>Log <span style={{color:"firebrick"}}>'{this.state.nick}'</span> Out</button></Link>
-              </li> 
+                <li>
+                  <Link to="/">Lobby</Link>
+                </li>
+                : ''} */}
+                <li>
+                  <Link to="/">Lobby</Link>
+                  
+                </li>
+                {this.state.loggedIn
+                ?
+                ''
+                : 
+                <li>
+                  <Link to="/login">Log In</Link>
+                </li>}
+                {this.state.loggedIn
+                ?
+                ''
+                :
+                <li>
+                  <Link to="/signup" onClick={this.playTone}>Sign Up</Link>
+                </li>}
+                {this.state.loggedIn 
+                  ?
+                <li>
+                  {/* <Link to="/logout" onClick={this.logMeOut.bind(this)}>Log <span style={{color:"firebrick"}}>'{this.state.nick}'</span> Out</Link> */}
+                  <Link to="/logout" onClick={this.logMeOut.bind(this)}>Log Out</Link>
+                </li> 
+                  : ''}
+                {this.state.loggedIn
+                ?
+                <li>
+                  <Link to="/profile/user">Profile</Link>
+                </li>
                 : ''}
-              {this.state.loggedIn
-              ?
-              <li>
-                <Link to="/profile/user"><button>Profile</button></Link>
-              </li>
-              : ''}
-              {this.state.loggedIn
-              ?
-              <li>
-                <Link to="/chat/general"><button>Chat</button></Link>
-              </li>
-              : ''}
-              {this.state.loggedIn
-              ?
-              ''
-              : 
-              <li>
-                <Link to="/guest"><button>Guest</button></Link>
-              </li>}
-            </ul>
+              </ul>
+            </div>
           </div>
-        </div>
-        <Switch>
-          <Route path="/signup">
-          {this.state.loggedIn 
-            ? <Redirect to="/" />  
-            : this.state.registered 
-              ? <Redirect to="/login" /> 
-              : [<Signup register={this.register.bind(this)}/>,  <div>{this.state.errorMessage}</div>]}
-          </Route>
+          </div>
+      
+          <Switch>
+            <Route path="/signup">
+            {this.state.loggedIn 
+              ? <Redirect to="/" />  
+              : this.state.registered 
+                ? <Redirect to="/login" /> 
+                : [<Signup register={this.register.bind(this)}/>,  <div>{this.state.errorMessage}</div>]}
+            </Route>
 
-          <Route path="/logout" >
-            <Redirect to='/login' />
-          </Route>
+            <Route path="/logout" >
+              <Redirect to='/login' />
+            </Route>
 
-          <Route path="/login">
-          {this.state.loggedIn 
-            ? <Redirect to="/" />
-            : [<LoginForm loginFunc={this.loginFunc.bind(this)}/>, <div>{this.state.errorMessage}</div>]}
+            <Route path="/login">
+            {this.state.loggedIn 
+              ? <Redirect to="/" />
+              : [<LoginForm loginFunc={this.loginFunc.bind(this)}/>, <div>{this.state.errorMessage}</div>]}
+            </Route>
 
-          </Route>
+            <Route path="/profile/user" >
+              <Profile formValue={this.state.nick}/>
+            </Route>
 
-          <Route path="/rooms/:room">
-          {this.state.loggedIn
-            ? <Game messages={this.state.messages}/>
-            // <Chat sendMessage={this.sendMessage.bind(this)} messages={this.state.messages}/>
-            : <Redirect to="/login" />}
-          </Route>
+            {/* <Route path="/guest" >
+              <GuestLobby/>
+            </Route> */}
 
-          <Route path="/chat/general">
-          {this.state.loggedIn
-            ? <Chat messages={this.state.messages}/>
-            : <Redirect to="/login" />}
-          </Route>
-
-          <Route path="/profile/user" >
-            <Profile formValue={this.state.nick}/>
-          </Route>
-
-          <Route path="/guest" >
-            {/* <GuestLobby rooms={this.getRooms()}
-            handleAddRoom={this.handleAddRoom.bind(this)}/> */}
-            <GuestLobby/>
-          </Route>
-
-          <Route path="/">
-          {this.state.loggedIn
-            ? <Lobby
-            rooms={this.getRooms()}
-            handleAddRoom={this.handleAddRoom.bind(this)}
-            />
-            // <Rooms
-            // rooms={this.getRooms()}
-            // handleAddRoom={this.handleAddRoom.bind(this)}
-            // />
-            : <Redirect to="/guest"/>}
-          </Route>
-        </Switch>
-
+            <Route path="/">
+            {this.state.loggedIn
+              // ? <Lobby
+              // rooms={this.getRooms()}
+              // handleAddRoom={this.handleAddRoom.bind(this)}
+              // />
+              ? <AppLobby />
+              // : <Redirect to="/guest"/>}
+              : <AppLobby />}
+            </Route>
+          </Switch>
+          <ThemeUp />
     </div>
     </Router>
     )

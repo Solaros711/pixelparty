@@ -37,6 +37,7 @@ if (process.env.NODE_ENV === 'production') {
 //   console.log(req)
 //   res.send('hey?')
 // })
+app.use(express.json())
 app.use('/', AuthController)
 gameIO(io)
 canvasIO(io)
