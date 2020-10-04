@@ -11,7 +11,7 @@ import * as Tone from 'tone'
 import Profile from './components/Profile'
 import LoginForm from './components/LoginForm'
 import Signup from './components/Signup'
-import ThemeUp from './components/ThemeUp'
+// import ThemeUp from './components/ThemeUp'
 import AppLobby from './AppLobby'
 
 import './App.css'
