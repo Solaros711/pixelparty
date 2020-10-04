@@ -138,23 +138,30 @@ export default class Canvas extends React.Component {
 
   render () {
     return (
-      <div>
-        {this.props.isArtist
-        ? <canvas
-            height={this.state.h}
-            width={this.state.w}
-            onMouseMove={this.handleMouseMove}
-            onClick={this.handleDrawPixel}
-            onMouseDown={() => this.setState({ drawing: true })}
-            onMouseUp={() => this.setState({ drawing: false })}
-            onMouseLeave={() => this.setState({ drawing: false })}
-          />
-        : <canvas
-            height={this.state.h}
-            width={this.state.w}
-          />
-      }
-        <Palette onClick={this.handlePalette} palettes={this.state.palettes} color={this.state.color} />
+      <div className="canvas-container-1">
+
+        <div className="canvas-container-1-2">
+          {this.props.isArtist
+          ? <canvas
+              height={this.state.h}
+              width={this.state.w}
+              onMouseMove={this.handleMouseMove}
+              onClick={this.handleDrawPixel}
+              onMouseDown={() => this.setState({ drawing: true })}
+              onMouseUp={() => this.setState({ drawing: false })}
+              onMouseLeave={() => this.setState({ drawing: false })}
+            />
+          : <canvas
+              height={this.state.h}
+              width={this.state.w}
+            />
+          }
+        </div>
+
+        <div className="canvas-container-1-1">
+          <Palette onClick={this.handlePalette} palettes={this.state.palettes} color={this.state.color} />
+        </div>
+
       </div>
     )
   }

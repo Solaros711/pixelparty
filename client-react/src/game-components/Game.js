@@ -78,9 +78,11 @@ export default class Game extends React.Component {
     console.log('game over: ', this.state.gameState.gameOver)
     return (
       this.state.gameState
-        ? <div id='round-and-chat'>
+        ? <div id="game-container">
+          <div className="play-container-1" id='round-and-chat'>
+          <div className="play-container-1-1">
           {!this.state.gameState.isReady
-          ? <div>loading</div>
+          ? <div>loading...</div>
           : <div>
             {this.state.gameState.gameOver
               ? (
@@ -91,7 +93,7 @@ export default class Game extends React.Component {
               )
               : this.state.betweenRounds
                 ? <div>
-                    <button onClick={this.handleNextRound}>Timer isn't working yet, so press this button to start next round</button>
+                    <button onClick={this.handleNextRound} style={{backgroundColor:"firebrick"}}>Test: Next Round</button>
                     <div>Score: {JSON.stringify(this.state.score)}</div>
                   </div>
                 : (
@@ -104,6 +106,9 @@ export default class Game extends React.Component {
                 )}
 
           </div>}
+          </div>        
+
+          <div className="play-container-1-2">     
             <Chat
               gameState={this.state.gameState}
               username={this.props.username}
@@ -112,10 +117,13 @@ export default class Game extends React.Component {
               // gameId={gameData._id}
               // roundData={roundData}
             />
+          </div>
+        
           {this.state.debug
           ? <div>{this.state.gameStateStr}</div>
           : null
         }
+      </div>
       </div>
       : null
     )
