@@ -45,7 +45,7 @@ timerIo(io)
 lobbyIO(io)
 
 const connectDatabase = async (dbName = 'pixel-party', hostname = 'localhost') => {
-  console.log('trying to connect')
+  console.log('Connecting to database...')
   const db = await mongoose.connect(
     process.env.MONGODB_URI ||
     `mongodb://${hostname}/${dbName}`,
@@ -55,12 +55,12 @@ const connectDatabase = async (dbName = 'pixel-party', hostname = 'localhost') =
       useCreateIndex: true
     },
     err => {
-      if (err) console.log('db connection error: ', err)
+      if (err) return console.log('Database Connection Error: ', err)
     }
   )
   await getWords(wordsPath)
-  console.log(`Database connected at
-    ${process.env.MONGODB_URI || `mongodb://${hostname}/${dbName}...`}`)
+  // how to get this message to log in the right circumstances?
+  if (db) console.log(`Database connected at ${process.env.MONGODB_URI || `mongodb://${hostname}/${dbName}...`}`)
   return db
 }
 

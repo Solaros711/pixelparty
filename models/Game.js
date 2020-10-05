@@ -87,7 +87,7 @@ const gameSchema = new Schema({
 })
 
 gameSchema.statics.create = async function (hostUsername, numOfPlayers) {
-  console.log('create start')
+  // console.log('create start')
   const game = new this()
   game.host = hostUsername
   game.players = [hostUsername]
@@ -95,12 +95,12 @@ gameSchema.statics.create = async function (hostUsername, numOfPlayers) {
   game.numOfPlayers = numOfPlayers
   game.numOfRounds = numOfPlayers
   await game.save()
-  console.log('create end')
+  // console.log('create end')
   return game
 }
 
 gameSchema.statics.join = async function (username, gameID) {
-  console.log('join')
+  // console.log('join')
   const game = await this.findOne({ _id: gameID }, err => { if (err) { return console.log(err) } })
   game.players.push(username)
   if (game.players.length === game.numOfPlayers) {
@@ -113,8 +113,8 @@ gameSchema.statics.join = async function (username, gameID) {
 
 gameSchema.statics.getJoinable = async function () {
   const games = await this.find({ joinable: true })
-  console.log('rainbow'.rainbow)
-  console.log({ games })
+  // console.log('rainbow'.rainbow)
+  // console.log({ games })
   return games
 }
 
