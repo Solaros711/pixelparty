@@ -3,6 +3,7 @@ const colors = require('colors')
 if (colors) console.log('gameIO'.rainbow)
 
 Game.clean() // comment in to clean db
+const verbose = false
 
 module.exports = io => { // this takes in the io from the main app.js
   const game = io.of('/game') // the game namespace of the io
@@ -10,30 +11,36 @@ module.exports = io => { // this takes in the io from the main app.js
     console.log('\nconnection on \'/game\' namespace'.magenta)
     socket.on('join game', async data => {
       // data = { username, gameID } // host doesn't need to join game in db
-      console.log('\n\'join game\' event recieved on\'/game\' namespace'.cyan)
-      console.log(`\tclient username: ${data.username}\n\tgameID: ${data.gameID}`.yellow)
-      console.log('event purpose'.cyan)
-      console.log('\tif client is not host:\n\t\tjoin client to game in database\n\ttrigger \'join game\' event\n\ttrigger \'game ready\' event if game is full'.yellow)
+      if (verbose) {
+        console.log('\n\'join game\' event recieved on\'/game\' namespace'.cyan)
+        console.log(`\tclient username: ${data.username}\n\tgameID: ${data.gameID}`.yellow)
+        console.log('event purpose'.cyan)
+        console.log('\tif client is not host:\n\t\tjoin client to game in database\n\ttrigger \'join game\' event\n\ttrigger \'game ready\' event if game is full'.yellow)
+      }
 
       const gameState = await Game.findOne({ _id: data.gameID })
       socket.join(data.gameID)
       console.log(`\nclient username: ${data.username} joined gameID: ${gameState._id}`.magenta)
 
       game.to(data.gameID).emit('join game', gameState)
-      console.log('\n\'join game\' event emitted to socket'.cyan)
-      console.log(`\tclient username: ${data.username}\n\tgameID: ${gameState._id}`.yellow)
-      console.log('event purpose'.cyan)
-      console.log('\t* join client to waiting room on frontend'.yellow)
+      if (verbose) {
+        console.log('\n\'join game\' event emitted to socket'.cyan)
+        console.log(`\tclient username: ${data.username}\n\tgameID: ${gameState._id}`.yellow)
+        console.log('event purpose'.cyan)
+        console.log('\t* join client to waiting room on frontend'.yellow)
+      }
 
       game.to(data.gameID).emit('game state', gameState)
     })
 
     socket.on('message', async data => {
       // data = { gameID, username, text }
-      console.log('\n\'message\' event recieved from client'.cyan)
-      console.log(`\tclient username: ${data.username}\n\tgameID: ${data.gameID}\n\tmessage text: ${data.text}`.yellow)
-      console.log('event purpose'.cyan)
-      console.log('\t* log message to game in database\n\t* check for win condition; alter db accordingly\n\t* emit updated game state to room'.yellow)
+      if (verbose) {
+        console.log('\n\'message\' event recieved from client'.cyan)
+        console.log(`\tclient username: ${data.username}\n\tgameID: ${data.gameID}\n\tmessage text: ${data.text}`.yellow)
+        console.log('event purpose'.cyan)
+        console.log('\t* log message to game in database\n\t* check for win condition; alter db accordingly\n\t* emit updated game state to room'.yellow)
+      }
 
       const message = { username: data.username, text: data.text }
       Game.findOne({ _id: data.gameID }, async (err, gameState) => {

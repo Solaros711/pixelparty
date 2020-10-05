@@ -1,6 +1,8 @@
 const colors = require('colors')
 if (colors) console.log('timerIO'.rainbow)
 
+const verbose = false
+
 module.exports = io => { // this will take io from the main app
   const timer = io.of('/timer') // timer namespace of the io
   timer.on('connection', socket => {
