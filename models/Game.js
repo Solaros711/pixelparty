@@ -149,7 +149,7 @@ gameSchema.methods.logMessage = async function (message) {
     }
   }
   await this.save()
-  console.log('log message: '.rainbow, this)
+  // console.log('log message: '.rainbow, this)
   return this
 }
 
@@ -158,7 +158,7 @@ gameSchema.methods.nextRound = async function () {
   this.currentRound++
   // if (this.currentRound >= this.rounds.length) this.gameOver = true
   await this.save()
-  console.log('next round: '.rainbow, this)
+  // console.log('next round: '.rainbow, this)
   return this
 }
 
@@ -169,7 +169,7 @@ gameSchema.methods.timesUp = async function () {
   // this.currentRound++
   // if (this.currentRound >= this.rounds.length) this.gameOver = true
   await this.save()
-  console.log('time\'s up: '.rainbow, this)
+  // console.log('time\'s up: '.rainbow, this)
   return this
 }
 

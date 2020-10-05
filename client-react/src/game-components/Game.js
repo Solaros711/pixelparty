@@ -19,7 +19,7 @@ export default class Game extends React.Component {
       username: this.props.username, 
       debug: false,
       loading: true,
-      socket: io('/game'),
+      gameSocket: this.props.gameSocket,
       gameState: '',
       score: '',
       betweenRounds: false
@@ -33,21 +33,12 @@ export default class Game extends React.Component {
   componentDidMount () {
     console.log('component did mount game')
     console.log(this.state.username, this.state.gameID)
-    this.state.socket.emit('join game', {
+    this.state.gameSocket.emit('join game', {
       username: this.state.username,
       gameID: this.state.gameID,
-      // isHost: this.state.isHost
     })
 
-    // this.state.socket.on('game state', gameState => {
-    //   this.setState({
-    //     gameState,
-    //     gameStateStr: JSON.stringify(gameState),
-    //     isHost: this.props.username === gameState.host
-    //   })
-    // })
-
-    this.state.socket.on('game state', gameState => {
+    this.state.gameSocket.on('game state', gameState => {
       console.log('game state socket')
       const betweenRounds = gameState.rounds.length ? gameState.rounds[gameState.currentRound].roundOver || false : false
       const score = gameState.points.
@@ -68,11 +59,11 @@ export default class Game extends React.Component {
   }
 
   handleTimesUp = gameID => {
-    this.state.socket.emit('time\'s up', gameID)
+    this.state.gameSocket.emit('time\'s up', gameID)
   }
 
   handleNextRound = () => {
-    this.state.socket.emit('next round', this.state.gameID)
+    this.state.gameSocket.emit('next round', this.state.gameID)
   }
 
   render () {
@@ -84,9 +75,10 @@ export default class Game extends React.Component {
           <div className="play-container-1-1">
           {!this.state.gameState.isReady
           ? <Canvas
-              socket={this.props.socket}
+              // socket={this.props.socket}
               isArtist={true}
               gameID={this.state.gameID}
+              canvasSocket={this.props.canvasSocket}
             />
           : <div>
             {this.state.gameState.gameOver
@@ -107,6 +99,8 @@ export default class Game extends React.Component {
                     username={this.props.username}
                     isHost={this.state.isHost}
                     onTimesUp={this.handleTimesUp}
+                    timerSocket={this.props.timerSocket}
+                    canvasSocket={this.props.canvasSocket}
                   />
                 )}
 
@@ -117,7 +111,7 @@ export default class Game extends React.Component {
             <Chat
               gameState={this.state.gameState}
               username={this.props.username}
-              socket={this.state.socket}
+              gameSocket={this.state.gameSocket}
               betweenRounds={this.state.betweenRounds}
               // gameId={gameData._id}
               // roundData={roundData}

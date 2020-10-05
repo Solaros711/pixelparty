@@ -43,6 +43,7 @@ export default class Round extends React.Component {
                 isHost={this.props.isHost}
                 onTimesUp={this.props.onTimesUp}
                 gameID={gameState._id}
+                timerSocket={this.props.timerSocket}
               />
             </div>
 
@@ -51,9 +52,10 @@ export default class Round extends React.Component {
           <div className="round-container-1-1">
             <Canvas
             //  drawing={this.props.drawing}
-            socket={this.props.socket}
+            // socket={this.props.socket}
             isArtist={isArtist}
             gameID={gameState._id}
+            canvasSocket={this.props.canvasSocket}
             />
           </div>
         
