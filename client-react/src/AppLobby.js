@@ -2,7 +2,11 @@ import React from 'react'
 import io from 'socket.io-client'
 import Game from './game-components/Game'
 
-const socket = io('/lobby')
+const lobbySocket = io('/lobby')
+const gameSocket = io ('/game')
+const timerSocket = io ('/timer')
+const canvasSocket = io ('/canvas')
+
 const names = ['kermit', 'miss piggy', 'fozzy', 'gonzo', 'rizzo', 'animal', 'swedish chef', 'sam eagle', 'statler', 'waldorf']
 
 export default class AppLobby extends React.Component {
@@ -22,11 +26,11 @@ export default class AppLobby extends React.Component {
   }
 
   componentDidMount () {
-    socket.emit('get games', this.state.username)
-    socket.on('games data', data => {
+    lobbySocket.emit('get games', this.state.username)
+    lobbySocket.on('games data', data => {
       this.setState({ games: data.games },)
     })
-    socket.on('joined game', gameID => {
+    lobbySocket.on('joined game', gameID => {
       console.log(gameID)
       this.setState({
         joinedGame: true,
@@ -39,16 +43,16 @@ export default class AppLobby extends React.Component {
   handleHostGame = () => {
     // this.setState({ joinedGame: true })
     const data = { username: this.state.username, numOfPlayers: parseInt(this.state.numOfPlayers) }
-    socket.emit('create game', data)
+    lobbySocket.emit('create game', data)
   }
 
   handleJoinGame =  gameID => {
     const { username } = this.state
-    socket.emit('join game', { gameID, username })
+    lobbySocket.emit('join game', { gameID, username })
   }
 
   handleTimesUp = gameID => {
-    socket.emit('time\'s up', gameID)
+    lobbySocket.emit('time\'s up', gameID)
   }
 
   render () {
@@ -62,8 +66,11 @@ export default class AppLobby extends React.Component {
                 // gameData={this.state.gameData}
                 isHost={this.state.isHost}
                 username={this.state.username}
-                socket={socket}
+                // socket={socket}
                 onTimesUp={this.handleTimesUp}
+                gameSocket={gameSocket}
+                timerSocket={timerSocket}
+                canvasSocket={canvasSocket}
               />
           : <div id="wait-container">
               <h5>Welcome to the <span style={{fontStyle:"italic", textTransform:"uppercase"}}>game lobby, </span><span style={{fontSize: "30px", color:"rgb(179, 67, 2)", textShadow:"2px 2px black"}}>{this.state.username}!</span></h5>

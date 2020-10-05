@@ -21,7 +21,7 @@ export default class Canvas extends React.Component {
         ['#49F57A', '#F5A331', '#5A19A8'],
         ['#C6CF55', '#699FCF', '#82332F']
       ],
-      socket: io('/canvas'),
+      canvasSocket: this.props.canvasSocket,
       partyMode: this.props.betweenRounds
     }
   }
@@ -31,11 +31,10 @@ export default class Canvas extends React.Component {
     this.setState({
       ctx: document.querySelector('canvas').getContext('2d'),
       gameID: this.props.gameID
-      // socket: io('/canvas')
     }, () => {
       this.drawGrid()
-      this.state.socket.emit('round start', this.state.gameID)
-      this.state.socket.on('drawing', pixels => {
+      this.state.canvasSocket.emit('round start', this.state.gameID)
+      this.state.canvasSocket.on('drawing', pixels => {
         // if (!this.props.isArtist) {
           this.setState({ pixels }, () => this.drawPixels())
         // }
@@ -79,7 +78,7 @@ export default class Canvas extends React.Component {
   }
 
   // this Canvas method handles drawing a pixel for a single click
-  handleDrawPixel = (_evt, socket = this.state.socket) => {
+  handleDrawPixel = _evt => {
     if (!this.props.isArtist) return
     try {
       const pixels = this.state.pixels.slice()
@@ -93,7 +92,7 @@ export default class Canvas extends React.Component {
       }, this.drawPixels)
       const data = { pixels, gameID: this.props.gameID}
       console.log(data)
-      socket.emit('drawing', data)
+      this.state.canvasSocket.emit('drawing', data)
     }
     catch (err) {
       console.log(err)
@@ -102,7 +101,7 @@ export default class Canvas extends React.Component {
 
   // this Canvas method handles drawing multiple pixels for a click and drag
   // ask Evan about try... catch here
-  handleDrawPixelMoving = (_evt, socket = this.state.socket) => {
+  handleDrawPixelMoving = _evt => {
     if (!this.props.isArtist) return
     try {
       const pixels = this.state.pixels.slice()
@@ -116,7 +115,7 @@ export default class Canvas extends React.Component {
       }, this.drawPixels)
       const data = { pixels, gameID: this.props.gameID}
       console.log(data)
-      socket.emit('drawing', data)
+      this.state.canvasSocket.emit('drawing', data)
     }
     catch (err) {
       // console.log(err)

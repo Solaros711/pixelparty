@@ -12,11 +12,11 @@ class NewMessage extends React.Component {
   handleChange = evt => this.setState({ text: evt.target.value })
 
   handleSubmit = (evt, text = this.state.text) => {
+    evt.preventDefault()
     const message = { text, username: this.props.username, gameID: this.props.gameID }
     if (this.state.consoleLogs) console.log({ message })
-    this.props.socket.emit('message', message)
+    this.props.gameSocket.emit('message', message)
     this.setState({ text: '' })
-    evt.preventDefault()
   }
 
   render () {
@@ -62,7 +62,6 @@ export default class Chat extends React.Component {
       const artist = gameState.rounds[gameState.currentRound].artist
       isArtist = artist === this.props.username
     }
-    const socket = this.props.socket
     const messages = this.props.gameState.messages
     return (
       <div id='messages-container'>
@@ -71,7 +70,7 @@ export default class Chat extends React.Component {
         </div>
         <NewMessage
           onSubmit={this.handleSubmit}
-          socket={socket}
+          gameSocket={this.props.gameSocket}
           isArtist={isArtist}
           username={this.props.username}
           gameID={gameState._id}
