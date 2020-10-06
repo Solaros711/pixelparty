@@ -101,6 +101,7 @@ export default class Game extends React.Component {
                     onTimesUp={this.handleTimesUp}
                     timerSocket={this.props.timerSocket}
                     canvasSocket={this.props.canvasSocket}
+                    gameSocket={this.props.gameSocket}
                   />
                 )}
 

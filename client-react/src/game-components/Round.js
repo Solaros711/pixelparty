@@ -9,9 +9,13 @@ export default class Round extends React.Component {
       consoleLogs: false
     }
   }
-  
+
   handleSubmitMessage = message => {
     this.props.onSubmitMessage(message)
+  }
+
+  handleTimesUp = gameID => {
+    this.props.gameSocket.emit('time\'s up', gameID)
   }
 
   render () {
@@ -41,7 +45,7 @@ export default class Round extends React.Component {
               <Timer
                 timer={this.props.timer}
                 isHost={this.props.isHost}
-                onTimesUp={this.props.onTimesUp}
+                onTimesUp={this.handleTimesUp}
                 gameID={gameState._id}
                 timerSocket={this.props.timerSocket}
               />
@@ -51,8 +55,6 @@ export default class Round extends React.Component {
 
           <div className="round-container-1-1">
             <Canvas
-            //  drawing={this.props.drawing}
-            // socket={this.props.socket}
             isArtist={isArtist}
             gameID={gameState._id}
             canvasSocket={this.props.canvasSocket}
