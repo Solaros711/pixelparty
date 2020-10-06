@@ -19,7 +19,7 @@ export default class Round extends React.Component {
     const isArtist = gameState.gameOver
       ? false
       : roundState.artist === this.props.username
-    this.props.gameSocket.emit('time\'s up', gameID)
+    if (this.props.isHost) this.props.gameSocket.emit('time\'s up', gameID)
     if (isArtist) {
       console.log('masterpiece?')
       const word = gameState.rounds[gameState.currentRound].word
