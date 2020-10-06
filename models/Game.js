@@ -110,8 +110,8 @@ gameSchema.statics.join = async function (username, gameID) {
   game.players.push(username)
   if (game.players.length === game.numOfPlayers) {
     game.isReady = true
+    game.joinable = false
   }
-  game.joinable = false
   await game.save()
   return game
 }
