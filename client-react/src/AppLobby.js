@@ -28,6 +28,11 @@ export default class AppLobby extends React.Component {
   }
 
   componentDidMount () {
+    lobbySocket.open()
+    gameSocket.open()
+    timerSocket.open()
+    canvasSocket.open()
+    
     lobbySocket.emit('get games', this.state.username)
     lobbySocket.on('games data', data => {
       this.setState({ games: data.games },)
