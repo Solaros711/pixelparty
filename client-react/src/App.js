@@ -47,7 +47,6 @@ class App extends React.Component {
   }
 
   loginFunc (data) {
-    console.log(data)
     fetch('/login', {
       method: 'POST',
       headers: {
@@ -82,7 +81,7 @@ class App extends React.Component {
   }
 
   logMeOut () {
-    this.setState({ loggedIn: false })
+    this.setState({ nick: null, loggedIn: false })
   }
 
   playTone () {
@@ -184,7 +183,7 @@ class App extends React.Component {
               // rooms={this.getRooms()}
               // handleAddRoom={this.handleAddRoom.bind(this)}
               // />
-                ? <AppLobby />
+                ? <AppLobby nick={this.state.nick} loggedIn={this.state.loggedIn} userID={this.state.userId} />
               // : <Redirect to="/guest"/>}
                 : <AppLobby />}
             </Route>
