@@ -5,7 +5,7 @@ class NewMessage extends React.Component {
     super(props)
     this.state = {
       text: '',
-      consoleLogs: true
+      consoleLogs: false
     }
   }
 
@@ -44,7 +44,7 @@ export default class Chat extends React.Component {
     super(props)
     this.state = {
       messages: [],
-      consoleLogs: true
+      consoleLogs: false
     }
   }
 
@@ -55,7 +55,6 @@ export default class Chat extends React.Component {
 
   render () {
     const gameState = this.props.gameState
-    console.log({ gameState })
     if (this.state.consoleLogs) console.log({ gameState })
     let isArtist = false
     if (!gameState.gameOver && gameState.isReady) {

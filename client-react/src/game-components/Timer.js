@@ -14,15 +14,15 @@ export default class Timer extends React.Component {
   }
 
   componentDidMount () {
-    this.state.socket.emit('round join', this.props.gameID)
+    this.props.timerSocket.emit('round join', this.props.gameID)
     if (this.props.isHost) {
-      this.state.socket.emit('round start', this.props.gameID)
-      this.state.socket.on('time\'s up', gameID => {
+      this.props.timerSocket.emit('round start', this.props.gameID)
+      this.props.timerSocket.on('time\'s up', gameID => {
         console.log(gameID)
         this.props.onTimesUp(gameID)
       })
     }
-    this.state.socket.on('timer', timer => {
+    this.props.timerSocket.on('timer', timer => {
       this.setState({ timer })
     })
   }

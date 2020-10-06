@@ -5,8 +5,8 @@ const { Schema } = mongoose
 
 if (colors) {}
 
-const wordsArray = ['doctor', 'moon', 'bear', 'tornado', 'waterfall', 'castle', 'knight', 'king', 'queen', 'movie', 'fire', 'volcano', 'dog', 'cat', 'horse', 'ocean', 'mountain', 'television']
-// const wordsArray = ['doctor', 'moon', 'bear', 'volcano']
+// const wordsArray = ['doctor', 'moon', 'bear', 'tornado', 'waterfall', 'castle', 'knight', 'king', 'queen', 'movie', 'fire', 'volcano', 'dog', 'cat', 'horse', 'ocean', 'mountain', 'television']
+const wordsArray = ['doctor', 'moon', 'bear']
 
 const roundSchema = new Schema({
   word: {
@@ -87,7 +87,7 @@ const gameSchema = new Schema({
 })
 
 gameSchema.statics.create = async function (hostUsername, numOfPlayers) {
-  // console.log('create start')
+  console.log('create start')
   const game = new this()
   game.host = hostUsername
   game.players = [hostUsername]
@@ -95,26 +95,26 @@ gameSchema.statics.create = async function (hostUsername, numOfPlayers) {
   game.numOfPlayers = numOfPlayers
   game.numOfRounds = numOfPlayers
   await game.save()
-  // console.log('create end')
+  console.log('create end')
   return game
 }
 
 gameSchema.statics.join = async function (username, gameID) {
-  // console.log('join')
+  console.log('join')
   const game = await this.findOne({ _id: gameID }, err => { if (err) { return console.log(err) } })
   game.players.push(username)
   if (game.players.length === game.numOfPlayers) {
     game.isReady = true
-    game.joinable = false
   }
+  game.joinable = false
   await game.save()
   return game
 }
 
 gameSchema.statics.getJoinable = async function () {
   const games = await this.find({ joinable: true })
-  // console.log('rainbow'.rainbow)
-  // console.log({ games })
+  console.log('rainbow'.rainbow)
+  console.log({ games })
   return games
 }
 
@@ -149,7 +149,7 @@ gameSchema.methods.logMessage = async function (message) {
     }
   }
   await this.save()
-  // console.log('log message: '.rainbow, this)
+  console.log('log message: '.rainbow, this)
   return this
 }
 
@@ -158,7 +158,7 @@ gameSchema.methods.nextRound = async function () {
   this.currentRound++
   // if (this.currentRound >= this.rounds.length) this.gameOver = true
   await this.save()
-  // console.log('next round: '.rainbow, this)
+  console.log('next round: '.rainbow, this)
   return this
 }
 
@@ -169,7 +169,7 @@ gameSchema.methods.timesUp = async function () {
   // this.currentRound++
   // if (this.currentRound >= this.rounds.length) this.gameOver = true
   await this.save()
-  // console.log('time\'s up: '.rainbow, this)
+  console.log('time\'s up: '.rainbow, this)
   return this
 }
 

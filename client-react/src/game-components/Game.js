@@ -75,7 +75,6 @@ export default class Game extends React.Component {
           <div className="play-container-1-1">
           {!this.state.gameState.isReady
           ? <Canvas
-              // socket={this.props.socket}
               isArtist={true}
               gameID={this.state.gameID}
               canvasSocket={this.props.canvasSocket}
@@ -114,8 +113,6 @@ export default class Game extends React.Component {
               username={this.props.username}
               gameSocket={this.state.gameSocket}
               betweenRounds={this.state.betweenRounds}
-              // gameId={gameData._id}
-              // roundData={roundData}
             />
           </div>
         

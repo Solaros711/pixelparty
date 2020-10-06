@@ -89,9 +89,12 @@ export default class Canvas extends React.Component {
       pixels[x] = column
       this.setState({
         pixels
-      }, this.drawPixels)
+      }, () => {
+        this.drawPixels()
+        this.sendPixelsUp()
+      })
       const data = { pixels, gameID: this.props.gameID}
-      console.log(data)
+      // console.log(data)
       this.state.canvasSocket.emit('drawing', data)
     }
     catch (err) {
@@ -112,9 +115,12 @@ export default class Canvas extends React.Component {
       pixels[x] = column
       this.setState({
         pixels
-      }, this.drawPixels)
+      }, () => {
+        this.drawPixels()
+        this.sendPixelsUp()
+      })
       const data = { pixels, gameID: this.props.gameID}
-      console.log(data)
+      // console.log(data)
       this.state.canvasSocket.emit('drawing', data)
     }
     catch (err) {
@@ -134,6 +140,10 @@ export default class Canvas extends React.Component {
       }
     }
     this.drawGrid()
+  }
+
+  sendPixelsUp = () => {
+    this.props.onSendPixelsUp(this.state.pixels)
   }
 
   render () {

@@ -6,17 +6,33 @@ export default class Round extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      consoleLogs: false
+      consoleLogs: false,
+      pixels: ''
     }
   }
 
-  handleSubmitMessage = message => {
-    this.props.onSubmitMessage(message)
-  }
+  // handleSubmitMessage = message => {
+  //   this.props.onSubmitMessage(message)
+  // }
 
   handleTimesUp = gameID => {
+    console.log('handle times up')
+    const gameState = this.props.gameState
+    if (this.state.consoleLogs) console.log(gameState)
+    const roundState = gameState.rounds[gameState.currentRound]
+    const isArtist = gameState.gameOver
+      ? false
+      : roundState.artist === this.props.username
     this.props.gameSocket.emit('time\'s up', gameID)
+    if (isArtist) {
+      console.log('masterpiece?')
+      const word = gameState.rounds[gameState.currentRound].word
+      const data = { gameID, username: this.props.username, pixels: this.state.pixels, word }
+      this.props.gameSocket.emit('masterpiece', data)
+    }
   }
+
+  setPixels = pixels => this.setState({ pixels})
 
   render () {
     const gameState = this.props.gameState
@@ -48,7 +64,7 @@ export default class Round extends React.Component {
                 onTimesUp={this.handleTimesUp}
                 gameID={gameState._id}
                 timerSocket={this.props.timerSocket}
-              />
+                />
             </div>
 
           </div>
@@ -58,6 +74,7 @@ export default class Round extends React.Component {
             isArtist={isArtist}
             gameID={gameState._id}
             canvasSocket={this.props.canvasSocket}
+            onSendPixelsUp={this.setPixels}
             />
           </div>
         
