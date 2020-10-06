@@ -55,7 +55,10 @@ export default class Game extends React.Component {
         isHost: this.props.username === gameState.host
       })
     })
-    
+  }
+
+  componentWillUnmount () {
+    this.props.gameSocket.close()
   }
 
   handleTimesUp = gameID => {

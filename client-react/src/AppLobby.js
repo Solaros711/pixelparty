@@ -39,8 +39,14 @@ export default class AppLobby extends React.Component {
         gameID
       })
     })
-
   }
+
+  // componentWillUnmount () {
+  //   lobbySocket.close()
+  //   gameSocket.close()
+  //   timerSocket.close()
+  //   canvasSocket.close()
+  // }
   
   handleHostGame = () => {
     // this.setState({ joinedGame: true })

@@ -27,6 +27,10 @@ export default class Timer extends React.Component {
     })
   }
 
+  componentWillUnmount () {
+    this.props.timerSocket.close()
+  }
+
   handleTimesUp = () => this.props.onTimesUp(this.props.gameID)
 
   render () {

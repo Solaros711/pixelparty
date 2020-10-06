@@ -27,7 +27,6 @@ export default class Canvas extends React.Component {
   }
   
   componentDidMount = () => {
-
     this.setState({
       ctx: document.querySelector('canvas').getContext('2d'),
       gameID: this.props.gameID
@@ -40,6 +39,10 @@ export default class Canvas extends React.Component {
         // }
       })
     })
+  }
+
+  componentWillUnmount () {
+    this.props.canvasSocket.close()
   }
 
   // this Canvas method draw the grid (called after pixels are drawn... so it show up on top) so the Artist can see where the pixels are
