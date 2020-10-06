@@ -1,4 +1,13 @@
 import React from 'react'
+import chroma from 'chroma-js'
+const scale = chroma.scale([
+  '8C00FC',
+  '3500FF',
+  '01FE01',
+  'FFFE37',
+  'FF8600',
+  'ED0003'
+])
 
 class NewMessage extends React.Component {
   constructor (props) {
@@ -21,7 +30,6 @@ class NewMessage extends React.Component {
 
   render () {
     const disabled = this.props.betweenRounds ? false : this.props.isArtist ? true : false
-    // const isArtist = this.props.isArtist
     return (
       <form onSubmit={this.handleSubmit}>
         <input
@@ -39,6 +47,18 @@ class NewMessage extends React.Component {
   }
 }
 
+function WinningMessage (props) {
+  const message = `${props.msg.username}: ${props.msg.text}`
+  return (
+    <div>
+      {message.split('').map((char, i) => {
+        const color = scale(i / (message.length - 1))
+        return <span key={i} style={{ color }}>{char}</span>
+      })}
+    </div>
+  )
+}
+
 export default class Chat extends React.Component {
   constructor (props) {
     super(props)
@@ -47,11 +67,6 @@ export default class Chat extends React.Component {
       consoleLogs: false
     }
   }
-
-  // handleSubmit = message => {  // to delete?
-  //   this.props.onSubmit(message)
-  // }
-
 
   render () {
     const gameState = this.props.gameState
@@ -65,7 +80,9 @@ export default class Chat extends React.Component {
     return (
       <div id='messages-container'>
         <div id='messages'>
-          {messages.map((msg, i) => <div key={i}>{msg.username}: {msg.text}</div>)}
+          {messages.map((msg, i) => msg.winner
+            ? <WinningMessage msg={msg} />
+            : <div key={i}>{msg.username}: {msg.text}</div>)}
         </div>
         <NewMessage
           onSubmit={this.handleSubmit}
