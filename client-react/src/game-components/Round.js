@@ -11,10 +11,6 @@ export default class Round extends React.Component {
     }
   }
 
-  // handleSubmitMessage = message => {
-  //   this.props.onSubmitMessage(message)
-  // }
-
   handleTimesUp = gameID => {
     console.log('handle times up')
     const gameState = this.props.gameState

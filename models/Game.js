@@ -35,6 +35,10 @@ const messageSchema = new Schema({
   text: {
     type: String,
     required: true
+  },
+  winner: {
+    type: Boolean,
+    required: false
   }
 })
 
@@ -137,17 +141,18 @@ gameSchema.methods.randomize = async function () {
 }
 
 gameSchema.methods.logMessage = async function (message) {
-  this.messages.push(message) // where do you need await
   if (this.isReady) {
     const round = this.rounds[this.currentRound]
     if (message.text.toLowerCase() === round.word.toLowerCase() && !round.roundOver) {
       round.winner = message.username
+      message.winner = true
       this.points.push(round.winner, round.artist)
       round.roundOver = true
       // this.currentRound++
       if (this.currentRound === this.rounds.length - 1) this.gameOver = true
     }
   }
+  this.messages.push(message)
   await this.save()
   console.log('log message: '.rainbow, this)
   return this
