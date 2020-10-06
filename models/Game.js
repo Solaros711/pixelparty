@@ -4,9 +4,10 @@ const { Schema } = mongoose
 // const { ObjectId } = mongoose.Schema.Types
 
 if (colors) {}
+const verbose = false
 
-// const wordsArray = ['doctor', 'moon', 'bear', 'tornado', 'waterfall', 'castle', 'knight', 'king', 'queen', 'movie', 'fire', 'volcano', 'dog', 'cat', 'horse', 'ocean', 'mountain', 'television']
-const wordsArray = ['doctor', 'moon', 'bear']
+const wordsArray = ['doctor', 'moon', 'bear', 'tornado', 'waterfall', 'castle', 'knight', 'king', 'queen', 'movie', 'fire', 'volcano', 'dog', 'cat', 'horse', 'ocean', 'mountain', 'television']
+// const wordsArray = ['doctor', 'moon', 'bear']
 
 const roundSchema = new Schema({
   word: {
@@ -91,7 +92,7 @@ const gameSchema = new Schema({
 })
 
 gameSchema.statics.create = async function (hostUsername, numOfPlayers) {
-  console.log('create start')
+  if (verbose) console.log('create start')
   const game = new this()
   game.host = hostUsername
   game.players = [hostUsername]
@@ -99,12 +100,12 @@ gameSchema.statics.create = async function (hostUsername, numOfPlayers) {
   game.numOfPlayers = numOfPlayers
   game.numOfRounds = numOfPlayers
   await game.save()
-  console.log('create end')
+  if (verbose) console.log('create end')
   return game
 }
 
 gameSchema.statics.join = async function (username, gameID) {
-  console.log('join')
+  if (verbose) console.log('join')
   const game = await this.findOne({ _id: gameID }, err => { if (err) { return console.log(err) } })
   game.players.push(username)
   if (game.players.length === game.numOfPlayers) {
@@ -117,8 +118,8 @@ gameSchema.statics.join = async function (username, gameID) {
 
 gameSchema.statics.getJoinable = async function () {
   const games = await this.find({ joinable: true })
-  console.log('rainbow'.rainbow)
-  console.log({ games })
+  if (verbose) console.log('rainbow'.rainbow)
+  if (verbose) console.log({ games })
   return games
 }
 
@@ -144,26 +145,24 @@ gameSchema.methods.logMessage = async function (message) {
   if (this.isReady) {
     const round = this.rounds[this.currentRound]
     if (message.text.toLowerCase() === round.word.toLowerCase() && !round.roundOver) {
-      round.winner = message.username
-      message.winner = true
-      this.points.push(round.winner, round.artist)
-      round.roundOver = true
-      // this.currentRound++
-      if (this.currentRound === this.rounds.length - 1) this.gameOver = true
+      if (!round.winner) {
+        round.winner = message.username
+        message.winner = true
+        this.points.push(round.winner, round.artist)
+      }
     }
   }
   this.messages.push(message)
   await this.save()
-  console.log('log message: '.rainbow, this)
+  if (verbose) console.log('log message: '.rainbow, this)
   return this
 }
 
 gameSchema.methods.nextRound = async function () {
   // trigger game state data for starting the next round
   this.currentRound++
-  // if (this.currentRound >= this.rounds.length) this.gameOver = true
   await this.save()
-  console.log('next round: '.rainbow, this)
+  if (verbose) console.log('next round: '.rainbow, this)
   return this
 }
 
@@ -174,7 +173,7 @@ gameSchema.methods.timesUp = async function () {
   // this.currentRound++
   // if (this.currentRound >= this.rounds.length) this.gameOver = true
   await this.save()
-  console.log('time\'s up: '.rainbow, this)
+  if (verbose) console.log('time\'s up: '.rainbow, this)
   return this
 }
 
