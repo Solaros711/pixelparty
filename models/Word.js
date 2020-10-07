@@ -27,7 +27,7 @@ wordSchema.statics.getWords = async function () {
         if(err){
             console.log(err)
         }else{
-            console.log(result)
+            // console.log(result)
             wordsArray = result.map(word => word.word)
         }
     })
