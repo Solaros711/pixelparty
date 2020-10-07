@@ -68,11 +68,12 @@ export default class Game extends React.Component {
 
   render () {
     console.log('game over: ', this.state.gameState.gameOver)
+    let isArtist = false
     if (this.state.gameStart) {
       const gameState = this.props.gameState
       if (this.state.consoleLogs) console.log(gameState)
       const roundState = gameState.rounds[gameState.currentRound]
-      const isArtist = gameState.gameOver
+      isArtist = gameState.gameOver
         ? false
         : roundState.artist === this.props.username
     }
