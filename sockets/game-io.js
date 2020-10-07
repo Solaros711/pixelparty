@@ -1,9 +1,10 @@
 const Game = require('./../models/Game')
+const { canvases } = require('./Canvas')
 const colors = require('colors')
 if (colors) console.log('gameIO'.rainbow)
 
 Game.clean() // comment in to clean db
-const verbose = false
+const verbose = true
 
 module.exports = io => { // this takes in the io from the main app.js
   const game = io.of('/game') // the game namespace of the io
@@ -54,8 +55,17 @@ module.exports = io => { // this takes in the io from the main app.js
     socket.on('time\'s up', gameID => {
       // data = { gameID, currentRound }
       console.log(`\n'time's up' gameID: ${gameID}`.magenta)
+
       Game.findOne({ _id: gameID }, async (err, gameState) => {
         if (err) return console.log(err)
+        // console.log(gameState)
+        // console.log(canvases)
+        // console.log({ canvases })
+        // canvases.map(canvas => console.log(canvas.gameID))
+        // console.log(gameState._id)
+        const canvas = canvases.filter(canvas => (canvas.gameID === gameState._id.toString() && canvas.username === gameState.rounds[gameState.currentRound].artist))[0]
+        console.log(canvas)
+        // canvas.pixels.map(column => console.log(column))
         await gameState.timesUp()
         game.to(gameID).emit('game state', gameState)
       })
@@ -68,6 +78,15 @@ module.exports = io => { // this takes in the io from the main app.js
         await gameState.nextRound()
         game.to(gameID).emit('game state', gameState)
       })
+    })
+
+    socket.on('masterpiece', data => {
+      // data = { gameID, username, pixels, word }
+      if (verbose) {
+        console.log('\nA Masterpiece:'.magenta)
+        console.log(`"${data.word}", by ${data.username}`.cyan)
+        console.log(JSON.stringify(data.pixels).yellow)
+      }
     })
 
     socket.on('disconnect', () => {

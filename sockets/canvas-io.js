@@ -1,3 +1,5 @@
+const { Canvas, canvases } = require('./Canvas')
+
 const colors = require('colors')
 if (colors) console.log('canvasIO'.rainbow)
 
@@ -14,11 +16,19 @@ module.exports = io => { // this takes in the io from the main app/game.js
       socket.join(gameID)
     })
 
+    socket.on('new canvas', data => {
+      // data = { gameID, username, word }
+      const canvas = new Canvas(data.gameID, data.username, data.word)
+      canvases.push(canvas)
+      // console.log(canvases)
+    })
+
     socket.on('drawing', data => {
+      // data = { gameID, username, word, pixels }
       // console.log('somebody\'s drawing'.rainbow)
-      // console.log({ data })
-      // data = { gameID, pixels }
       socket.to(data.gameID).emit('drawing', data.pixels)
+      canvases.filter(canvas => (canvas.gameID === data.gameID && canvas.username === data.username))[0].pixels = data.pixels
+      // console.log(canvases)
     })
 
     socket.on('disconnect', () => {

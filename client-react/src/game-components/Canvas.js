@@ -39,6 +39,10 @@ export default class Canvas extends React.Component {
           this.setState({ pixels }, () => this.drawPixels())
         // }
       })
+      if (this.props.isArtist) {
+        const data = { gameID: this.props.gameID, username: this.props.username, word: this.props.word}
+        this.state.canvasSocket.emit('new canvas', data)
+      }
     })
   }
 
@@ -89,9 +93,14 @@ export default class Canvas extends React.Component {
       pixels[x] = column
       this.setState({
         pixels
-      }, this.drawPixels)
-      const data = { pixels, gameID: this.props.gameID}
-      console.log(data)
+      }, () => {
+        this.drawPixels()
+        this.sendPixelsUp()
+      })
+      // const data = { pixels, gameID: this.props.gameID}
+      const data = { gameID: this.props.gameID, username: this.props.username, word: this.props.word, pixels}
+
+      // console.log(data)
       this.state.canvasSocket.emit('drawing', data)
     }
     catch (err) {
@@ -112,9 +121,14 @@ export default class Canvas extends React.Component {
       pixels[x] = column
       this.setState({
         pixels
-      }, this.drawPixels)
-      const data = { pixels, gameID: this.props.gameID}
-      console.log(data)
+      }, () => {
+        this.drawPixels()
+        this.sendPixelsUp()
+      })
+      // const data = { pixels, gameID: this.props.gameID}
+      const data = { gameID: this.props.gameID, username: this.props.username, word: this.props.word, pixels }
+
+      // console.log(data)
       this.state.canvasSocket.emit('drawing', data)
     }
     catch (err) {
@@ -134,6 +148,10 @@ export default class Canvas extends React.Component {
       }
     }
     this.drawGrid()
+  }
+
+  sendPixelsUp = () => {
+    this.props.onSendPixelsUp(this.state.pixels)
   }
 
   render () {

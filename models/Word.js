@@ -21,6 +21,19 @@ wordSchema.statics.addWord = async function (newWord, newDifficulty) {
     return word
 }
 
+wordSchema.statics.getWords = async function () {
+    let wordsArray = []
+    await Word.find({}, function(err, result){
+        if(err){
+            console.log(err)
+        }else{
+            // console.log(result)
+            wordsArray = result.map(word => word.word)
+        }
+    })
+    return wordsArray
+}
+
 const Word = mongoose.model('Word', wordSchema)
 
 module.exports = Word

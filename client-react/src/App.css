@@ -258,10 +258,19 @@ button:focus {
   border-width: 10px;
   text-align: center;
 
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; */
+}
+
+#wait-host-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 400px;
+
 }
 
 #game-container {
@@ -379,7 +388,7 @@ button:focus {
 
 h5{
   /* color: whitesmoke; */
-  font-size: 20px;
+  font-size: 25px;
   margin: 5px;
 }
 
@@ -394,6 +403,19 @@ h7 {
   color: whitesmoke;
   font-size: 15px;
   margin: 3px;
+}
+
+h9{
+  font-size: 20px;
+  margin: 5px;
+  font-weight: bold;
+}
+
+h10{
+  margin: 5px;
+  font-size: 15px;
+  font-style: italic;
+  font-weight: bold; 
 }
 
 #message-text-game{
@@ -428,6 +450,16 @@ input {
 input:focus {
   outline: transparent;
   background-color: darkgrey;
+}
+
+select {
+  background-color: lightgrey;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+select:focus {
+  outline: transparent;
 }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
