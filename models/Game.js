@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const colors = require('colors')
+const Word = require('./Word')
 const { Schema } = mongoose
 // const { ObjectId } = mongoose.Schema.Types
 
@@ -130,7 +131,9 @@ gameSchema.statics.clean = async function () {
 gameSchema.methods.randomize = async function () {
   const players = this.players.slice()
   let artist
-  const words = wordsArray.slice()
+  let words = await Word.getWords()//.slice()
+  console.log(words)
+  words = words.slice()
   let word
   while (players.length) {
     artist = players.sort((_a, _b) => Math.random() - 0.5).splice(0, 1)[0]
