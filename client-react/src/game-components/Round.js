@@ -22,7 +22,7 @@ export default class Round extends React.Component {
     if (this.props.isHost) this.props.gameSocket.emit('time\'s up', gameID)
     if (this.props.isArtist) {
       console.log('masterpiece?')
-      const word = gameState.rounds[gameState.currentRound].word
+      const word = this.props.gameState.rounds[this.props.gameState.currentRound].word
       const data = { gameID, username: this.props.username, pixels: this.state.pixels, word }
       this.props.gameSocket.emit('masterpiece', data)
     }
