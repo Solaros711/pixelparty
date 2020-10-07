@@ -48,8 +48,8 @@ export default class Round extends React.Component {
                   ? <div>Congrats, {roundState.winner} guessed {roundState.word} correctly!</div>
                   : <div>Oof, the word was "{roundState.word}"</div>
                 : isArtist
-                  ? <div>Your word is: <span style={{fontSize: "25px", color:"rgb(179, 67, 2)", textTransform:"uppercase", textShadow:"2px 2px black"}}>{roundState.word}</span></div>
-                  : <div><span style={{fontSize: "20px", color:"rgb(179, 67, 2)", textShadow:"2px 2px black" }}>{roundState.artist}</span> is drawing...</div>
+                  ? <div>Your word is: <span style={{fontSize: "25px", color:"khaki", textTransform:"uppercase", textShadow:"2px 2px black"}}>{roundState.word}</span></div>
+                  : <div><span style={{fontSize: "20px", color:"khaki", textShadow:"2px 2px black" }}>{roundState.artist}</span> is drawing...</div>
               }
             </div>
             
@@ -78,3 +78,5 @@ export default class Round extends React.Component {
     )
   }
 }
+
+//old orange color:"rgb(179, 67, 2)"
