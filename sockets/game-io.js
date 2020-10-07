@@ -3,7 +3,7 @@ const colors = require('colors')
 if (colors) console.log('gameIO'.rainbow)
 
 Game.clean() // comment in to clean db
-const verbose = false
+const verbose = true
 
 module.exports = io => { // this takes in the io from the main app.js
   const game = io.of('/game') // the game namespace of the io
@@ -68,6 +68,15 @@ module.exports = io => { // this takes in the io from the main app.js
         await gameState.nextRound()
         game.to(gameID).emit('game state', gameState)
       })
+    })
+
+    socket.on('masterpiece', data => {
+      // data = { gameID, username, pixels, word }
+      if (verbose) {
+        console.log('\nA Masterpiece:'.magenta)
+        console.log(`"${data.word}", by ${data.username}`.cyan)
+        console.log(JSON.stringify(data.pixels).yellow)
+      }
     })
 
     socket.on('disconnect', () => {

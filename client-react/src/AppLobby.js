@@ -80,7 +80,7 @@ export default class AppLobby extends React.Component {
                   <div>
                     <h9><span style={{color:"rgb(179, 67, 2)", textShadow:"2px 2px black"}}>Host a game:  </span></h9>
                   </div>
-                  <div style={{display:"flex", flexDirection:"row"}}>  
+                  <div style={{display:"flex", flexDirection:"row"}}>
                     <h10><label htmlFor='num-of-players'>Number of players?</label></h10>
                     <select value={this.state.numOfPlayers} onChange={evt => this.setState({ numOfPlayers: evt.target.value })}>
                       <option value={2}>2</option>
@@ -89,30 +89,40 @@ export default class AppLobby extends React.Component {
                     </select>
                   </div>
                   <div style={{marginLeft:"20px"}}>
-                    <button onClick={this.handleHostGame}>Host game!</button>
+                      {this.state.loggedIn
+                        ? <button onClick={this.handleHostGame}>Host a game!</button>
+                        : <button onClick={this.handleHostGame}>Log in to host a game!</button>}
                   </div>
                 </div>
                 <div style={{display:"flex", flexDirection:"row"}}>
-                  
                   <div>
-                    {this.state.games.map(game =>
-                      <div>
-                      <h9><span style={{color:"rgb(179, 67, 2)", textShadow:"2px 2px black"}}>Join a game:  </span></h9>
-                      <button
-                        key={game._id}
-                        onClick={() => this.handleJoinGame(game._id)}
-                      >
-                        Join {game.host}'s game!  {game.players.length} of {game.numOfPlayers} joined!
-                      </button>
-                      </div>
-                    )}
+                    {this.state.loggedIn 
+                    ? <h9><span style={{color:"rgb(179, 67, 2)", textShadow:"2px 2px black"}}>Join a game:  </span></h9>
+                    : <h9><span style={{color:"rgb(179, 67, 2)", textShadow:"2px 2px black"}}>Log in to join a game:  </span></h9>}
+                    {this.state.loggedIn 
+                      ? this.state.games.map(game =>
+                        <button
+                          key={game._id}
+                          onClick={() => this.handleJoinGame(game._id)}
+                        >
+                          Join {game.host}'s game!  {game.players.length} of {game.numOfPlayers} joined!
+                        </button>) 
+                      : this.state.games.map(game =>
+                        <button
+                          disabled={this.state.loggedIn}
+                          key={game._id}
+                          onClick={() => this.handleJoinGame(game._id)}
+                        >
+                          Log in to join {game.host}'s game!  {game.players.length} of {game.numOfPlayers} joined!
+                        </button>)
+                    }
                   </div>
                 </div>
               </div>
-              
             </div>
           }
         </main>
+        
     )
   }
 }
