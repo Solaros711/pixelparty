@@ -24,7 +24,7 @@ artSchema.statics.addArt = async function (userID, taskID, newPic) {
   const art = new this()
   const pic = new Array(50)
   for (let i = 0; i < pic.length; i++) {
-    line = new Array(50)
+    const line = new Array(50)
     for (let j = 0; j < line.length; j++) {
       line[j] = newPic[i][j]
     }
