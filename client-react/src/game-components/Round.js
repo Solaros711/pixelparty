@@ -55,9 +55,7 @@ export default class Round extends React.Component {
             
             <div className="round-container-1-2-2">
               <Timer
-                // timer={this.props.timer}
-                minutes={this.props.minutes}
-                seconds={this.props.seconds}
+                timer={this.props.timer}
                 isHost={this.props.isHost}
                 onTimesUp={this.handleTimesUp}
                 gameID={gameState._id}
