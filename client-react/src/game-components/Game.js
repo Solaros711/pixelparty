@@ -68,6 +68,12 @@ export default class Game extends React.Component {
 
   render () {
     console.log('game over: ', this.state.gameState.gameOver)
+    const gameState = this.props.gameState
+    if (this.state.consoleLogs) console.log(gameState)
+    const roundState = gameState.rounds[gameState.currentRound]
+    const isArtist = gameState.gameOver
+      ? false
+      : roundState.artist === this.props.username
     return (
       this.state.gameState
         ? <div id="game-container">
@@ -101,6 +107,7 @@ export default class Game extends React.Component {
                     timerSocket={this.props.timerSocket}
                     canvasSocket={this.props.canvasSocket}
                     gameSocket={this.props.gameSocket}
+                    isArtist={isArtist}
                   />
                 )}
 
