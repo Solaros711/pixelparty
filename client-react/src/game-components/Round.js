@@ -19,7 +19,10 @@ export default class Round extends React.Component {
     // const isArtist = gameState.gameOver
     //   ? false
     //   : roundState.artist === this.props.username
-    if (this.props.isHost) this.props.gameSocket.emit('time\'s up', gameID)
+    if (this.props.isHost) {
+      console.log('isHost: ', this.props.isHost)
+      this.props.gameSocket.emit('time\'s up', gameID)
+    }
     if (this.props.isArtist) {
       console.log('masterpiece?')
       const word = this.props.gameState.rounds[this.props.gameState.currentRound].word
@@ -71,6 +74,8 @@ export default class Round extends React.Component {
             gameID={gameState._id}
             canvasSocket={this.props.canvasSocket}
             onSendPixelsUp={this.setPixels}
+            username={this.props.username}
+            word={roundState.word}
             />
           </div>
         

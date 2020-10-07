@@ -1,4 +1,5 @@
 const Game = require('./../models/Game')
+const { canvases } = require('./Canvas')
 const colors = require('colors')
 if (colors) console.log('gameIO'.rainbow)
 
@@ -54,8 +55,17 @@ module.exports = io => { // this takes in the io from the main app.js
     socket.on('time\'s up', gameID => {
       // data = { gameID, currentRound }
       console.log(`\n'time's up' gameID: ${gameID}`.magenta)
+
       Game.findOne({ _id: gameID }, async (err, gameState) => {
         if (err) return console.log(err)
+        // console.log(gameState)
+        // console.log(canvases)
+        // console.log({ canvases })
+        // canvases.map(canvas => console.log(canvas.gameID))
+        // console.log(gameState._id)
+        const canvas = canvases.filter(canvas => (canvas.gameID === gameState._id.toString() && canvas.username === gameState.rounds[gameState.currentRound].artist))[0]
+        console.log(canvas)
+        // canvas.pixels.map(column => console.log(column))
         await gameState.timesUp()
         game.to(gameID).emit('game state', gameState)
       })
