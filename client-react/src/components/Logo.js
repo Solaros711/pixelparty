@@ -24,7 +24,7 @@ export default class Logo extends React.Component {
       //   {color: }
       // ]
 
-      width: 440,
+      width: 460,
       height: 70,
       pixelSize: 10,    
     }

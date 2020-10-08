@@ -104,6 +104,15 @@ const colors = {
         [0, 0], [0, 1], [1, 1], [1, -1], [0, -1], [-1, 3], [0, 1]
       ],
       pixels: []
+    },
+    {
+      letter: '!',
+      color: colors.lightgreen,
+      starting: [43, 1],
+      route: [
+        [0, 0], [0, 1], [0, 1], [0, 2]
+      ],
+      pixels: []
     }
   ]
   letters.map(letter => {
