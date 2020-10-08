@@ -1,7 +1,9 @@
 import React from 'react'
 import io from 'socket.io-client'
-import Game from './game-components/Game'
 import { withRouter } from 'react-router-dom' //allows routing to /login from class AppLobby
+
+import Canvas from './game-components/Canvas'
+import Game from './game-components/Game'
 
 const lobbySocket = io('/lobby')
 const gameSocket = io ('/game')
@@ -34,11 +36,15 @@ class AppLobby extends React.Component {
       this.setState({ games: data.games },)
     })
     lobbySocket.on('joined game', gameID => {
-      console.log(gameID)
+      // console.log(gameID)
       this.setState({
         joinedGame: true,
         gameID
       })
+    })
+    lobbySocket.emit('random artwork')
+    lobbySocket.on('random artwork', data => {
+      this.setState({ showcase: data })
     })
   }
   
@@ -79,49 +85,58 @@ class AppLobby extends React.Component {
               {this.state.loggedIn
               ? <h5>Welcome to the <span style={{fontStyle:"italic", textTransform:"uppercase"}}>game lobby, </span><span style={{fontSize: "30px", color:"darkkhaki", textShadow:"2px 2px black"}}>{this.state.username}!</span></h5>
               : <h5>Welcome to the <span style={{fontStyle:"italic", textTransform:"uppercase"}}>game lobby</span></h5>}
-                <div id="wait-host-container">
-                  <div style={{display:"flex", flexDirection:"row"}}>
-                    <div>
-                      <h9><span style={{color:"darkkhaki", textShadow:"2px 2px black"}}>Host a game:  </span></h9>
-                    </div>
-                    <div>
-                        {this.state.loggedIn
-                          ? <div style={{display:"flex", flexDirection:"row"}}>
-                              <h10><label htmlFor='num-of-players'>Number of players?</label></h10>
-                              <select value={this.state.numOfPlayers} onChange={evt => this.setState({ numOfPlayers: evt.target.value })}>
-                                <option value={2}>2</option>
-                                <option value={3}>3</option>
-                                <option value={4}>4</option>
-                              </select>
-                              <div style={{marginLeft:"17px"}}>
-                                <button onClick={this.handleHostGame}>Host game!</button>
+                <div id='games-and-showcase' style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <div id="wait-host-container">
+                    <div style={{display:"flex", flexDirection:"row"}}>
+                      <div>
+                        <h9><span style={{color:"darkkhaki", textShadow:"2px 2px black"}}>Host a game:  </span></h9>
+                      </div>
+                      <div>
+                          {this.state.loggedIn
+                            ? <div style={{display:"flex", flexDirection:"row"}}>
+                                <h10><label htmlFor='num-of-players'>Number of players?</label></h10>
+                                <select value={this.state.numOfPlayers} onChange={evt => this.setState({ numOfPlayers: evt.target.value })}>
+                                  <option value={2}>2</option>
+                                  <option value={3}>3</option>
+                                  <option value={4}>4</option>
+                                </select>
+                                <div style={{marginLeft:"17px"}}>
+                                  <button onClick={this.handleHostGame}>Host game!</button>
+                                </div>
                               </div>
-                            </div>
-                          : <div style={{marginLeft:"17px"}}>
-                              <button onClick={this.handleHostGame}>Log in to host a game!</button>
-                            </div>}
+                            : <div style={{marginLeft:"17px"}}>
+                                <button onClick={this.handleHostGame}>Log in to host a game!</button>
+                              </div>}
+                      </div>
+                    </div>
+                    <div style={{display:"flex", flexDirection:"row", marginTop:"10px"}}>
+                      <div>
+                        {this.state.loggedIn 
+                          ? this.state.games.map(game =>
+                            <div>
+                              <h9><span style={{color:"darkkhaki", textShadow:"2px 2px black"}}>Join a game:  </span></h9>
+                              <button key={game._id} onClick={() => this.handleJoinGame(game._id)}>
+                                Join {game.host}'s game!  {game.players.length} of {game.numOfPlayers} joined!
+                              </button> 
+                            </div>)
+                          : this.state.games.map(game =>
+                            <div>
+                              <h9><span style={{color:"darkkhaki", textShadow:"2px 2px black"}}>Join a game:  </span></h9>
+                              <button disabled={this.state.loggedIn} key={game._id} onClick={() => this.handleJoinGame(game._id)}>
+                                Log in to join {game.host}'s game!  {game.players.length} of {game.numOfPlayers} joined!
+                              </button>
+                            </div>)
+                        }
+                      </div>
                     </div>
                   </div>
-                  <div style={{display:"flex", flexDirection:"row", marginTop:"10px"}}>
-                    <div>
-                      {this.state.loggedIn 
-                        ? this.state.games.map(game =>
-                          <div>
-                            <h9><span style={{color:"darkkhaki", textShadow:"2px 2px black"}}>Join a game:  </span></h9>
-                            <button key={game._id} onClick={() => this.handleJoinGame(game._id)}>
-                              Join {game.host}'s game!  {game.players.length} of {game.numOfPlayers} joined!
-                            </button> 
-                          </div>)
-                        : this.state.games.map(game =>
-                          <div>
-                            <h9><span style={{color:"darkkhaki", textShadow:"2px 2px black"}}>Join a game:  </span></h9>
-                            <button disabled={this.state.loggedIn} key={game._id} onClick={() => this.handleJoinGame(game._id)}>
-                              Log in to join {game.host}'s game!  {game.players.length} of {game.numOfPlayers} joined!
-                            </button>
-                          </div>)
-                      }
-                    </div>
+                {this.state.showcase
+                ? <div>
+                  <div>"{this.state.showcase.word}", by {this.state.showcase.username}</div>
+                  <Canvas displayMode={true} pixels={this.state.showcase.pixels} />
                   </div>
+                : null
+                }
                 </div>
             </div>
           }
