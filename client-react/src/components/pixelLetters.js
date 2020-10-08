@@ -122,4 +122,5 @@ const colors = {
       pixel.y *= size
     })
   })
+  
   export default letters

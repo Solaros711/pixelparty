@@ -26,8 +26,7 @@ export default class Logo extends React.Component {
 
       width: 440,
       height: 70,
-      pixelSize: 10,
-    
+      pixelSize: 10,    
     }
   }
   componentDidMount (colors = this.state.colors, size = this.state.pixelSize, width = this.state.width, height = this.state.height) {

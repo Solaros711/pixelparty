@@ -199,5 +199,6 @@ class App extends React.Component {
 
 export default App
 
+
 // assignment. make ternaries from rooms - sensei dustino
 // theme toggle. https://css-tricks.com/a-dark-mode-toggle-with-react-and-themeprovider/ - maks akymenko
