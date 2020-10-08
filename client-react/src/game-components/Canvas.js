@@ -31,7 +31,7 @@ export default class Canvas extends React.Component {
   componentDidMount = () => {
 
     this.setState({
-      ctx: document.querySelector('canvas').getContext('2d'),
+      ctx: this.canvasRef.current.getContext('2d'),
       gameID: this.props.gameID
     }, () => {
       if (this.state.displayMode) this.drawPixels()

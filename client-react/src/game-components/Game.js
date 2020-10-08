@@ -94,10 +94,13 @@ export default class Game extends React.Component {
                 <div>
                   <div>Game Over</div>
                   <div>Score: {JSON.stringify(this.state.score)}</div>
-                  <div id='gallery'>
+                  <div id='gallery' style={{ display: 'flex' }}>
               {this.state.gameState.rounds.map(round => {
                 console.log(round.masterpiece)
-                return <Canvas displayMode={true} res={5} pixels={round.masterpiece} />
+                return <div>
+                    <div>"{round.word}", by {round.artist}</div>
+                    <Canvas displayMode={true} res={5} pixels={round.masterpiece} />
+                  </div>
                 }
               )}
                   </div>
