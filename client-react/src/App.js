@@ -7,8 +7,14 @@ import {
   Redirect
 } from 'react-router-dom'
 import * as Tone from 'tone'
-
-import Profile from './components/Profile'
+import 'antd/dist/antd.css';
+import { Avatar } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import ProfilePicChanger from './components/ProfilePicChanger'
+import Pic1 from './components/pic/1.jpg';
+import Pic2 from './components/pic/2.jpg';
+import Pic3 from './components/pic/3.jpg';
+import ProfileTabs from './components/ProfileTabs'
 import LoginForm from './components/LoginForm'
 import Signup from './components/Signup'
 import ThemeUp from './components/ThemeUp'
@@ -20,13 +26,17 @@ import logo from './pix_logo_50.png'
 /* globals fetch */
 
 class App extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
-    this.state = { messages: [], nick: null, loggedIn: false, errorMessage: '', room: 'Pixel Party (Room 1)', userId: '' }
+    this.state = {
+      messages: [], nick: null, loggedIn: false, errorMessage: '', room: 'Pixel Party (Room 1)', userId: '', profileImage: '',
+      Tabs: '',
+      userInput: ''
+    }
     this.register = this.register.bind(this)
   }
 
-  register (data) {
+  register(data) {
     // const data={ username: "Johnny", password: "321" }
     // Default options are marked with *
     fetch('/signup', {
@@ -42,11 +52,11 @@ class App extends React.Component {
     // return response.json(); // parses JSON response into native JavaScript objects
   }
 
-  componentDidMount () {
+  componentDidMount() {
     console.log('Your component mounted!')
   }
 
-  loginFunc (data) {
+  loginFunc(data) {
     fetch('/login', {
       method: 'POST',
       headers: {
@@ -68,30 +78,48 @@ class App extends React.Component {
       .catch(err => console.log(err))// when exception is thrown it will end up here - so error message ain't here
   }
 
-  handleAddRoom () {
+  handleAddRoom() {
     const room = prompt('Enter a room name')
     this.setState({ room: room })
   }
 
-  getRooms () {
+  getRooms() {
     const rooms = this.state.messages.map(msg => msg.room)
     rooms.push(this.state.room) // we have to add the currentRoom to the list, otherwise it won't be an option if there isn't already a message with that room
     const filtered = rooms.filter(room => room) // filter out undefined or empty string
     return Array.from(new Set(filtered)) // filters out the duplicates
   }
 
-  logMeOut () {
+  logMeOut() {
     this.setState({ nick: null, loggedIn: false })
   }
 
-  playTone () {
+  playTone() {
     Tone.start()
     // console.log('audio is ready')
     const synth = new Tone.Synth().toDestination()
     return synth.triggerAttackRelease('C4', '8n')
   }
 
-  render () {
+  handleImageChange = (profileImage) => {
+    this.setState({
+      profileImage
+    })
+  }
+
+  handleTabChange = (Tabs) => {
+    this.setState({
+      Tabs
+    })
+  }
+
+  handleUserInput = (userInput) => {
+    this.setState({
+      userInput
+    })
+  }
+
+  render() {
     return (
       <Router>
         {/* <button onClick={this.signUp}>Sign Up or Whatever</button> */}
@@ -128,12 +156,12 @@ class App extends React.Component {
                     ? ''
                     : <li>
                       <Link to='/login'>Log In</Link>
-                      </li>}
+                    </li>}
                   {this.state.loggedIn
                     ? ''
                     : <li>
                       <Link to='/signup' onClick={this.playTone}>Sign Up</Link>
-                      </li>}
+                    </li>}
                   {this.state.loggedIn
                     ? <li>
                       {/* <Link to="/logout" onClick={this.logMeOut.bind(this)}>Log <span style={{color:"firebrick"}}>'{this.state.nick}'</span> Out</Link> */}
@@ -143,7 +171,7 @@ class App extends React.Component {
                   {this.state.loggedIn
                     ? <li>
                       <Link to='/profile/user'>Profile</Link>
-                      </li>
+                    </li>
                     : ''}
                 </ul>
               </div>
@@ -170,7 +198,10 @@ class App extends React.Component {
             </Route>
 
             <Route path='/profile/user'>
-              <Profile formValue={this.state.nick} />
+              {/* <Profile formValue={this.state.nick} /> */}
+              <Avatar size={64} icon={<UserOutlined />} src={this.state.profileImage} />
+              <ProfilePicChanger handleImageChange={this.handleImageChange} pic1={Pic1} pic2={Pic2} pic3={Pic3} />
+              <ProfileTabs handleTabChange={this.handleTabChange} />
             </Route>
 
             {/* <Route path="/guest" >
@@ -179,12 +210,12 @@ class App extends React.Component {
 
             <Route path='/'>
               {this.state.loggedIn
-              // ? <Lobby
-              // rooms={this.getRooms()}
-              // handleAddRoom={this.handleAddRoom.bind(this)}
-              // />
+                // ? <Lobby
+                // rooms={this.getRooms()}
+                // handleAddRoom={this.handleAddRoom.bind(this)}
+                // />
                 ? <AppLobby nick={this.state.nick} loggedIn={this.state.loggedIn} userID={this.state.userId} />
-              // : <Redirect to="/guest"/>}
+                // : <Redirect to="/guest"/>}
                 : <AppLobby />}
             </Route>
           </Switch>
