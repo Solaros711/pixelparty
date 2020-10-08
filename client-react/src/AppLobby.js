@@ -82,13 +82,13 @@ export default class AppLobby extends React.Component {
               />
           : <div id="wait-container">
               {this.state.loggedIn
-              ? <h5>Welcome to the <span style={{fontStyle:"italic", textTransform:"uppercase"}}>game lobby, </span><span style={{fontSize: "30px", color:"rgb(179, 67, 2)", textShadow:"2px 2px black"}}>{this.state.username}!</span></h5>
+              ? <h5>Welcome to the <span style={{fontStyle:"italic", textTransform:"uppercase"}}>game lobby, </span><span style={{fontSize: "30px", color:"darkkhaki", textShadow:"2px 2px black"}}>{this.state.username}!</span></h5>
               : <h5>Welcome to the <span style={{fontStyle:"italic", textTransform:"uppercase"}}>game lobby</span></h5>}
               {/* <h5>Player: <span style={{color:"firebrick", textTransform:"uppercase"}}>{this.state.username}</span></h5> */}
               <div id="wait-host-container">
                 <div style={{display:"flex", flexDirection:"row"}}>
                   <div>
-                    <h9><span style={{color:"rgb(179, 67, 2)", textShadow:"2px 2px black"}}>Host a game:  </span></h9>
+                    <h9><span style={{color:"darkkhaki", textShadow:"2px 2px black"}}>Host a game:  </span></h9>
                   </div>
                   <div style={{display:"flex", flexDirection:"row"}}>
                     <h10><label htmlFor='num-of-players'>Number of players?</label></h10>
@@ -107,8 +107,8 @@ export default class AppLobby extends React.Component {
                 <div style={{display:"flex", flexDirection:"row"}}>
                   <div>
                     {this.state.loggedIn 
-                    ? <h9><span style={{color:"rgb(179, 67, 2)", textShadow:"2px 2px black"}}>Join a game:  </span></h9>
-                    : <h9><span style={{color:"rgb(179, 67, 2)", textShadow:"2px 2px black"}}>Log in to join a game:  </span></h9>}
+                    ? <h9><span style={{color:"darkkhaki", textShadow:"2px 2px black"}}>Join a game:  </span></h9>
+                    : <h9><span style={{color:"darkkhaki", textShadow:"2px 2px black"}}>Log in to join a game:  </span></h9>}
                     {this.state.loggedIn 
                       ? this.state.games.map(game =>
                         <button
@@ -135,3 +135,5 @@ export default class AppLobby extends React.Component {
     )
   }
 }
+
+//old orange color:"rgb(179, 67, 2)"
