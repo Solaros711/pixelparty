@@ -23,7 +23,8 @@ export default class Canvas extends React.Component {
       ],
       canvasSocket: this.props.canvasSocket,
       partyMode: this.props.betweenRounds,
-      displayMode: props.displayMode || false
+      displayMode: props.displayMode || false,
+      dynamic: props.dynamic || false
     }
     this.canvasRef = React.createRef()
   }
@@ -34,7 +35,7 @@ export default class Canvas extends React.Component {
       ctx: this.canvasRef.current.getContext('2d'),
       gameID: this.props.gameID
     }, () => {
-      if (this.state.displayMode) this.drawPixels()
+      if (this.state.displayMode) this.state.dynamic ? this.drawPixelsDynamic(0, 0) : this.drawPixels()
       else {
         this.drawGrid()
         this.state.canvasSocket.emit('round start', this.state.gameID)
@@ -147,6 +148,27 @@ export default class Canvas extends React.Component {
       }
     }
     if (!this.state.displayMode) this.drawGrid()
+  }
+
+  drawPixelsDynamic1 = (x, y, pixels = this.state.pixels, res = this.state.res, w = this.state.w, h = this.state.h) => {
+    if (x === 0 && y === 0) this.state.ctx.clearRect(0, 0, w, h)
+    if (x >= pixels.length) return
+    this.state.ctx.fillStyle = pixels[x][y] ? pixels[x][y] : 'black'
+    this.state.ctx.fillRect(x * res, y * res, res, res)
+    if (x < pixels.length) {
+      if (y < pixels.length) requestAnimationFrame(() => this.drawPixelsDynamic(x, ++y))
+      else requestAnimationFrame(() => this.drawPixelsDynamic(++x, 0))
+    }
+    else {
+      if (y < pixels.length) requestAnimationFrame(() => this.drawPixelsDynamic(x, ++y))
+    }
+  }
+
+  drawPixelsDynamic2 = (i, pixels = this.state.pixels, res = this.state.res, w = this.state.w, h = this.state.h) => {
+    if (i === 0) this.state.ctx.clearRect(0, 0, w, h)
+    if (i >= pixels.length) return
+    let x = i
+    let y = i
   }
 
   sendPixelsUp = () => {

@@ -133,7 +133,7 @@ class AppLobby extends React.Component {
                 {this.state.showcase
                 ? <div>
                   <div>"{this.state.showcase.word}", by {this.state.showcase.username}</div>
-                  <Canvas displayMode={true} pixels={this.state.showcase.pixels} />
+                  <Canvas displayMode={true} pixels={this.state.showcase.pixels} dynamic={true} />
                   </div>
                 : null
                 }
