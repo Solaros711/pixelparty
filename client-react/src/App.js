@@ -7,7 +7,6 @@ import {
   Redirect
 } from 'react-router-dom'
 import * as Tone from 'tone'
-
 import Profile from './components/Profile'
 import LoginForm from './components/LoginForm'
 import Signup from './components/Signup'
