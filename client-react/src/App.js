@@ -12,7 +12,7 @@ import Profile from './components/Profile'
 import LoginForm from './components/LoginForm'
 import Signup from './components/Signup'
 import ThemeUp from './components/ThemeUp'
-import AppLobby from './AppLobby'
+import Main from './Main'
 
 import './App.css'
 import logo from './pix_logo_50.png'
@@ -185,9 +185,9 @@ class App extends React.Component {
               // rooms={this.getRooms()}
               // handleAddRoom={this.handleAddRoom.bind(this)}
               // />
-                ? <AppLobby nick={this.state.nick} loggedIn={this.state.loggedIn} userID={this.state.userId} />
+                ? <Main nick={this.state.nick} loggedIn={this.state.loggedIn} userID={this.state.userId} />
               // : <Redirect to="/guest"/>}
-                : <AppLobby />}
+                : <Main />}
             </Route>
           </Switch>
           <ThemeUp />
