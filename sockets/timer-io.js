@@ -16,7 +16,7 @@ module.exports = io => { // this will take io from the main app
     socket.on('round start', gameID => {
       // data = { gameID, isHost }
       console.log(`round start ${gameID}`)
-      let time = 10
+      let time = 30
       timer.to(gameID).emit('timer', time)
       const id = setInterval(() => {
         timer.to(gameID).emit('timer', --time)

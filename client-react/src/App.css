@@ -62,6 +62,7 @@ canvas {
 
 #messages-container {
   margin-left: 4vw;
+  margin-right: 1vw;
 }
 
 /* * {
@@ -210,6 +211,34 @@ button:focus {
 
 #message-btn {
   height: 30px;
+}
+
+#score-box {
+  text-align: justify;
+  margin-top: 3vh;
+  margin-left: 2vw;
+  margin-right: 2vw;
+  margin-bottom: 1%;
+  padding: 5px;
+  box-sizing: border-box;
+  background: rgba(39, 39, 39, 0.2);
+  position: relative;
+  left: 5vw;
+  bottom: 0;
+  width: 50vw;
+  border-radius: 5%;
+  overflow-y: auto;
+  height: 300px;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  text-align: center;
+}
+
+#results-center-container {
+  display: flex;
+  flex-direction: column;
+
 }
 
 #login-container {

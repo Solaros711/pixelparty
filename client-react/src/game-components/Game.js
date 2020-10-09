@@ -7,7 +7,7 @@ import io from 'socket.io-client'
 // const socket = io('./game')
 
 export default class Game extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       consoleLogs: false,
@@ -16,7 +16,7 @@ export default class Game extends React.Component {
       // is this good practice
       // isHost: this.props.isHost,
       gameID: this.props.gameID,
-      username: this.props.username, 
+      username: this.props.username,
       debug: false,
       loading: true,
       gameSocket: this.props.gameSocket,
@@ -30,7 +30,7 @@ export default class Game extends React.Component {
   //   console.log(error)
   // }
 
-  componentDidMount () {
+  componentDidMount() {
     console.log('component did mount game')
     console.log(this.state.username, this.state.gameID)
     this.state.gameSocket.emit('join game', {
@@ -55,7 +55,7 @@ export default class Game extends React.Component {
         isHost: this.props.username === gameState.host
       })
     })
-    
+
   }
 
   handleTimesUp = gameID => {
@@ -66,7 +66,7 @@ export default class Game extends React.Component {
     this.state.gameSocket.emit('next round', this.state.gameID)
   }
 
-  render () {
+  render() {
     console.log('game over: ', this.state.gameState.gameOver)
     let isArtist = false
     if (this.state.gameStart) {
@@ -81,66 +81,68 @@ export default class Game extends React.Component {
       this.state.gameState
         ? <div id="game-container">
           <div className="play-container-1" id='round-and-chat'>
-          <div className="play-container-1-1">
-          {!this.state.gameState.isReady
-          ? <Canvas
-              isArtist={false}
-              gameID={this.state.gameID}
-              canvasSocket={this.props.canvasSocket}
-            />
-          : <div>
-            {this.state.gameState.gameOver
-              ? (
-                <div>
-                  <div>Game Over</div>
-                  <div>Score: {JSON.stringify(this.state.score)}</div>
-                  <div id='gallery' style={{ display: 'flex' }}>
-              {this.state.gameState.rounds.map(round => {
-                console.log(round.masterpiece)
-                return <div>
-                    <div>"{round.word}", by {round.artist}</div>
-                    <Canvas displayMode={true} res={5} pixels={round.masterpiece} />
-                  </div>
-                }
-              )}
-                  </div>
-                </div>
-              )
-              : this.state.betweenRounds
-                ? <div>
-                    <button onClick={this.handleNextRound} style={{backgroundColor:"firebrick"}}>Test: Next Round</button>
-                    <div>Score: {JSON.stringify(this.state.score)}</div>
-                  </div>
-                : (
-                  <Round
-                    gameState={this.state.gameState}
-                    username={this.props.username}
-                    isHost={this.state.isHost}
-                    onTimesUp={this.handleTimesUp}
-                    timerSocket={this.props.timerSocket}
-                    canvasSocket={this.props.canvasSocket}
-                    gameSocket={this.props.gameSocket}
-                    isArtist={isArtist || false}
-                  />
-                )}
+            <div className="play-container-1-1">
+              {!this.state.gameState.isReady
+                ? <Canvas
+                  isArtist={false}
+                  gameID={this.state.gameID}
+                  canvasSocket={this.props.canvasSocket}
+                />
+                : <div>
+                  {this.state.gameState.gameOver
+                    ? (
+                      <div id='results-center-container'>
+                        {/* <div>Game Over</div> */}
+                        <div id='score-box'>
+                          <div>Score: {JSON.stringify(this.state.score)}</div>
+                        </div>
+                        <div id='gallery' style={{ display: 'flex' }}>
+                          {this.state.gameState.rounds.map(round => {
+                            console.log(round.masterpiece)
+                            return <div>
+                              <div>"{round.word}", by {round.artist}</div>
+                              <Canvas displayMode={true} res={2.5} pixels={round.masterpiece} />
+                            </div>
+                          }
+                          )}
+                        </div>
+                      </div>
+                    )
+                    : this.state.betweenRounds
+                      ? <div>
+                        <button onClick={this.handleNextRound} style={{ backgroundColor: "firebrick" }}>Test: Next Round</button>
+                        <div>Score: {JSON.stringify(this.state.score)}</div>
+                      </div>
+                      : (
+                        <Round
+                          gameState={this.state.gameState}
+                          username={this.props.username}
+                          isHost={this.state.isHost}
+                          onTimesUp={this.handleTimesUp}
+                          timerSocket={this.props.timerSocket}
+                          canvasSocket={this.props.canvasSocket}
+                          gameSocket={this.props.gameSocket}
+                          isArtist={isArtist || false}
+                        />
+                      )}
 
-          </div>}
-          </div>        
+                </div>}
+            </div>
 
-          <div className="play-container-1-2">     
-            <Chat
-              gameState={this.state.gameState}
-              username={this.props.username}
-              gameSocket={this.state.gameSocket}
-              betweenRounds={this.state.betweenRounds}
-            />
+            <div className="play-container-1-2">
+              <Chat
+                gameState={this.state.gameState}
+                username={this.props.username}
+                gameSocket={this.state.gameSocket}
+                betweenRounds={this.state.betweenRounds}
+              />
+            </div>
+
+            {this.state.debug
+              ? <div>{this.state.gameStateStr}</div>
+              : null
+            }
           </div>
-        
-          {this.state.debug
-          ? <div>{this.state.gameStateStr}</div>
-          : null
-        }
-        </div>
         </div>
         : null
     )

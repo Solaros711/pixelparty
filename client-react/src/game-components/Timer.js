@@ -8,7 +8,7 @@ export default class Timer extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      timer: 30,
+      timer: 60,
       disabled: false,
       // socket: io('/timer')
     }
