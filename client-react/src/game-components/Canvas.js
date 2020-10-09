@@ -10,38 +10,41 @@ export default class Canvas extends React.Component {
       pixels.push(new Array(50))
     }
     this.state = {
-      res: 10,
+      res: props.res || 10,
       color: 'black',
-      pixels: Array(50).fill(Array(50)),
+      pixels: props.pixels || Array(50).fill(Array(50)),
       pixel: [null, null],
-      w: 500,
-      h: 500,
+      w: props.res * 50 || 500,
+      h: props.res * 50 || 500,
       drawing: false,
       palettes: [
         ['#49F57A', '#F5A331', '#5A19A8'],
         ['#C6CF55', '#699FCF', '#82332F']
       ],
       canvasSocket: this.props.canvasSocket,
-      partyMode: this.props.betweenRounds
+      partyMode: this.props.betweenRounds,
+      displayMode: props.displayMode || false
     }
+    this.canvasRef = React.createRef()
   }
   
   componentDidMount = () => {
 
     this.setState({
-      ctx: document.querySelector('canvas').getContext('2d'),
+      ctx: this.canvasRef.current.getContext('2d'),
       gameID: this.props.gameID
     }, () => {
-      this.drawGrid()
-      this.state.canvasSocket.emit('round start', this.state.gameID)
-      this.state.canvasSocket.on('drawing', pixels => {
-        // if (!this.props.isArtist) {
+      if (this.state.displayMode) this.drawPixels()
+      else {
+        this.drawGrid()
+        this.state.canvasSocket.emit('round start', this.state.gameID)
+        this.state.canvasSocket.on('drawing', pixels => {
           this.setState({ pixels }, () => this.drawPixels())
-        // }
-      })
-      if (this.props.isArtist) {
-        const data = { gameID: this.props.gameID, username: this.props.username, word: this.props.word}
-        this.state.canvasSocket.emit('new canvas', data)
+        })
+        if (this.props.isArtist) {
+          const data = { gameID: this.props.gameID, username: this.props.username, word: this.props.word}
+          this.state.canvasSocket.emit('new canvas', data)
+        }
       }
     })
   }
@@ -97,10 +100,8 @@ export default class Canvas extends React.Component {
         this.drawPixels()
         this.sendPixelsUp()
       })
-      // const data = { pixels, gameID: this.props.gameID}
       const data = { gameID: this.props.gameID, username: this.props.username, word: this.props.word, pixels}
 
-      // console.log(data)
       this.state.canvasSocket.emit('drawing', data)
     }
     catch (err) {
@@ -125,14 +126,12 @@ export default class Canvas extends React.Component {
         this.drawPixels()
         this.sendPixelsUp()
       })
-      // const data = { pixels, gameID: this.props.gameID}
       const data = { gameID: this.props.gameID, username: this.props.username, word: this.props.word, pixels }
 
-      // console.log(data)
       this.state.canvasSocket.emit('drawing', data)
     }
     catch (err) {
-      // console.log(err)
+      console.log(err)
     }
   }
 
@@ -147,7 +146,7 @@ export default class Canvas extends React.Component {
         }
       }
     }
-    this.drawGrid()
+    if (!this.state.displayMode) this.drawGrid()
   }
 
   sendPixelsUp = () => {
@@ -161,6 +160,7 @@ export default class Canvas extends React.Component {
         <div className="canvas-container-1-2">
           {this.props.isArtist
           ? <canvas
+              ref={this.canvasRef}
               height={this.state.h}
               width={this.state.w}
               onMouseMove={this.handleMouseMove}
@@ -170,15 +170,19 @@ export default class Canvas extends React.Component {
               onMouseLeave={() => this.setState({ drawing: false })}
             />
           : <canvas
+              ref={this.canvasRef}
               height={this.state.h}
               width={this.state.w}
             />
           }
         </div>
-
-        <div className="canvas-container-1-1">
-          <Palette onClick={this.handlePalette} palettes={this.state.palettes} color={this.state.color} />
-        </div>
+        
+        {this.state.displayMode
+          ? null
+          : <div className="canvas-container-1-1">
+            <Palette onClick={this.handlePalette} palettes={this.state.palettes} color={this.state.color} />
+          </div>
+        }
 
       </div>
     )
