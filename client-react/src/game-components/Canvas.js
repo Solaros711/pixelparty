@@ -166,15 +166,30 @@ export default class Canvas extends React.Component {
 
   drawPixelsDynamic2 = (i, pixels = this.state.pixels, res = this.state.res, w = this.state.w, h = this.state.h) => {
     if (i === 0) this.state.ctx.clearRect(0, 0, w, h)
-    if (i >= pixels.length) return
-    let x = i
-    let y = 0
-    for (let y = 0; y <= i; y++) {
-      this.state.ctx.fillStyle = pixels[x][y] ? pixels[x][y] : 'black'
-      this.state.ctx.fillRect(x * res, y * res, res, res)
-      x--
+    if (i < pixels.length) {
+      console.log(1, i)
+      let x = i
+      for (let y = 0; y <= i; y++) {
+        console.log({ x, y })
+        this.state.ctx.fillStyle = pixels[x][y] ? pixels[x][y] : 'black'
+        this.state.ctx.fillRect(x * res, y * res, res, res) 
+        x--
+      }
+      // console.log(i)
+    } else if (i >= pixels.length && i < pixels.length * 2) {
+      console.log(2, i)
+      // console.log({ i })
+      let x = pixels.length - i
+      for (let y = pixels.length - 1; y >= x; y--) {
+        console.log({ x, y })
+        // this.state.ctx.fillStyle = pixels[x][y] ? pixels[x][y] : 'black'
+        // this.state.ctx.fillRect(x * res, y * res, res, res)
+        x--
+      }
+      // let y = pixels.length - i
+      // for (let x = 0; true; x++) {
+      // }
     }
-    console.log(i)
     requestAnimationFrame(() => this.drawPixelsDynamic2(++i))
   }
 
