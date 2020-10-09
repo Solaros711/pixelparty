@@ -24,7 +24,7 @@ class Main extends React.Component {
       debug: true, // shows stringified game data from db if true
       consoleLogs: false,
       gameID: '',
-      // numOfPlayers: 2,
+      numOfPlayers: 2,
       loggedIn: props.loggedIn || false
     }
   }
@@ -32,30 +32,30 @@ class Main extends React.Component {
   componentDidMount () {
     lobbySocket.emit('get games', this.state.username)
     lobbySocket.on('games data', data => {
-      this.setState({ games: data.games },)
+        this.setState({ games: data.games },)
     })
     lobbySocket.on('joined game', gameID => {
-      console.log(gameID)
-      this.setState({
-        joinedGame: true,
-        gameID
-      })
+        console.log(gameID)
+        this.setState({
+            joinedGame: true,
+            gameID
+        })
     })
   }
   
-  // handleHostGame = () => { 
-  //   {this.state.loggedIn
-  //     ? lobbySocket.emit('create game', { username: this.state.username, userID: this.state.userID, numOfPlayers: parseInt(this.state.numOfPlayers) })
-  //     : this.props.history.push('/login')
-  //   }
-  // }
+  handleHostGame = () => { 
+    {this.state.loggedIn
+      ? lobbySocket.emit('create game', { username: this.state.username, userID: this.state.userID, numOfPlayers: parseInt(this.state.numOfPlayers) })
+      : this.props.history.push('/login')
+    }
+  }
   
-  // handleJoinGame =  gameID => {
-  //   {this.state.loggedIn
-  //     ? lobbySocket.emit('join game', {gameID: gameID, userID: this.state.userID, username: this.state.username})
-  //     : this.props.history.push('/login')
-  //   }
-  // }
+  handleJoinGame =  gameID => {
+    {this.state.loggedIn
+      ? lobbySocket.emit('join game', {gameID: gameID, userID: this.state.userID, username: this.state.username})
+      : this.props.history.push('/login')
+    }
+  }
 
   handleTimesUp = gameID => {
     lobbySocket.emit('time\'s up', gameID)
@@ -77,16 +77,14 @@ class Main extends React.Component {
                 canvasSocket={canvasSocket}
               />
             : <Lobby
-                // props='all the props lobby will need'
                 gameID={this.state.gameID}
                 userID={this.state.userID}
                 loggedIn={this.state.loggedIn}
                 username={this.state.username}
-                // numOfPlayers={this.state.numOfPlayers}
-                // onHostGame={this.handleHostGame}
-                // onJoinGame={this.handleJoinGame}
+                numOfPlayers={this.state.numOfPlayers}
+                onHostGame={this.handleHostGame}
+                onJoinGame={this.handleJoinGame.bind(this)}
                 games={this.state.games}
-                // otherProps="i think this is everything"
               />
           }
         </main>
@@ -95,4 +93,5 @@ class Main extends React.Component {
 }
 
 export default withRouter(Main)
-//old orange color:"rgb(179, 67, 2)"
+
+
