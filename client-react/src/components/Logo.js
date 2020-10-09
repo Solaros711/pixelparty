@@ -28,6 +28,7 @@ export default class Logo extends React.Component {
       height: 70,
       pixelSize: 10,    
     }
+    this.canvasRef = React.createRef()
   }
   componentDidMount (colors = this.state.colors, size = this.state.pixelSize, width = this.state.width, height = this.state.height) {
     const pixels = []
@@ -42,7 +43,7 @@ export default class Logo extends React.Component {
     letters.map(letter => pixels.push(...letter.pixels))
     // console.log(pixels)
     this.setState({
-      ctx: document.querySelector('#logo').getContext('2d'),
+      ctx: this.canvasRef.current.getContext('2d'),
       pixels
     }, () => this.drawLogo())
   }
@@ -64,6 +65,12 @@ export default class Logo extends React.Component {
     if (i < this.state.pixels.length)  requestAnimationFrame(() => this.drawPixels(i))
   }
   render () {
-    return <canvas id='logo' style={{ borderRadius: 10, border: "none" }} width={this.state.width} height={this.state.height} />
+    return <canvas
+      id='logo'
+      style={{ borderRadius: 10, border: "none" }}
+      width={this.state.width}
+      height={this.state.height}
+      ref={this.canvasRef}
+    />
   }
 }
