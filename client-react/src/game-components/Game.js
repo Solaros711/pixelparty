@@ -20,7 +20,7 @@ export default class Game extends React.Component {
   }
 
   componentDidMount () {
-    if (this.state.consoleLogs) console.log(this.props.username, this.props.game)
+    if (this.state.consoleLogs) console.log(this.props.username, this.props.gameID)
     this.props.gameSocket.emit('join game', {
       username: this.props.username,
       gameID: this.props.gameID,
