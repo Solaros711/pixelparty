@@ -23,7 +23,8 @@ export default class Canvas extends React.Component {
       ],
       canvasSocket: this.props.canvasSocket,
       partyMode: this.props.betweenRounds,
-      displayMode: props.displayMode || false
+      displayMode: props.displayMode || false,
+      dynamic: props.dynamic || false
     }
     this.canvasRef = React.createRef()
   }
@@ -34,7 +35,7 @@ export default class Canvas extends React.Component {
       ctx: this.canvasRef.current.getContext('2d'),
       gameID: this.props.gameID
     }, () => {
-      if (this.state.displayMode) this.drawPixels()
+      if (this.state.displayMode) this.state.dynamic ? this.drawPixelsDynamic3(0) : this.drawPixels()
       else {
         this.drawGrid()
         this.state.canvasSocket.emit('round start', this.state.gameID)
@@ -147,6 +148,77 @@ export default class Canvas extends React.Component {
       }
     }
     if (!this.state.displayMode) this.drawGrid()
+  }
+
+  // drawPixelsDynamic1 = (x, y, pixels = this.state.pixels, res = this.state.res, w = this.state.w, h = this.state.h) => {
+  //   if (x === 0 && y === 0) this.state.ctx.clearRect(0, 0, w, h)
+  //   if (x >= pixels.length) return
+  //   this.state.ctx.fillStyle = pixels[x][y] ? pixels[x][y] : 'black'
+  //   this.state.ctx.fillRect(x * res, y * res, res, res)
+  //   if (x < pixels.length) {
+  //     if (y < pixels.length) requestAnimationFrame(() => this.drawPixelsDynamic(x, ++y))
+  //     else requestAnimationFrame(() => this.drawPixelsDynamic(++x, 0))
+  //   }
+  //   else {
+  //     if (y < pixels.length) requestAnimationFrame(() => this.drawPixelsDynamic(x, ++y))
+  //   }
+  // }
+
+  drawPixelsDynamic3 = (i, pixels = this.state.pixels, res = this.state.res, w = this.state.w, h = this.state.h) => {
+    if (i === 0) this.state.ctx.clearRect(0, 0, w, h)
+    if (i > pixels.length * 2) return //  console.log(i)
+    let x = i
+      for (let y = 0; y <= i; y++) {
+        if (y < pixels.length && x < pixels.length) {
+          this.state.ctx.fillStyle = pixels[x][y] ? pixels[x][y] : 'black'
+          this.state.ctx.fillRect(x * res, y * res, res, res) 
+        }
+        x--
+      }
+    requestAnimationFrame(() => this.drawPixelsDynamic3(++i))
+  }
+
+  drawPixelsDynamic2 = (i, pixels = this.state.pixels, res = this.state.res, w = this.state.w, h = this.state.h) => {
+    // console.log(i)
+    if (i === 0) this.state.ctx.clearRect(0, 0, w, h)
+    if (i > pixels.length * 1.25) return //  console.log(i)
+    if (i < pixels.length) {
+      console.log(1, i)
+      let x = i
+      for (let y = 0; y <= i; y++) {
+        console.log({ x, y })
+        this.state.ctx.fillStyle = pixels[x][y] ? pixels[x][y] : 'black'
+        this.state.ctx.fillRect(x * res, y * res, res, res) 
+        x--
+      }
+    } else if (i >= pixels.length && i < pixels.length * 2) {
+      console.log(2, i)
+      let x = pixels.length * 2 - i - 1
+      for (let y = 1; y <= pixels.length * 2 - i; y++) {
+        try {
+          this.state.ctx.fillStyle = pixels[x][y] ? pixels[x][y] : 'hotpink'
+          this.state.ctx.fillRect(x * res, y * res, res, res)
+          console.log({ x, y })
+        } catch {
+          console.log('out of range', {x, y})
+        }
+        x--
+      }
+      // let j = Math.abs(pixels.length - i)
+      // let x = i - Math.abs(i - pixels.length) - 1
+      // let y = pixels.length * 2 - i - 1
+      // for (let x = 1; x < i; x++) {
+      //   try {
+      //     this.state.ctx.fillStyle = pixels[x][y] ? pixels[x][y] : 'hotpink'
+      //     this.state.ctx.fillRect(x * res, y * res, res, res)
+      //     console.log({ x, y })
+      //   } catch {
+      //     console.log('out of range', {x, y})
+      //   }
+      //   y++
+      // }
+    }
+    requestAnimationFrame(() => this.drawPixelsDynamic2(++i))
   }
 
   sendPixelsUp = () => {
