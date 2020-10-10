@@ -53,6 +53,18 @@
         {"word":"Backpack","difficulty": 2},
         {"word":"Crowbar","difficulty": 3},
         {"word":"Ice","difficulty": 2},
-        {"word":"Cassette Tape","difficulty": 2}
+        {"word":"Cassette Tape","difficulty": 2},
+        {"word":"Ear","difficulty": 2},
+        {"word":"Wallet","difficulty": 2},
+        {"word":"Light","difficulty": 3},
+        {"word":"Monster","difficulty": 3},
+        {"word":"Pizza","difficulty": 2},
+        {"word":"Safe","difficulty": 2},
+        {"word":"Money ","difficulty": 1},
+        {"word":"Art","difficulty": 3},
+        {"word":"UFO","difficulty": 2},
+        {"word":"Ghost","difficulty": 1},
+        {"word":"Idea","difficulty": 3},
+        {"word":"Coffee","difficulty": 3}
     ]
 }

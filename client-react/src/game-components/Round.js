@@ -51,8 +51,8 @@ export default class Round extends React.Component {
                   ? <div>Congrats, {roundState.winner} guessed {roundState.word} correctly!</div>
                   : <div>Oof, the word was "{roundState.word}"</div>
                 : isArtist
-                  ? <div>Your word is: <span style={{fontSize: "25px", color:"khaki", textTransform:"uppercase", textShadow:"2px 2px black"}}>{roundState.word}</span></div>
-                  : <div><span style={{fontSize: "20px", color:"khaki", textShadow:"2px 2px black" }}>{roundState.artist}</span> is drawing...</div>
+                  ? <div>Your word is: <span id="emphatic-text" style={{fontSize: "25px", textTransform:"uppercase", margin: "0px"}}>{roundState.word}</span></div>
+                  : <div><span id="emphatic-text" style={{fontSize: "20px", margin: "0px"}}>{roundState.artist}</span> is drawing...</div>
               }
             </div>
             
