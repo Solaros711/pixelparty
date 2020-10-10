@@ -82,7 +82,7 @@ export default class Chat extends React.Component {
         <div id='messages'>
           {messages.map((msg, i) => msg.winner
             ? <WinningMessage msg={msg} />
-            : <div key={i}>{msg.username}: {msg.text}</div>)}
+            : <div key={i} style={{textAlign: this.props.username === msg.username ?"right": "left"}}>{msg.username}: {msg.text}</div>)}
         </div>
         <NewMessage
           onSubmit={this.handleSubmit}

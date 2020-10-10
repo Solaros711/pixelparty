@@ -26,6 +26,10 @@ const roundSchema = new Schema({
   roundOver: {
     type: Boolean,
     default: false
+  },
+  masterpiece: {
+    type: Array,
+    default: []
   }
 })
 
@@ -180,4 +184,11 @@ gameSchema.methods.timesUp = async function () {
   return this
 }
 
+gameSchema.methods.saveArt = async function (pixels) {
+  const round = this.rounds[this.currentRound]
+  round.masterpiece = pixels
+  await this.save()
+}
+
 module.exports = mongoose.model('Game', gameSchema)
+

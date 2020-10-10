@@ -1,4 +1,5 @@
 import React from 'react'
+import * as Tone from 'tone'
 import io from 'socket.io-client'
 
 // const socket = io('/timer')
@@ -13,6 +14,13 @@ export default class Timer extends React.Component {
     }
   }
 
+  playTone () {
+    Tone.start()
+    // console.log('audio is ready')
+    const synth = new Tone.Synth().toDestination()
+    return synth.triggerAttackRelease('C4', '8n')
+  }
+
   componentDidMount () {
     this.props.timerSocket.emit('round join', this.props.gameID)
     if (this.props.isHost) {
@@ -23,7 +31,7 @@ export default class Timer extends React.Component {
       this.props.onTimesUp(gameID)
     })
     this.props.timerSocket.on('timer', timer => {
-      this.setState({ timer })
+      this.setState({ timer }, () => {if (timer <= 5){this.playTone()}})
     })
   }
 

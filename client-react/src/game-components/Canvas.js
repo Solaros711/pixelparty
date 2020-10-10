@@ -10,38 +10,42 @@ export default class Canvas extends React.Component {
       pixels.push(new Array(50))
     }
     this.state = {
-      res: 10,
+      res: props.res || 10,
       color: 'black',
-      pixels: Array(50).fill(Array(50)),
+      pixels: props.pixels || Array(50).fill(Array(50)),
       pixel: [null, null],
-      w: 500,
-      h: 500,
+      w: props.res * 50 || 500,
+      h: props.res * 50 || 500,
       drawing: false,
       palettes: [
         ['#49F57A', '#F5A331', '#5A19A8'],
         ['#C6CF55', '#699FCF', '#82332F']
       ],
       canvasSocket: this.props.canvasSocket,
-      partyMode: this.props.betweenRounds
+      partyMode: this.props.betweenRounds,
+      displayMode: props.displayMode || false,
+      dynamic: props.dynamic || false
     }
+    this.canvasRef = React.createRef()
   }
   
   componentDidMount = () => {
 
     this.setState({
-      ctx: document.querySelector('canvas').getContext('2d'),
+      ctx: this.canvasRef.current.getContext('2d'),
       gameID: this.props.gameID
     }, () => {
-      this.drawGrid()
-      this.state.canvasSocket.emit('round start', this.state.gameID)
-      this.state.canvasSocket.on('drawing', pixels => {
-        // if (!this.props.isArtist) {
+      if (this.state.displayMode) this.state.dynamic ? this.drawPixelsDynamic3(0) : this.drawPixels()
+      else {
+        this.drawGrid()
+        this.state.canvasSocket.emit('round start', this.state.gameID)
+        this.state.canvasSocket.on('drawing', pixels => {
           this.setState({ pixels }, () => this.drawPixels())
-        // }
-      })
-      if (this.props.isArtist) {
-        const data = { gameID: this.props.gameID, username: this.props.username, word: this.props.word}
-        this.state.canvasSocket.emit('new canvas', data)
+        })
+        if (this.props.isArtist) {
+          const data = { gameID: this.props.gameID, username: this.props.username, word: this.props.word}
+          this.state.canvasSocket.emit('new canvas', data)
+        }
       }
     })
   }
@@ -97,10 +101,8 @@ export default class Canvas extends React.Component {
         this.drawPixels()
         this.sendPixelsUp()
       })
-      // const data = { pixels, gameID: this.props.gameID}
       const data = { gameID: this.props.gameID, username: this.props.username, word: this.props.word, pixels}
 
-      // console.log(data)
       this.state.canvasSocket.emit('drawing', data)
     }
     catch (err) {
@@ -125,14 +127,12 @@ export default class Canvas extends React.Component {
         this.drawPixels()
         this.sendPixelsUp()
       })
-      // const data = { pixels, gameID: this.props.gameID}
       const data = { gameID: this.props.gameID, username: this.props.username, word: this.props.word, pixels }
 
-      // console.log(data)
       this.state.canvasSocket.emit('drawing', data)
     }
     catch (err) {
-      // console.log(err)
+      console.log(err)
     }
   }
 
@@ -147,7 +147,78 @@ export default class Canvas extends React.Component {
         }
       }
     }
-    this.drawGrid()
+    if (!this.state.displayMode) this.drawGrid()
+  }
+
+  // drawPixelsDynamic1 = (x, y, pixels = this.state.pixels, res = this.state.res, w = this.state.w, h = this.state.h) => {
+  //   if (x === 0 && y === 0) this.state.ctx.clearRect(0, 0, w, h)
+  //   if (x >= pixels.length) return
+  //   this.state.ctx.fillStyle = pixels[x][y] ? pixels[x][y] : 'black'
+  //   this.state.ctx.fillRect(x * res, y * res, res, res)
+  //   if (x < pixels.length) {
+  //     if (y < pixels.length) requestAnimationFrame(() => this.drawPixelsDynamic(x, ++y))
+  //     else requestAnimationFrame(() => this.drawPixelsDynamic(++x, 0))
+  //   }
+  //   else {
+  //     if (y < pixels.length) requestAnimationFrame(() => this.drawPixelsDynamic(x, ++y))
+  //   }
+  // }
+
+  drawPixelsDynamic3 = (i, pixels = this.state.pixels, res = this.state.res, w = this.state.w, h = this.state.h) => {
+    if (i === 0) this.state.ctx.clearRect(0, 0, w, h)
+    if (i > pixels.length * 2) return //  console.log(i)
+    let x = i
+      for (let y = 0; y <= i; y++) {
+        if (y < pixels.length && x < pixels.length) {
+          this.state.ctx.fillStyle = pixels[x][y] ? pixels[x][y] : 'black'
+          this.state.ctx.fillRect(x * res, y * res, res, res) 
+        }
+        x--
+      }
+    requestAnimationFrame(() => this.drawPixelsDynamic3(++i))
+  }
+
+  drawPixelsDynamic2 = (i, pixels = this.state.pixels, res = this.state.res, w = this.state.w, h = this.state.h) => {
+    // console.log(i)
+    if (i === 0) this.state.ctx.clearRect(0, 0, w, h)
+    if (i > pixels.length * 1.25) return //  console.log(i)
+    if (i < pixels.length) {
+      console.log(1, i)
+      let x = i
+      for (let y = 0; y <= i; y++) {
+        console.log({ x, y })
+        this.state.ctx.fillStyle = pixels[x][y] ? pixels[x][y] : 'black'
+        this.state.ctx.fillRect(x * res, y * res, res, res) 
+        x--
+      }
+    } else if (i >= pixels.length && i < pixels.length * 2) {
+      console.log(2, i)
+      let x = pixels.length * 2 - i - 1
+      for (let y = 1; y <= pixels.length * 2 - i; y++) {
+        try {
+          this.state.ctx.fillStyle = pixels[x][y] ? pixels[x][y] : 'hotpink'
+          this.state.ctx.fillRect(x * res, y * res, res, res)
+          console.log({ x, y })
+        } catch {
+          console.log('out of range', {x, y})
+        }
+        x--
+      }
+      // let j = Math.abs(pixels.length - i)
+      // let x = i - Math.abs(i - pixels.length) - 1
+      // let y = pixels.length * 2 - i - 1
+      // for (let x = 1; x < i; x++) {
+      //   try {
+      //     this.state.ctx.fillStyle = pixels[x][y] ? pixels[x][y] : 'hotpink'
+      //     this.state.ctx.fillRect(x * res, y * res, res, res)
+      //     console.log({ x, y })
+      //   } catch {
+      //     console.log('out of range', {x, y})
+      //   }
+      //   y++
+      // }
+    }
+    requestAnimationFrame(() => this.drawPixelsDynamic2(++i))
   }
 
   sendPixelsUp = () => {
@@ -161,6 +232,7 @@ export default class Canvas extends React.Component {
         <div className="canvas-container-1-2">
           {this.props.isArtist
           ? <canvas
+              ref={this.canvasRef}
               height={this.state.h}
               width={this.state.w}
               onMouseMove={this.handleMouseMove}
@@ -170,15 +242,19 @@ export default class Canvas extends React.Component {
               onMouseLeave={() => this.setState({ drawing: false })}
             />
           : <canvas
+              ref={this.canvasRef}
               height={this.state.h}
               width={this.state.w}
             />
           }
         </div>
-
-        <div className="canvas-container-1-1">
-          <Palette onClick={this.handlePalette} palettes={this.state.palettes} color={this.state.color} />
-        </div>
+        
+        {this.state.displayMode
+          ? null
+          : <div className="canvas-container-1-1">
+            <Palette onClick={this.handlePalette} palettes={this.state.palettes} color={this.state.color} />
+          </div>
+        }
 
       </div>
     )

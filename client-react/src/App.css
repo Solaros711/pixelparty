@@ -36,6 +36,26 @@ canvas {
   border-radius: 5%;
 }
 
+#emphatic-text {
+  color: darkkhaki;
+  text-shadow: 2px 2px black;
+  font-size: 20px;
+  margin: 5px;
+  font-weight: bold;
+}
+
+#tentative-text {
+  margin: 5px;
+  font-size: 15px;
+  font-style: italic;
+  font-weight: bold; 
+}
+
+#header-stress {
+  font-style: italic;
+  text-transform: uppercase;
+}
+
 #chat-and-canvas, #round-and-chat {
   /* width: 80vw; */
   display: flex;
@@ -143,12 +163,13 @@ body {
   width: 50px;
 }
 
-#logo {
-  max-width: 100%;
+#logo-1 {
+  max-width: 50%;
   height: auto;
   position: relative;
   right: 0.5vw;
   margin-top: 3px;
+  margin-left: 2vw;
   
 }
 
@@ -188,17 +209,14 @@ button {
   margin-top: 5px;
   margin-left: 5px;
   margin-right: 5px;
-  /* border-radius: 6px; */
-  border-radius: 30px;
+  border-radius: 7px;
   font-weight: bold;
   margin-bottom: 2px;
-  /* background-color: rgb(102, 100, 100); */
   background-color: lightgray;
   border-width: 4px;
 }
 
 button:hover {
-  /* background-color: lightgray; */
   background-color: rgb(102, 100, 100);
   border-style: solid;
   font-size: .8rem;
@@ -261,17 +279,89 @@ button:focus {
   text-align: center;
 
   /* display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center; */
 }
 
-#wait-host-container {
+#wait-container-flex{
+  display: flex;
+  direction: row;
+}
+
+#wait-container-a {
+  width: 30vw;
+}
+
+#wait-container-b {
+  width: 60vw;
+}
+
+#wait-container-art {
+  background: rgba(83, 83, 83, 0.2);
+  height: 405px;
+  overflow-y: auto;
+  /* margin-left: 2vw;
+  margin-right: 2vw; */
+  margin-top: 1vh;
+  /* width: 28%; */
+  border-radius: 5%;
+  border: 1px dotted black;
+  /* border: none;  */
+  padding: 7px;
+  flex: 0 0 12em;
+}
+
+#game-text {
+  font-style: italic;
+  font-weight: bold;
+}
+
+#wait-container-c {
+  width: 30vw;
+}
+
+#wait-container-c-1 {
+  background: rgba(83, 83, 83, 0.2);
+  height: 405px;
+  overflow-y: auto;
+  margin-left: 2vw;
+  margin-right: 2vw;
+  margin-top: 1vh;
+  /* width: 28%; */
+  border-radius: 5%;
+  border: 1px dotted black;
+  /* border: none; */
+  padding: 7px;
+  flex: 0 0 12em;
+  
+}
+
+#wait-container-1 {
+  background: rgba(39, 39, 39, 0.2);
+  background: rgba(83, 83, 83, 0.2);
+  /* height: 80vh; */
+  /* margin-top: 3vh; */
+  height: 200px;
+  overflow-y: auto;
+  margin-left: 2vw;
+  margin-right: 2vw;
+  margin-top: 1vh;
+  /* width: 28%; */
+  border-radius: 5%;
+  border: 1px dotted black;
+  /* border: 1px solid darkkhaki;
+  border: none; */
+  padding: 7px;
+  flex: 0 0 12em;
+}
+
+#wait-sub-container-1 {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 400px;
+  /* height: 60%; */
 
 }
 
@@ -389,16 +479,13 @@ button:focus {
 }
 
 h5{
-  /* color: whitesmoke; */
   font-size: 25px;
   margin: 5px;
 }
 
 h6{
-  /* color: whitesmoke; */
   font-size: 30px;
   margin: 0px 44vw;
-  /* margin-top: 2px; */
 }
 
 h7 {
@@ -456,8 +543,10 @@ input:focus {
 
 select {
   background-color: lightgrey;
-  border-radius: 10px;
+  border-radius: 1px;
   font-weight: bold;
+  width: 3vw;
+  
 }
 
 select:focus {

@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt')
 const Schema = mongoose.Schema
 
 const userSchema = new mongoose.Schema({
-
     username: {
         type: String,
         required: true,
@@ -17,7 +16,6 @@ const userSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId, ref: 'Art',
         required: false
     }
-    
 })
 
 userSchema.statics.signUp = async function (username, password) {
