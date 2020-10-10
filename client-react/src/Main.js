@@ -33,7 +33,7 @@ class Main extends React.Component {
   }
 
   render () {
-    console.log(this.state)
+    // console.log(this.state)
     return (
       <main>
         {this.state.joinedGame

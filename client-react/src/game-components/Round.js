@@ -11,14 +11,14 @@ export default class Round extends React.Component {
     }
   }
 
-  handleTimesUp = gameID => {
-    console.log('handle times up')
+  handleTimesUpRound = gameID => {
+    // console.log('handle times up')
     if (this.props.isHost) {
-      console.log('isHost: ', this.props.isHost)
+      // console.log('isHost: ', this.props.isHost)
       this.props.gameSocket.emit('time\'s up', gameID)
     }
     if (this.props.isArtist) {
-      console.log('masterpiece?')
+      // console.log('masterpiece?')
       const word = this.props.gameState.rounds[this.props.gameState.currentRound].word
       const data = { gameID, username: this.props.username, pixels: this.state.pixels, word }
       this.props.gameSocket.emit('masterpiece', data)
@@ -52,9 +52,9 @@ export default class Round extends React.Component {
             
             <div className="round-container-1-2-2">
               <Timer
-                timer={this.props.timer}
+                inRound
                 isHost={this.props.isHost}
-                onTimesUp={this.handleTimesUp}
+                onTimesUpRound={this.handleTimesUpRound}
                 gameID={gameState._id}
                 timerSocket={this.props.timerSocket}
                 />

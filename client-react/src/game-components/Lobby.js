@@ -4,7 +4,7 @@ import Canvas from './Canvas'
 export default class Lobby extends React.Component {
   constructor (props) {
     super(props)
-    console.log('lobby', props)
+    // console.log('lobby', props)
     this.state = {
       numOfPlayers: 2,
       artist: '',

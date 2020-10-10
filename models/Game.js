@@ -176,8 +176,6 @@ gameSchema.methods.timesUp = async function () {
   const round = this.rounds[this.currentRound]
   round.roundOver = true
   if (this.currentRound === this.rounds.length - 1) this.gameOver = true
-  // this.currentRound++
-  // if (this.currentRound >= this.rounds.length) this.gameOver = true
   await this.save()
   if (verbose) console.log('time\'s up: '.rainbow, this)
   return this

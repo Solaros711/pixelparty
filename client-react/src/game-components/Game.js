@@ -7,7 +7,7 @@ import PostRound from './PostRound'
 export default class Game extends React.Component {
   constructor (props) {
     super(props)
-    console.log('game', props)
+    // console.log('game', props)
     this.state = {
       consoleLogs: false,
       gameStart: false,
@@ -27,6 +27,7 @@ export default class Game extends React.Component {
     })
 
     this.props.gameSocket.on('game state', gameState => {
+      // console.log(gameState)
       const betweenRounds = gameState.rounds.length ? gameState.rounds[gameState.currentRound].roundOver || false : false
       const score = gameState.points.
         reduce((pointsObject, name) => {
@@ -45,16 +46,19 @@ export default class Game extends React.Component {
     
   }
 
-  handleTimesUp = gameID => {
-    this.props.gameSocket.emit('time\'s up', gameID)
-  }
+  // handleTimesUp = gameID => {
+  //   this.props.gameSocket.emit('time\'s up', gameID)
+  // }
 
-  handleNextRound = () => {
-    this.props.gameSocket.emit('next round', this.props.gameID)
+  handleTimesUpPostRound = gameID => {
+    if (this.state.isHost) {
+      this.props.gameSocket.emit('next round', gameID)
+      console.log('handleTimesUpPostRound')
+    }
   }
 
   render () {
-    console.log(this.state)
+    // console.log(this.state)
     let isArtist = false
     if (this.state.gameStart) {
       const gameState = this.props.gameState
@@ -93,13 +97,15 @@ export default class Game extends React.Component {
                 </div>
               )
               : this.state.betweenRounds
-                ? <PostRound onNextRound={this.handleNextRound} score={this.state.score} />
-                // <div>
-                //     <button onClick={this.handleNextRound} style={{backgroundColor:"firebrick"}}>Test: Next Round</button>
-                //     <div>Score: {JSON.stringify(this.state.score)}</div>
-                //   </div>
-                : (
-                  <Round
+                ? <PostRound
+                  onNextRound={this.handleNextRound}
+                  score={this.state.score}
+                  onTimesUpPostRound={gameID => this.handleTimesUpPostRound(gameID)}
+                  timerSocket={this.props.timerSocket}
+                  gameID={this.props.gameID}
+                  isHost={this.state.isHost}
+                />
+                : <Round
                     gameState={this.state.gameState}
                     username={this.props.username}
                     isHost={this.state.isHost}
@@ -109,7 +115,7 @@ export default class Game extends React.Component {
                     gameSocket={this.props.gameSocket}
                     isArtist={isArtist || false}
                   />
-                )}
+            }
 
           </div>}
           </div>        

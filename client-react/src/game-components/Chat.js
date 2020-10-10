@@ -69,7 +69,6 @@ export default class Chat extends React.Component {
   }
 
   render () {
-    console.log(this.props)
     const gameState = this.props.gameState
     if (this.state.consoleLogs) console.log({ gameState })
     let isArtist = false
