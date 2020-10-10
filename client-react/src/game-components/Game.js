@@ -14,7 +14,8 @@ export default class Game extends React.Component {
       debug: false,
       gameState: '',
       score: '',
-      betweenRounds: false
+      betweenRounds: false,
+      gameState: {}
     }
   }
 
@@ -53,6 +54,7 @@ export default class Game extends React.Component {
   }
 
   render () {
+    console.log(this.state)
     let isArtist = false
     if (this.state.gameStart) {
       const gameState = this.props.gameState
