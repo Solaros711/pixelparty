@@ -42,10 +42,6 @@ class App extends React.Component {
     // return response.json(); // parses JSON response into native JavaScript objects
   }
 
-  componentDidMount () {
-    console.log('Your component mounted!')
-  }
-
   loginFunc (data) {
     fetch('/login', {
       method: 'POST',

@@ -48,8 +48,6 @@ module.exports = io => { // this takes in the io from the main app.js
         console.log('\t* update frontend state to make game joinable by other clients'.yellow)
       }
 
-      // console.log({ gameID: gameState._id })
-
       socket.emit('joined game', gameState._id)
     })
 

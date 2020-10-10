@@ -31,11 +31,6 @@ artSchema.statics.getRandom = async function (cb) {
       const data = { username: result[0].user.username, pixels: result[0].picture, word: result[0].task.word }
       cb(data)
     })
-    // .then(sample => {
-    //   console.log(sample[0])
-    // })
-  // const sample = await this.aggregate.sample(2)
-  // console.log(sample)
 }
 
 artSchema.statics.addArt = async function (userID, taskID, newPic) {
@@ -43,7 +38,6 @@ artSchema.statics.addArt = async function (userID, taskID, newPic) {
   art.user = userID
   art.task = taskID
   art.picture = newPic
-  // console.log(art)
   await art.save()
   return art
 }

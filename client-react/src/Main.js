@@ -35,7 +35,7 @@ class Main extends React.Component {
         this.setState({ games: data.games },)
     })
     lobbySocket.on('joined game', gameID => {
-        console.log(gameID)
+        if (this.state.consoleLogs) console.log(gameID)
         this.setState({
             joinedGame: true,
             gameID

@@ -18,7 +18,7 @@ router.post('/signup', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
   User.findOne({ username: req.body.username }, async (err, user) => {
     if (err) return res.status(500).send(err)
     if (!user) return res.status(400).send({ error: 'username invalid' })

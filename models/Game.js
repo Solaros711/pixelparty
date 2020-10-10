@@ -135,8 +135,7 @@ gameSchema.statics.clean = async function () {
 gameSchema.methods.randomize = async function () {
   const players = this.players.slice()
   let artist
-  let words = await Word.getWords()//.slice()
-  // console.log(words)
+  let words = await Word.getWords()
   words = words.slice()
   let word
   while (players.length) {

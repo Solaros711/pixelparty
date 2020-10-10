@@ -10,7 +10,6 @@ module.exports = io => { // this takes in the io from the main app/game.js
   canvas.on('connection', socket => {
     console.log('\nconnection on \'/canvas\' namespace'.rainbow)
     socket.on('round start', gameID => {
-      // console.log({ gameID })
       // gameID = id from game object in db
       console.log(`\nsomebody joined gameID: ${gameID}`.rainbow)
       socket.join(gameID)
@@ -20,15 +19,12 @@ module.exports = io => { // this takes in the io from the main app/game.js
       // data = { gameID, username, word }
       const canvas = new Canvas(data.gameID, data.username, data.word)
       canvases.push(canvas)
-      // console.log(canvases)
     })
 
     socket.on('drawing', data => {
       // data = { gameID, username, word, pixels }
-      // console.log('somebody\'s drawing'.rainbow)
       socket.to(data.gameID).emit('drawing', data.pixels)
       canvases.filter(canvas => (canvas.gameID === data.gameID && canvas.username === data.username))[0].pixels = data.pixels
-      // console.log(canvases)
     })
 
     socket.on('disconnect', () => {

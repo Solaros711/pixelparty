@@ -26,20 +26,14 @@ export default class Game extends React.Component {
     }
   }
 
-  // componentDidCatch (error) {
-  //   console.log(error)
-  // }
-
   componentDidMount () {
-    console.log('component did mount game')
-    console.log(this.state.username, this.state.gameID)
+    if (this.state.consoleLogs) console.log(this.state.username, this.state.gameID)
     this.state.gameSocket.emit('join game', {
       username: this.state.username,
       gameID: this.state.gameID,
     })
 
     this.state.gameSocket.on('game state', gameState => {
-      console.log('game state socket')
       const betweenRounds = gameState.rounds.length ? gameState.rounds[gameState.currentRound].roundOver || false : false
       const score = gameState.points.
         reduce((pointsObject, name) => {
@@ -67,7 +61,6 @@ export default class Game extends React.Component {
   }
 
   render () {
-    console.log('game over: ', this.state.gameState.gameOver)
     let isArtist = false
     if (this.state.gameStart) {
       const gameState = this.props.gameState
@@ -96,7 +89,6 @@ export default class Game extends React.Component {
                   <div>Score: {JSON.stringify(this.state.score)}</div>
                   <div id='gallery' style={{ display: 'flex' }}>
               {this.state.gameState.rounds.map(round => {
-                console.log(round.masterpiece)
                 return <div>
                     <div>"{round.word}", by {round.artist}</div>
                     <Canvas displayMode={true} res={5} pixels={round.masterpiece} />

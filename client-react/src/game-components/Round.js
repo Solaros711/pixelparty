@@ -13,12 +13,6 @@ export default class Round extends React.Component {
 
   handleTimesUp = gameID => {
     console.log('handle times up')
-    // const gameState = this.props.gameState
-    // if (this.state.consoleLogs) console.log(gameState)
-    // const roundState = gameState.rounds[gameState.currentRound]
-    // const isArtist = gameState.gameOver
-    //   ? false
-    //   : roundState.artist === this.props.username
     if (this.props.isHost) {
       console.log('isHost: ', this.props.isHost)
       this.props.gameSocket.emit('time\'s up', gameID)
