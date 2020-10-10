@@ -5,7 +5,7 @@ export default class Lobby extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      numOfPlayers: props.numOfPlayers,
+      numOfPlayers: 2,
       artist: '',
       word: '',
       pixels: ''
@@ -17,6 +17,12 @@ export default class Lobby extends React.Component {
     this.props.lobbySocket.on('random artwork', data => {
       this.setState({ artist: data.username, word: data.word, pixels: data.pixels })
     })
+  }
+
+  handleHostGame = _evt => {
+    {this.props.loggedIn
+      ? this.props.lobbySocket.emit('create game', { username: this.props.username, userID: this.props.userID, numOfPlayers: parseInt(this.state.numOfPlayers) })
+      : this.props.history.push('/login')}
   }
 
   render () {
@@ -43,7 +49,7 @@ export default class Lobby extends React.Component {
                       </select>
                     </div>
                     <div>
-                      <button onClick={this.props.onHostGame} style={{ marginTop: '5px' }}>Host game!</button>
+                      <button onClick={this.handleHostGame} style={{ marginTop: '5px' }}>Host game!</button>
                     </div>
                   </div>
                   : <div>
