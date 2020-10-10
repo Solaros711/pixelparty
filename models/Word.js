@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
 const wordSchema = new mongoose.Schema({
-
     word: {
         type: String,
         required: true,
@@ -27,7 +26,6 @@ wordSchema.statics.getWords = async function () {
         if(err){
             console.log(err)
         }else{
-            // console.log(result)
             wordsArray = result.map(word => word.word)
         }
     })
