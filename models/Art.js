@@ -4,7 +4,6 @@ const Word = require('./Word')
 const Schema = mongoose.Schema
 
 const artSchema = new mongoose.Schema({
-
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',

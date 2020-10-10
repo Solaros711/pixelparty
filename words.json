@@ -36,6 +36,23 @@
         {"word":"Torch","difficulty": 1},
         {"word":"Net","difficulty": 1},
         {"word":"Football","difficulty": 2},
-        {"word":"Envelope","difficulty":2}
+        {"word":"Envelope","difficulty": 2},
+        {"word":"Alphabet","difficulty": 3},
+        {"word":"Computer","difficulty": 2},
+        {"word":"Tiger","difficulty": 1},
+        {"word":"The White House","difficulty": 2},
+        {"word":"Fire","difficulty": 1},
+        {"word":"CD","difficulty": 1},
+        {"word":"Mouse","difficulty": 2},
+        {"word":"Airplane","difficulty": 2},
+        {"word":"Apple","difficulty": 1},
+        {"word":"Banana","difficulty": 1},
+        {"word":"Fence","difficulty": 2},
+        {"word":"Lightning","difficulty": 2},
+        {"word":"Couch","difficulty": 2},
+        {"word":"Backpack","difficulty": 2},
+        {"word":"Crowbar","difficulty": 3},
+        {"word":"Ice","difficulty": 2},
+        {"word":"Cassette Tape","difficulty": 2}
     ]
 }

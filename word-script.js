@@ -2,6 +2,8 @@ const fs = require('fs')
 const Word = require('./models/Word')
 const mongoose = require('mongoose')
 
+// Gets the words from a JSON file, and if a specific word is not 
+// in the database, it will add it to the database.
 module.exports = async function getWords (path){
     let advar = false
     let raw = fs.readFileSync(path)
@@ -22,8 +24,9 @@ module.exports = async function getWords (path){
     }
 }
 
+// Checks to see if the word is in the database, then executes a 
+// function after it has checked.
 function checkWord(word, diff, func){
-    
     Word.exists({word: word}, function(err, res){
         if(err)
             console.log(err)
