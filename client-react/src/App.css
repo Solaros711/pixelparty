@@ -181,6 +181,7 @@ a{
 
 a:hover {
   color: lightgray;
+  font-size: 1.2rem;
 }
 
 button {
@@ -200,6 +201,7 @@ button:hover {
   /* background-color: lightgray; */
   background-color: rgb(102, 100, 100);
   border-style: solid;
+  font-size: .8rem;
 }
 
 button:focus {
