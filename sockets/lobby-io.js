@@ -4,7 +4,7 @@ const Art = require('./../models/Art')
 const colors = require('colors')
 if (colors) console.log('game-io'.rainbow)
 
-const verbose = false
+const verbose = true
 
 module.exports = io => { // this takes in the io from the main app.js
   const lobby = io.of('/lobby')

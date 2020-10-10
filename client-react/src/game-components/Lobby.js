@@ -4,15 +4,21 @@ import Canvas from './Canvas'
 export default class Lobby extends React.Component {
   constructor (props) {
     super(props)
+    console.log('lobby', props)
     this.state = {
       numOfPlayers: 2,
       artist: '',
       word: '',
-      pixels: ''
+      pixels: '',
+      games: []
     }
   }
 
   componentDidMount () {
+    this.props.lobbySocket.emit('get games', this.props.username)
+    this.props.lobbySocket.on('games data', data => {
+        this.setState({ games: data.games },)
+    })
     this.props.lobbySocket.emit('random artwork')
     this.props.lobbySocket.on('random artwork', data => {
       this.setState({ artist: data.username, word: data.word, pixels: data.pixels })
@@ -23,6 +29,13 @@ export default class Lobby extends React.Component {
     {this.props.loggedIn
       ? this.props.lobbySocket.emit('create game', { username: this.props.username, userID: this.props.userID, numOfPlayers: parseInt(this.state.numOfPlayers) })
       : this.props.history.push('/login')}
+  }
+
+  handleJoinGame =  gameID => {
+    {this.props.loggedIn
+      ? this.props.lobbySocket.emit('join game', {gameID: gameID, userID: this.props.userID, username: this.props.username})
+      : this.props.history.push('/login')
+    }
   }
 
   render () {
@@ -53,7 +66,7 @@ export default class Lobby extends React.Component {
                     </div>
                   </div>
                   : <div>
-                    <button onClick={this.props.onHostGame}>Log in to host a game!</button>
+                    <button onClick={this.handleHostGame}>Log in to host a game!</button>
                   </div>}
               </div>
             </div>
@@ -63,17 +76,17 @@ export default class Lobby extends React.Component {
               <text id='emphatic-text'>Join a Game</text>
               <div id='wait-sub-container-1'>
                 {this.props.loggedIn
-                  ? this.props.games.map(game =>
+                  ? this.state.games.map(game =>
                     <div key={game._id}>
                       {/* <text id="emphatic-text">Join a game:  </text> */}
-                      <button onClick={() => this.props.onJoinGame(game._id)}>
+                      <button onClick={() => this.handleJoinGame(game._id)}>
                          Join {game.host}'s game!  {game.players.length} of {game.numOfPlayers} joined!
                       </button>
                     </div>)
-                  : this.props.games.map(game =>
+                  : this.state.games.map(game =>
                     <div key={game._id}>
                       {/* <text id="emphatic-text">Join a game:  </text> */}
-                      <button onClick={() => this.props.onJoinGame(game._id)}>
+                      <button onClick={() => this.handleJoinGame(game._id)}>
                         Log in to join {game.host}'s game!  {game.players.length} of {game.numOfPlayers} joined!
                       </button>
                     </div>)}
