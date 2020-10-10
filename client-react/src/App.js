@@ -7,15 +7,15 @@ import {
   Redirect
 } from 'react-router-dom'
 import * as Tone from 'tone'
-
 import Profile from './components/Profile'
 import LoginForm from './components/LoginForm'
 import Signup from './components/Signup'
 import ThemeUp from './components/ThemeUp'
-import AppLobby from './AppLobby'
+import Main from './Main'
 
 import './App.css'
 import logo from './pix_logo_50.png'
+import Logo from './components/Logo'
 
 /* globals fetch */
 
@@ -98,9 +98,10 @@ class App extends React.Component {
         <div>
           <div className='navbar'>
             <div className='container-0' id='menu-outer'>
-              <div className='container-0-1' id='logo'>
+              <div className='container-0-1' id='logo-1'>
                 <div>
-                  <img src={logo} alt='logo' />
+                  {/* <img src={logo} alt='logo' /> */}
+                  <Logo />
                 </div>
               </div>
               <div className='container-0-3'>
@@ -183,9 +184,9 @@ class App extends React.Component {
               // rooms={this.getRooms()}
               // handleAddRoom={this.handleAddRoom.bind(this)}
               // />
-                ? <AppLobby nick={this.state.nick} loggedIn={this.state.loggedIn} userID={this.state.userId} />
+                ? <Main nick={this.state.nick} loggedIn={this.state.loggedIn} userID={this.state.userId} />
               // : <Redirect to="/guest"/>}
-                : <AppLobby />}
+                : <Main />}
             </Route>
           </Switch>
           <ThemeUp />
@@ -196,6 +197,7 @@ class App extends React.Component {
 }
 
 export default App
+
 
 // assignment. make ternaries from rooms - sensei dustino
 // theme toggle. https://css-tricks.com/a-dark-mode-toggle-with-react-and-themeprovider/ - maks akymenko

@@ -1,4 +1,6 @@
 const Game = require('./../models/Game')
+const Art = require('./../models/Art')
+
 const colors = require('colors')
 if (colors) console.log('game-io'.rainbow)
 
@@ -9,6 +11,10 @@ module.exports = io => { // this takes in the io from the main app.js
 
   lobby.on('connection', socket => { // a client connects to '/lobby' namespace and creates this socket to the server
     console.log('\nconnection on \'/lobby\' namespace'.magenta)
+
+    socket.on('random artwork', () => {
+      Art.getRandom(data => socket.emit('random artwork', data))
+    })
 
     socket.on('get games', async username => {
       if (verbose) {

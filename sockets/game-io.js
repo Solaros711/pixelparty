@@ -1,6 +1,7 @@
 const Game = require('./../models/Game')
 const { canvases } = require('./Canvas')
 const colors = require('colors')
+const Art = require('../models/Art')
 if (colors) console.log('gameIO'.rainbow)
 
 Game.clean() // comment in to clean db
@@ -65,6 +66,8 @@ module.exports = io => { // this takes in the io from the main app.js
         // console.log(gameState._id)
         const canvas = canvases.filter(canvas => (canvas.gameID === gameState._id.toString() && canvas.username === gameState.rounds[gameState.currentRound].artist))[0]
         console.log(canvas)
+        await gameState.saveArt(canvas.pixels)
+        await Art.sendArt(canvas)
         // canvas.pixels.map(column => console.log(column))
         await gameState.timesUp()
         game.to(gameID).emit('game state', gameState)
@@ -94,3 +97,4 @@ module.exports = io => { // this takes in the io from the main app.js
     })
   })
 }
+
