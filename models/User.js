@@ -54,11 +54,4 @@ userSchema.methods.addPic = async function (picID) {
 
 const User = mongoose.model('User', userSchema)
 
-User.findOne({ username: 'pixelcasso' }, async (err, user) => {
-  if (err) return console.log(err)
-  //   user.password = process.env.MY_PASSWORD
-  await user.hashPassword(process.env.MY_PASSWORD)
-  user.save()
-})
-
 module.exports = User
