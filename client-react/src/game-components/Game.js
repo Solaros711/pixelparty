@@ -80,6 +80,7 @@ export default class Game extends React.Component {
     return (
       this.state.gameState
         ? <div id="game-container">
+
           <div className="play-container-1" id='round-and-chat'>
             <div className="play-container-1-1">
               {!this.state.gameState.isReady
@@ -91,22 +92,37 @@ export default class Game extends React.Component {
                 : <div>
                   {this.state.gameState.gameOver
                     ? (
+
+
                       <div id='results-center-container'>
-                        {/* <div>Game Over</div> */}
-                        <div id='score-box'>
-                          <div>Score: {JSON.stringify(this.state.score)}</div>
+                        <div style={{ display: "flex", flexDirection: "column"}}>
+                          <div id='game-winner'></div>
+                          <div id='empty'></div>
+                          <div id="play-again-btn"></div>
+
                         </div>
-                        <div id='gallery' style={{ display: 'flex' }}>
-                          {this.state.gameState.rounds.map(round => {
-                            console.log(round.masterpiece)
-                            return <div>
-                              <div>"{round.word}", by {round.artist}</div>
-                              <Canvas displayMode={true} res={2.5} pixels={round.masterpiece} />
+                     
+
+
+                          <div style={{ display: "flex", flexDirection: "column" }}>
+                            {/* <div>Game Over</div> */}
+                            <div id='score-box'>
+                              <div>Score: {JSON.stringify(this.state.score)}</div>
                             </div>
-                          }
-                          )}
-                        </div>
-                      </div>
+                            <div id='gallery' style={{ display: 'flex' }}>
+                              {this.state.gameState.rounds.map(round => {
+                                console.log(round.masterpiece)
+                                return <div>
+                                  <div>"{round.word}", by {round.artist}</div>
+                                  <Canvas displayMode={true} res={2.5} pixels={round.masterpiece} />
+                                </div>
+                              }
+                              )}
+                            </div>
+                          </div>
+                       </div>
+                      
+
                     )
                     : this.state.betweenRounds
                       ? <div>
