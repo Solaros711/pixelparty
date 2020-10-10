@@ -2,6 +2,7 @@ import React from 'react'
 import Round from './Round'
 import Chat from './Chat'
 import Canvas from './Canvas'
+import PostRound from './PostRound'
 
 export default class Game extends React.Component {
   constructor (props) {
@@ -10,24 +11,22 @@ export default class Game extends React.Component {
     this.state = {
       consoleLogs: false,
       gameStart: false,
-      gameID: this.props.gameID,
-      username: this.props.username, 
       debug: false,
-      gameSocket: this.props.gameSocket,
       gameState: '',
       score: '',
-      betweenRounds: false
+      betweenRounds: false,
+      gameState: {}
     }
   }
 
   componentDidMount () {
-    if (this.state.consoleLogs) console.log(this.state.username, this.state.gameID)
-    this.state.gameSocket.emit('join game', {
-      username: this.state.username,
-      gameID: this.state.gameID,
+    if (this.state.consoleLogs) console.log(this.props.username, this.props.gameID)
+    this.props.gameSocket.emit('join game', {
+      username: this.props.username,
+      gameID: this.props.gameID,
     })
 
-    this.state.gameSocket.on('game state', gameState => {
+    this.props.gameSocket.on('game state', gameState => {
       const betweenRounds = gameState.rounds.length ? gameState.rounds[gameState.currentRound].roundOver || false : false
       const score = gameState.points.
         reduce((pointsObject, name) => {
@@ -47,14 +46,15 @@ export default class Game extends React.Component {
   }
 
   handleTimesUp = gameID => {
-    this.state.gameSocket.emit('time\'s up', gameID)
+    this.props.gameSocket.emit('time\'s up', gameID)
   }
 
   handleNextRound = () => {
-    this.state.gameSocket.emit('next round', this.state.gameID)
+    this.props.gameSocket.emit('next round', this.props.gameID)
   }
 
   render () {
+    console.log(this.state)
     let isArtist = false
     if (this.state.gameStart) {
       const gameState = this.props.gameState
@@ -72,7 +72,7 @@ export default class Game extends React.Component {
           {!this.state.gameState.isReady
           ? <Canvas
               isArtist={false}
-              gameID={this.state.gameID}
+              gameID={this.props.gameID}
               canvasSocket={this.props.canvasSocket}
             />
           : <div>
@@ -93,10 +93,11 @@ export default class Game extends React.Component {
                 </div>
               )
               : this.state.betweenRounds
-                ? <div>
-                    <button onClick={this.handleNextRound} style={{backgroundColor:"firebrick"}}>Test: Next Round</button>
-                    <div>Score: {JSON.stringify(this.state.score)}</div>
-                  </div>
+                ? <PostRound onNextRound={this.handleNextRound} score={this.state.score} />
+                // <div>
+                //     <button onClick={this.handleNextRound} style={{backgroundColor:"firebrick"}}>Test: Next Round</button>
+                //     <div>Score: {JSON.stringify(this.state.score)}</div>
+                //   </div>
                 : (
                   <Round
                     gameState={this.state.gameState}
@@ -117,7 +118,7 @@ export default class Game extends React.Component {
             <Chat
               gameState={this.state.gameState}
               username={this.props.username}
-              gameSocket={this.state.gameSocket}
+              gameSocket={this.props.gameSocket}
               betweenRounds={this.state.betweenRounds}
             />
           </div>

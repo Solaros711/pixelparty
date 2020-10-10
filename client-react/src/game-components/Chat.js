@@ -69,6 +69,7 @@ export default class Chat extends React.Component {
   }
 
   render () {
+    console.log(this.props)
     const gameState = this.props.gameState
     if (this.state.consoleLogs) console.log({ gameState })
     let isArtist = false
@@ -76,7 +77,7 @@ export default class Chat extends React.Component {
       const artist = gameState.rounds[gameState.currentRound].artist
       isArtist = artist === this.props.username
     }
-    const messages = this.props.gameState.messages
+    const messages = this.props.gameState.messages || []
     return (
       <div id='messages-container'>
         <div id='messages'>
