@@ -1,15 +1,22 @@
 import React from 'react'
+import Canvas from './Canvas'
 
 export default class Lobby extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      numOfPlayers: props.numOfPlayers
+      numOfPlayers: props.numOfPlayers,
+      artist: '',
+      word: '',
+      pixels: ''
     }
   }
 
   componentDidMount () {
-    
+    this.props.lobbySocket.emit('random artwork')
+    this.props.lobbySocket.on('random artwork', data => {
+      this.setState({ artist: data.username, word: data.word, pixels: data.pixels })
+    })
   }
 
   render () {
@@ -70,6 +77,10 @@ export default class Lobby extends React.Component {
           <div id='wait-container-b'>
             <div id='wait-container-art'>
               <p id='emphatic-text'>Featured Masterpiece</p>
+              <div>"{this.state.word}" by {this.state.artist}</div>
+              {this.state.pixels
+                ? <Canvas displayMode dynamic pixels={this.state.pixels} />
+                : null}
             </div>
           </div>
 

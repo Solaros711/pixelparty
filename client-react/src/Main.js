@@ -85,7 +85,7 @@ class Main extends React.Component {
                 onHostGame={this.handleHostGame}
                 onJoinGame={this.handleJoinGame.bind(this)}
                 games={this.state.games}
-                lobbySocket={this.state.lobbySocket}
+                lobbySocket={lobbySocket}
               />
           }
         </main>
