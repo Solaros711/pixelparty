@@ -46,11 +46,11 @@ export default class Game extends React.Component {
   }
 
   handleTimesUp = gameID => {
-    this.props.gameSocket.emit('time\'s up', gameID)
+    this.props.gameSocket.emit('time\'s up', this.props.gameID)
   }
 
   handleNextRound = () => {
-    this.props.gameSocket.emit('next round', this.props.game)
+    this.props.gameSocket.emit('next round', this.props.gameID)
   }
 
   render () {
