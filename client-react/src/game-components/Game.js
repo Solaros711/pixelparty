@@ -2,23 +2,17 @@ import React from 'react'
 import Round from './Round'
 import Chat from './Chat'
 import Canvas from './Canvas'
-import io from 'socket.io-client'
-
-// const socket = io('./game')
 
 export default class Game extends React.Component {
   constructor (props) {
     super(props)
+    console.log('game', props)
     this.state = {
       consoleLogs: false,
       gameStart: false,
-      // joined: false,
-      // is this good practice
-      // isHost: this.props.isHost,
       gameID: this.props.gameID,
       username: this.props.username, 
       debug: false,
-      loading: true,
       gameSocket: this.props.gameSocket,
       gameState: '',
       score: '',
