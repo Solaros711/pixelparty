@@ -23,7 +23,7 @@ export default class Game extends React.Component {
     if (this.state.consoleLogs) console.log(this.props.username, this.props.game)
     this.props.gameSocket.emit('join game', {
       username: this.props.username,
-      gameID: this.props.game,
+      gameID: this.props.gameID,
     })
 
     this.props.gameSocket.on('game state', gameState => {
@@ -72,7 +72,7 @@ export default class Game extends React.Component {
           {!this.state.gameState.isReady
           ? <Canvas
               isArtist={false}
-              gameID={this.props.game}
+              gameID={this.props.gameID}
               canvasSocket={this.props.canvasSocket}
             />
           : <div>
