@@ -42,6 +42,8 @@ module.exports = io => { // this takes in the io from the main app.js
       if (gameState.rounds.length === gameState.numOfPlayers) {
         const timer = new Timer(gameState.rounds.length, game.to(data.gameID))
         timer.start(() => {
+          console.log(`\n'time's up' gameID: ${gameID}`.magenta)
+
           Game.findOne({ _id: gameID }, async (err, gameState) => {
             if (err) return console.log(err)
             const canvas = canvases.filter(canvas => (canvas.gameID === gameState._id.toString() && canvas.username === gameState.rounds[gameState.currentRound].artist))[0]
@@ -52,6 +54,7 @@ module.exports = io => { // this takes in the io from the main app.js
           })
         }, () => {
           console.log(`'next round' gameID: ${gameID}`.magenta)
+
           Game.findOne({ _id: gameID }, async (err, gameState) => {
             if (err) return console.log(err)
             await gameState.nextRound()
@@ -80,11 +83,12 @@ module.exports = io => { // this takes in the io from the main app.js
       })
     })
 
-    socket.on('time\'s up', gameID => {
-      // data = { gameID, currentRound }
-      console.log(`\n'time's up' gameID: ${gameID}`.magenta)
-
     // old stuff vv keep for now
+
+    // socket.on('time\'s up', gameID => {
+    //   // data = { gameID, currentRound }
+    //   console.log(`\n'time's up' gameID: ${gameID}`.magenta)
+
     //   Game.findOne({ _id: gameID }, async (err, gameState) => {
     //     if (err) return console.log(err)
     //     const canvas = canvases.filter(canvas => (canvas.gameID === gameState._id.toString() && canvas.username === gameState.rounds[gameState.currentRound].artist))[0]
@@ -103,6 +107,7 @@ module.exports = io => { // this takes in the io from the main app.js
     //     game.to(gameID).emit('game state', gameState)
     //   })
     // })
+
     // old stuff ^^ keep for now
 
     socket.on('masterpiece', data => {

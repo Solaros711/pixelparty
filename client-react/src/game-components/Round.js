@@ -1,6 +1,6 @@
 import React from 'react'
 import Canvas from './Canvas'
-import Timer from './Timer'
+import Timer2 from './Timer2'
 
 export default class Round extends React.Component {
   constructor (props) {
@@ -11,19 +11,19 @@ export default class Round extends React.Component {
     }
   }
 
-  handleTimesUp = gameID => {
-    console.log('handle times up')
-    if (this.props.isHost) {
-      console.log('isHost: ', this.props.isHost)
-      this.props.gameSocket.emit('time\'s up', gameID)
-    }
-    if (this.props.isArtist) {
-      console.log('masterpiece?')
-      const word = this.props.gameState.rounds[this.props.gameState.currentRound].word
-      const data = { gameID, username: this.props.username, pixels: this.state.pixels, word }
-      this.props.gameSocket.emit('masterpiece', data)
-    }
-  }
+  // handleTimesUp = gameID => {
+  //   console.log('handle times up')
+  //   if (this.props.isHost) {
+  //     console.log('isHost: ', this.props.isHost)
+  //     this.props.gameSocket.emit('time\'s up', gameID)
+  //   }
+  //   if (this.props.isArtist) {
+  //     console.log('masterpiece?')
+  //     const word = this.props.gameState.rounds[this.props.gameState.currentRound].word
+  //     const data = { gameID, username: this.props.username, pixels: this.state.pixels, word }
+  //     this.props.gameSocket.emit('masterpiece', data)
+  //   }
+  // }
 
   setPixels = pixels => this.setState({ pixels})
 

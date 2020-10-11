@@ -26,7 +26,7 @@ app.use(express.json())
 app.use('/', AuthController)
 gameIO(io)
 canvasIO(io)
-timerIo(io)
+// timerIo(io)
 lobbyIO(io)
 
 const connectDatabase = async (dbName = 'pixel-party', hostname = 'localhost') => {

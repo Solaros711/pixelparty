@@ -12,15 +12,18 @@ class Timer {
     this.postRoundTime = 0 
   }
 
-  keepTime = (timesUp, nextRound) => {
+  keepTime = (timesUp, nextRound, gameOver = null) => {
     const remainder = this.time % this.fullRoundLength
+    if (this.time === 0) return
     if (!remainder) {
+      console.log('\nif')
       console.log({
         time: this.time,
         round: this.roundLength
       })
       this.room.emit('timer', this.roundLength)
     } else if (remainder >= this.postRoundLength) {
+      console.log('\nelse if')
       console.log({
         time: this.time,
         round: remainder - this.postRoundLength
@@ -28,16 +31,17 @@ class Timer {
       this.room.emit('timer', remainder - this.postRoundLength)
       if (remainder - this.postRoundLength === 0) timesUp()
     } else {
+      console.log('\nelse')
       console.log({
         time: this.time,
         post: remainder
       })
       this.room.emit('timer', remainder)
-      setTimeout(nextRound, 1000)
+      if (remainder === 1) setTimeout(nextRound, 1000)
     }
   }
 
-  start = (timesUp, nextRound) => {
+  start = (timesUp, nextRound, gameOver = null) => {
     // timesUp: cb to end round
     // nextRound: cb to go to next round
     this.keepTime(timesUp, nextRound)
