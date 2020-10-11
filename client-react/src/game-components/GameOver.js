@@ -20,4 +20,3 @@ export default function GameOver (props) {
     </div>
   )
 }
-
