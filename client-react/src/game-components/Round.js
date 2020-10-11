@@ -1,6 +1,6 @@
 import React from 'react'
 import Canvas from './Canvas'
-import Timer2 from './Timer2'
+import Timer from './Timer'
 
 export default class Round extends React.Component {
   constructor (props) {
@@ -51,12 +51,12 @@ export default class Round extends React.Component {
             </div>
             
             <div className="round-container-1-2-2">
-              <Timer2
+              <Timer
                 timer={this.props.timer}
-                isHost={this.props.isHost}
-                onTimesUp={this.handleTimesUp}
-                gameID={gameState._id}
-                timerSocket={this.props.timerSocket}
+                // isHost={this.props.isHost}
+                // onTimesUp={this.handleTimesUp}
+                // gameID={gameState._id}
+                // timerSocket={this.props.timerSocket}
                 />
             </div>
 

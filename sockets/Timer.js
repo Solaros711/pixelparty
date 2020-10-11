@@ -14,7 +14,7 @@ class Timer {
 
   keepTime = (timesUp, nextRound, gameOver = null) => {
     const remainder = this.time % this.fullRoundLength
-    if (this.time === 0) return
+    // if (this.time === 0) return
     if (!remainder) {
       console.log('\nif')
       console.log({
@@ -37,7 +37,7 @@ class Timer {
         post: remainder
       })
       this.room.emit('timer', remainder)
-      if (remainder === 1) setTimeout(nextRound, 1000)
+      if (remainder === 1 && this.time > 1) nextRound()
     }
   }
 
@@ -47,8 +47,8 @@ class Timer {
     this.keepTime(timesUp, nextRound)
     const timerID = setInterval(() => {
       this.time--
+      if (this.time === 0) return clearInterval(timerID)
       this.keepTime(timesUp, nextRound)
-      if (this.time === 0) clearInterval(timerID)
     }, 1000)
   }
 }
