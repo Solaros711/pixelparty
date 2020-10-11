@@ -3,6 +3,7 @@ import Round from './Round'
 import Chat from './Chat'
 import Canvas from './Canvas'
 import PostRound from './PostRound'
+import GameOver from './GameOver'
 
 export default class Game extends React.Component {
   constructor (props) {
@@ -77,27 +78,9 @@ export default class Game extends React.Component {
             />
           : <div>
             {this.state.gameState.gameOver
-              ? (
-                <div>
-                  <div>Game Over</div>
-                  <div>Score: {JSON.stringify(this.state.score)}</div>
-                  <div id='gallery' style={{ display: 'flex' }}>
-              {this.state.gameState.rounds.map(round => {
-                return <div>
-                    <div>"{round.word}", by {round.artist}</div>
-                    <Canvas displayMode={true} res={5} pixels={round.masterpiece} />
-                  </div>
-                }
-              )}
-                  </div>
-                </div>
-              )
+              ? <GameOver score={this.state.score}/>
               : this.state.betweenRounds
                 ? <PostRound onNextRound={this.handleNextRound} score={this.state.score} />
-                // <div>
-                //     <button onClick={this.handleNextRound} style={{backgroundColor:"firebrick"}}>Test: Next Round</button>
-                //     <div>Score: {JSON.stringify(this.state.score)}</div>
-                //   </div>
                 : (
                   <Round
                     gameState={this.state.gameState}
@@ -133,3 +116,4 @@ export default class Game extends React.Component {
     )
   }
 }
+
