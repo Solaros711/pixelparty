@@ -1,7 +1,9 @@
 const Game = require('./../models/Game')
-const { canvases } = require('./Canvas')
-const colors = require('colors')
 const Art = require('../models/Art')
+const Timer = require('./Timer')
+const { canvases } = require('./Canvas')
+
+const colors = require('colors')
 if (colors) console.log('gameIO'.rainbow)
 
 Game.clean() // comment in to clean db
@@ -13,6 +15,8 @@ module.exports = io => { // this takes in the io from the main app.js
     console.log('\nconnection on \'/game\' namespace'.magenta)
     socket.on('join game', async data => {
       // data = { username, gameID } // host doesn't need to join game in db
+      const gameID = data.gameID
+
       if (verbose) {
         console.log('\n\'join game\' event recieved on\'/game\' namespace'.cyan)
         console.log(`\tclient username: ${data.username}\n\tgameID: ${data.gameID}`.yellow)
@@ -33,6 +37,29 @@ module.exports = io => { // this takes in the io from the main app.js
       }
 
       game.to(data.gameID).emit('game state', gameState)
+
+      // new stuff vv
+      if (gameState.rounds.length === gameState.numOfPlayers) {
+        const timer = new Timer(gameState.rounds.length, game.to(data.gameID))
+        timer.start(() => {
+          Game.findOne({ _id: gameID }, async (err, gameState) => {
+            if (err) return console.log(err)
+            const canvas = canvases.filter(canvas => (canvas.gameID === gameState._id.toString() && canvas.username === gameState.rounds[gameState.currentRound].artist))[0]
+            await gameState.saveArt(canvas.pixels)
+            await Art.sendArt(canvas)
+            await gameState.timesUp()
+            game.to(gameID).emit('game state', gameState)
+          })
+        }, () => {
+          console.log(`'next round' gameID: ${gameID}`.magenta)
+          Game.findOne({ _id: gameID }, async (err, gameState) => {
+            if (err) return console.log(err)
+            await gameState.nextRound()
+            game.to(gameID).emit('game state', gameState)
+          })
+        })
+      }
+      // new stuff ^^
     })
 
     socket.on('message', async data => {
@@ -57,24 +84,26 @@ module.exports = io => { // this takes in the io from the main app.js
       // data = { gameID, currentRound }
       console.log(`\n'time's up' gameID: ${gameID}`.magenta)
 
-      Game.findOne({ _id: gameID }, async (err, gameState) => {
-        if (err) return console.log(err)
-        const canvas = canvases.filter(canvas => (canvas.gameID === gameState._id.toString() && canvas.username === gameState.rounds[gameState.currentRound].artist))[0]
-        await gameState.saveArt(canvas.pixels)
-        await Art.sendArt(canvas)
-        await gameState.timesUp()
-        game.to(gameID).emit('game state', gameState)
-      })
-    })
+    // old stuff vv keep for now
+    //   Game.findOne({ _id: gameID }, async (err, gameState) => {
+    //     if (err) return console.log(err)
+    //     const canvas = canvases.filter(canvas => (canvas.gameID === gameState._id.toString() && canvas.username === gameState.rounds[gameState.currentRound].artist))[0]
+    //     await gameState.saveArt(canvas.pixels)
+    //     await Art.sendArt(canvas)
+    //     await gameState.timesUp()
+    //     game.to(gameID).emit('game state', gameState)
+    //   })
+    // })
 
-    socket.on('next round', gameID => {
-      console.log(`'next round' gameID: ${gameID}`.magenta)
-      Game.findOne({ _id: gameID }, async (err, gameState) => {
-        if (err) return console.log(err)
-        await gameState.nextRound()
-        game.to(gameID).emit('game state', gameState)
-      })
-    })
+    // socket.on('next round', gameID => {
+    //   console.log(`'next round' gameID: ${gameID}`.magenta)
+    //   Game.findOne({ _id: gameID }, async (err, gameState) => {
+    //     if (err) return console.log(err)
+    //     await gameState.nextRound()
+    //     game.to(gameID).emit('game state', gameState)
+    //   })
+    // })
+    // old stuff ^^ keep for now
 
     socket.on('masterpiece', data => {
       // data = { gameID, username, pixels, word }

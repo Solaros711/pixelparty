@@ -51,7 +51,7 @@ export default class Round extends React.Component {
             </div>
             
             <div className="round-container-1-2-2">
-              <Timer
+              <Timer2
                 timer={this.props.timer}
                 isHost={this.props.isHost}
                 onTimesUp={this.handleTimesUp}

@@ -16,7 +16,8 @@ export default class Game extends React.Component {
       gameState: '',
       score: '',
       betweenRounds: false,
-      gameState: {}
+      gameState: {},
+      timer: 0
     }
   }
 
@@ -43,6 +44,8 @@ export default class Game extends React.Component {
         isHost: this.props.username === gameState.host
       })
     })
+
+    this.props.gameSocket.on('timer', timer => this.setState({ timer }))
     
   }
 
@@ -80,7 +83,13 @@ export default class Game extends React.Component {
             {this.state.gameState.gameOver
               ? <GameOver score={this.state.score} gameState={this.state.gameState} />
               : this.state.betweenRounds
-                ? <PostRound onNextRound={this.handleNextRound} score={this.state.score} gameState={this.state.gameState} canvasSocket={this.props.canvasSocket} />
+                ? <PostRound
+                  onNextRound={this.handleNextRound}
+                  score={this.state.score}
+                  gameState={this.state.gameState}
+                  canvasSocket={this.props.canvasSocket}
+                  timer={this.state.timer}
+                />
                 : (
                   <Round
                     gameState={this.state.gameState}
@@ -91,6 +100,7 @@ export default class Game extends React.Component {
                     canvasSocket={this.props.canvasSocket}
                     gameSocket={this.props.gameSocket}
                     isArtist={isArtist || false}
+                    timer={this.state.timer}
                   />
                 )}
 
