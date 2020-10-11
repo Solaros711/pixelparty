@@ -7,7 +7,7 @@ export default function GameOver (props) {
       <div>Game Over</div>
       <div>Score: {JSON.stringify(props.score)}</div>
       <div id='gallery' style={{ display: 'flex' }}>
-        {this.state.gameState.rounds.map((round, i) => {
+        {props.gameState.rounds.map((round, i) => {
           return (
             <div key={i}>
               <div>"{round.word}", by {round.artist}</div>

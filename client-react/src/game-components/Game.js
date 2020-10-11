@@ -78,7 +78,7 @@ export default class Game extends React.Component {
             />
           : <div>
             {this.state.gameState.gameOver
-              ? <GameOver score={this.state.score}/>
+              ? <GameOver score={this.state.score} gameState={this.state.gameState} />
               : this.state.betweenRounds
                 ? <PostRound onNextRound={this.handleNextRound} score={this.state.score} />
                 : (
