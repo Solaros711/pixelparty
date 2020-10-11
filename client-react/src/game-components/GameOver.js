@@ -11,7 +11,7 @@ export default function GameOver (props) {
           return (
             <div key={i}>
               <div>"{round.word}", by {round.artist}</div>
-              <Canvas displayMode res={5} pixels={round.masterpiece} />
+              <Canvas displayMode res={5} pixels={round.masterpiece} dynamic />
             </div>
           )
         }
