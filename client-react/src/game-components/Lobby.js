@@ -100,7 +100,7 @@ export default class Lobby extends React.Component {
               <p id='emphatic-text'>Featured Masterpiece</p>
               <div>"{this.state.word}" by {this.state.artist}</div>
               {this.state.pixels
-                ? <Canvas displayMode dynamic pixels={this.state.pixels} />
+                ? <Canvas displayMode dynamic pixels={this.state.pixels} res={6} />
                 : null}
             </div>
           </div>
