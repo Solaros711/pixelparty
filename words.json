@@ -65,6 +65,8 @@
         {"word":"UFO","difficulty": 2},
         {"word":"Ghost","difficulty": 1},
         {"word":"Idea","difficulty": 3},
-        {"word":"Coffee","difficulty": 3}
+        {"word":"Coffee","difficulty": 3},
+        {"word":"Bridge","difficulty": 2},
+        {"word":"Train","difficulty": 2}
     ]
 }
