@@ -15,7 +15,7 @@ class Timer {
     // this.postRoundTime = 0 
   }
 
-  keepTime2 = (timesUp, nextRound, gameOver = null) => {
+  keepTime = (timesUp, nextRound, gameOver = null) => {
     if (this.state === 'START ROUND') {
       this.room.emit('timer', this.roundLength)
       console.log({
@@ -65,49 +65,14 @@ class Timer {
     }
   }
 
-  // keepTime = (timesUp, nextRound, gameOver = null) => {
-  //   const remainder = this.time % this.fullRoundLength
-  //   // if (this.time === 0) return
-  //   if (!remainder) {
-  //     console.log('\nif')
-  //     console.log({
-  //       time: this.time,
-  //       round: this.roundLength
-  //     })
-  //     this.room.emit('timer', this.roundLength)
-  //   } else if (remainder >= this.postRoundLength) {
-  //     console.log('\nelse if')
-  //     console.log({
-  //       time: this.time,
-  //       round: remainder - this.postRoundLength
-  //     })
-  //     this.room.emit('timer', remainder - this.postRoundLength)
-  //     if (remainder - this.postRoundLength === 0) {
-  //       console.log('timesUp'.yellow)
-  //       timesUp()
-  //     }
-  //   } else {
-  //     console.log('\nelse')
-  //     console.log({
-  //       time: this.time,
-  //       post: remainder
-  //     })
-  //     this.room.emit('timer', remainder)
-  //     if (remainder === 1 && this.time > 1) {
-  //       console.log('nextRound'.yellow)
-  //       nextRound()
-  //     }
-  //   }
-  // }
-
   start = (timesUp, nextRound, gameOver = null) => {
     // timesUp: cb to end round
     // nextRound: cb to go to next round
-    this.keepTime2(timesUp, nextRound)
+    this.keepTime(timesUp, nextRound)
     const timerID = setInterval(() => {
       this.time--
       if (this.time === 0) return clearInterval(timerID)
-      this.keepTime2(timesUp, nextRound)
+      this.keepTime(timesUp, nextRound)
     }, 1000)
   }
 }
