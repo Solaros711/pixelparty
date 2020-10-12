@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const ToggleContainer = styled.button`
   background: ${({ theme }) => theme.gradient};
   border: 2px solid ${({ theme }) => theme.toggleBorder};
-  border-radius: 30px;
+  border-radius: 15px;
   cursor: pointer;
   display: flex;
   font-size: 0.5rem;
@@ -19,7 +19,6 @@ export const ToggleContainer = styled.button`
 
   svg {
     height: auto;
-    
     width: 2.5rem;
     transition: all 0.5s linear;
     
@@ -32,7 +31,6 @@ export const ToggleContainer = styled.button`
     &:nth-child(2) {
       transform: ${({ partyTheme }) => partyTheme ? 'translateY(-100px)' : 'translateY(0)'};
 
-      
     }
   }
 `

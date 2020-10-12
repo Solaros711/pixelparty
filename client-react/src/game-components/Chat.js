@@ -31,18 +31,20 @@ class NewMessage extends React.Component {
   render () {
     const disabled = this.props.betweenRounds ? false : this.props.isArtist ? true : false
     return (
-      <form onSubmit={this.handleSubmit}>
-        <input
-          onChange={this.handleChange}
-          value={this.state.text}
-          disabled={disabled}
-          placeholder="Take a guess..."
-        />
-        <button
-        disabled={disabled}>
-          Send
-        </button>
-      </form>
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <input style={{width:"65%"}}
+            onChange={this.handleChange}
+            value={this.state.text}
+            disabled={disabled}
+            placeholder="Chat..."
+          />
+          <button
+          disabled={disabled}>
+            Send
+          </button>
+        </form>
+      </div>
     )
   }
 }
@@ -69,6 +71,7 @@ export default class Chat extends React.Component {
   }
 
   render () {
+    console.log(this.props)
     const gameState = this.props.gameState
     if (this.state.consoleLogs) console.log({ gameState })
     let isArtist = false
@@ -76,7 +79,7 @@ export default class Chat extends React.Component {
       const artist = gameState.rounds[gameState.currentRound].artist
       isArtist = artist === this.props.username
     }
-    const messages = this.props.gameState.messages
+    const messages = this.props.gameState.messages || []
     return (
       <div id='messages-container'>
         <div id='messages'>

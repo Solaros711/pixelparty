@@ -23,7 +23,8 @@ export default class Canvas extends React.Component {
       ],
       canvasSocket: this.props.canvasSocket,
       partyMode: this.props.betweenRounds,
-      displayMode: props.displayMode || false
+      displayMode: props.displayMode || false,
+      dynamic: props.dynamic || false
     }
     this.canvasRef = React.createRef()
   }
@@ -34,7 +35,7 @@ export default class Canvas extends React.Component {
       ctx: this.canvasRef.current.getContext('2d'),
       gameID: this.props.gameID
     }, () => {
-      if (this.state.displayMode) this.drawPixels()
+      if (this.state.displayMode) this.state.dynamic ? this.drawPixelsDynamic(0) : this.drawPixels()
       else {
         this.drawGrid()
         this.state.canvasSocket.emit('round start', this.state.gameID)
@@ -74,7 +75,6 @@ export default class Canvas extends React.Component {
     this.setState({
       pixel: [x, y]
     }, () => {
-      // console.log(this.state.pixel)
       if (this.state.drawing) this.handleDrawPixelMoving()
     })
   }
@@ -147,6 +147,19 @@ export default class Canvas extends React.Component {
       }
     }
     if (!this.state.displayMode) this.drawGrid()
+  }
+
+  drawPixelsDynamic = (i, pixels = this.state.pixels, res = this.state.res, w = this.state.w, h = this.state.h) => {
+    if (i === 0) this.state.ctx.clearRect(0, 0, w, h)
+    let x = i
+      for (let y = 0; y <= i; y++) {
+        if (y < pixels.length && x < pixels.length) {
+          this.state.ctx.fillStyle = pixels[x][y] ? pixels[x][y] : 'black'
+          this.state.ctx.fillRect(x * res, y * res, res, res) 
+        }
+        x--
+      }
+    requestAnimationFrame(() => this.drawPixelsDynamic(++i))
   }
 
   sendPixelsUp = () => {

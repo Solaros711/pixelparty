@@ -2,47 +2,35 @@ import React from 'react'
 import Round from './Round'
 import Chat from './Chat'
 import Canvas from './Canvas'
-import io from 'socket.io-client'
-
-// const socket = io('./game')
+import PostRound from './PostRound'
+import GameOver from './GameOver'
 
 export default class Game extends React.Component {
   constructor(props) {
     super(props)
+    console.log('game', props)
     this.state = {
       consoleLogs: false,
       gameStart: false,
-      // joined: false,
-      // is this good practice
-      // isHost: this.props.isHost,
-      gameID: this.props.gameID,
-      username: this.props.username,
       debug: false,
-      loading: true,
-      gameSocket: this.props.gameSocket,
-      gameState: '',
+      gameState: {},
       score: '',
-      betweenRounds: false
+      betweenRounds: false,
+      timer: 0
     }
   }
 
-  // componentDidCatch (error) {
-  //   console.log(error)
-  // }
-
-  componentDidMount() {
-    console.log('component did mount game')
-    console.log(this.state.username, this.state.gameID)
-    this.state.gameSocket.emit('join game', {
-      username: this.state.username,
-      gameID: this.state.gameID,
+  componentDidMount () {
+    if (this.state.consoleLogs) console.log(this.props.username, this.props.gameID)
+    this.props.gameSocket.emit('join game', {
+      username: this.props.username,
+      gameID: this.props.gameID
     })
 
-    this.state.gameSocket.on('game state', gameState => {
-      console.log('game state socket')
+    this.props.gameSocket.on('game state', gameState => {
       const betweenRounds = gameState.rounds.length ? gameState.rounds[gameState.currentRound].roundOver || false : false
-      const score = gameState.points.
-        reduce((pointsObject, name) => {
+      const score = gameState.points
+        .reduce((pointsObject, name) => {
           if (name in pointsObject) pointsObject[name]++
           else pointsObject[name] = 1
           return pointsObject
@@ -56,18 +44,19 @@ export default class Game extends React.Component {
       })
     })
 
+    this.props.gameSocket.on('timer', timer => this.setState({ timer }))
   }
 
-  handleTimesUp = gameID => {
-    this.state.gameSocket.emit('time\'s up', gameID)
-  }
+  // handleTimesUp = gameID => {
+  //   this.props.gameSocket.emit('time\'s up', gameID)
+  // }
 
-  handleNextRound = () => {
-    this.state.gameSocket.emit('next round', this.state.gameID)
-  }
+  // handleNextRound = () => {
+  //   this.props.gameSocket.emit('next round', this.props.gameID)
+  // }
 
-  render() {
-    console.log('game over: ', this.state.gameState.gameOver)
+  render () {
+    console.log(this.state)
     let isArtist = false
     if (this.state.gameStart) {
       const gameState = this.props.gameState
@@ -79,87 +68,59 @@ export default class Game extends React.Component {
     }
     return (
       this.state.gameState
-        ? <div id="game-container">
-
-          <div className="play-container-1" id='round-and-chat'>
-            <div className="play-container-1-1">
-              {!this.state.gameState.isReady
-                ? <Canvas
-                  isArtist={false}
-                  gameID={this.state.gameID}
-                  canvasSocket={this.props.canvasSocket}
-                />
-                : <div>
-                  {this.state.gameState.gameOver
-                    ? (
-
-
-                      <div id='results-center-container'>
-                        <div style={{ display: "flex", flexDirection: "column"}}>
-                          <div id='game-winner'></div>
-                          <div id='empty'></div>
-                          <div id="play-again-btn"></div>
-
-                        </div>
-                     
-
-
-                          <div style={{ display: "flex", flexDirection: "column" }}>
-                            {/* <div>Game Over</div> */}
-                            <div id='score-box'>
-                              <div>Score: {JSON.stringify(this.state.score)}</div>
-                            </div>
-                            <div id='gallery' style={{ display: 'flex' }}>
-                              {this.state.gameState.rounds.map(round => {
-                                console.log(round.masterpiece)
-                                return <div>
-                                  <div>"{round.word}", by {round.artist}</div>
-                                  <Canvas displayMode={true} res={2.5} pixels={round.masterpiece} />
-                                </div>
-                              }
-                              )}
-                            </div>
-                          </div>
-                       </div>
-                      
-
-                    )
-                    : this.state.betweenRounds
-                      ? <div>
-                        <button onClick={this.handleNextRound} style={{ backgroundColor: "firebrick" }}>Test: Next Round</button>
-                        <div>Score: {JSON.stringify(this.state.score)}</div>
-                      </div>
-                      : (
-                        <Round
+        ? <div id='game-container'>
+            {/* <div className='play-container-1' id='round-and-chat'> */}
+            <div className='play-container-1'>
+              {/* <div className='play-container-1-1'> */}
+                {!this.state.gameState.isReady
+                  ? <Canvas
+                    isArtist={false}
+                    gameID={this.props.gameID}
+                    canvasSocket={this.props.canvasSocket}
+                  />
+                  : <div>
+                    {this.state.gameState.gameOver
+                      ? <GameOver score={this.state.score} gameState={this.state.gameState} />
+                      : this.state.betweenRounds
+                        ? <PostRound
+                          onNextRound={this.handleNextRound}
+                          score={this.state.score}
                           gameState={this.state.gameState}
-                          username={this.props.username}
-                          isHost={this.state.isHost}
-                          onTimesUp={this.handleTimesUp}
-                          timerSocket={this.props.timerSocket}
                           canvasSocket={this.props.canvasSocket}
-                          gameSocket={this.props.gameSocket}
-                          isArtist={isArtist || false}
+                          timer={this.state.timer}
                         />
-                      )}
+                        : (
+                          <Round
+                            gameState={this.state.gameState}
+                            username={this.props.username}
+                            isHost={this.state.isHost}
+                            onTimesUp={this.handleTimesUp}
+                            timerSocket={this.props.timerSocket}
+                            canvasSocket={this.props.canvasSocket}
+                            gameSocket={this.props.gameSocket}
+                            isArtist={isArtist || false}
+                            timer={this.state.timer}
+                          />
+                        )}
 
-                </div>}
+                  </div>}
+
+              {/* </div> */}
+
+              {/* <div className='play-container-1-2'> */}
+                <Chat
+                  gameState={this.state.gameState}
+                  username={this.props.username}
+                  gameSocket={this.props.gameSocket}
+                  betweenRounds={this.state.betweenRounds}
+                />
+              {/* </div> */}
+
+              {this.state.debug
+                ? <div>{this.state.gameStateStr}</div>
+                : null}
             </div>
-
-            <div className="play-container-1-2">
-              <Chat
-                gameState={this.state.gameState}
-                username={this.props.username}
-                gameSocket={this.state.gameSocket}
-                betweenRounds={this.state.betweenRounds}
-              />
-            </div>
-
-            {this.state.debug
-              ? <div>{this.state.gameStateStr}</div>
-              : null
-            }
           </div>
-        </div>
         : null
     )
   }

@@ -8,8 +8,8 @@ export default class Timer extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      timer: 60,
-      disabled: false,
+      timer: 30,
+      disabled: false
       // socket: io('/timer')
     }
   }
@@ -21,29 +21,30 @@ export default class Timer extends React.Component {
     return synth.triggerAttackRelease('C4', '8n')
   }
 
-  componentDidMount () {
-    this.props.timerSocket.emit('round join', this.props.gameID)
-    if (this.props.isHost) {
-      this.props.timerSocket.emit('round start', this.props.gameID)
-    }
-    this.props.timerSocket.on('time\'s up', gameID => {
-      console.log('time\'s up')
-      this.props.onTimesUp(gameID)
-    })
-    this.props.timerSocket.on('timer', timer => {
-      this.setState({ timer }, () => {if (timer <= 5){this.playTone()}})
-    })
-  }
+  // componentDidMount () {
+  //   this.props.timerSocket.emit('round join', this.props.gameID)
+  //   if (this.props.isHost) {
+  //     this.props.timerSocket.emit('round start', this.props.gameID)
+  //   }
+  //   this.props.timerSocket.on('time\'s up', gameID => {
+  //     console.log('time\'s up')
+  //     this.props.onTimesUp(gameID)
+  //   })
+  //   this.props.timerSocket.on('timer', timer => {
+  //     this.setState({ timer }, () => { if (timer <= 5) { this.playTone() } })
+  //   })
+  // }
 
-  handleTimesUp = () => this.props.onTimesUp(this.props.gameID)
+  // handleTimesUp = () => this.props.onTimesUp(this.props.gameID)
 
   render () {
+    if (this.props.timer <= 5) this.playTone()
     return (
       <div>
-        <span id='timer'>00:{this.state.timer.toString().padStart(2, '0')}</span>
-        <div>
-          <button onClick={this.handleTimesUp} style={{backgroundColor:"firebrick"}}>Test: End Round</button>
-        </div>
+        <span id='timer'>00:{this.props.timer.toString().padStart(2, '0')}</span>
+        {/* <div>
+          <button onClick={this.handleTimesUp} style={{ backgroundColor: 'firebrick' }}>Test: End Round</button>
+        </div> */}
       </div>
     )
   }
