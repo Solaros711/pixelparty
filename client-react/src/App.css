@@ -9,13 +9,15 @@
 } */
 
 canvas {
-  border: 2px solid black;
-  border-radius: 2%;
+  /* border: 2px solid black; */
+  border: 1px solid gray;
+  border: 1px dotted black;
+  border-radius: 5%;
 }
 
 .canvas-container-1 {
   display: flex;
-  
+  justify-content: center;
 }
 
 #palette {
@@ -272,7 +274,7 @@ button:focus {
   width: 95%;
   border-radius: 5%;
   overflow-y: auto;
-  height: 500px;
+  height: 510px;
   border-style: solid;
   border-color: rgba(244, 245, 240, 0.3);
   border-width: 10px;
@@ -287,6 +289,7 @@ button:focus {
 #wait-container-flex{
   display: flex;
   direction: row;
+  margin-bottom: 2vh;
 }
 
 #wait-container-a {
@@ -295,11 +298,9 @@ button:focus {
 
 #wait-container-b {
   width: 60vw;
-}
 
-#wait-container-art {
   background: rgba(83, 83, 83, 0.2);
-  height: 405px;
+  height: 420px;
   overflow-y: auto;
   /* margin-left: 2vw;
   margin-right: 2vw; */
@@ -309,7 +310,26 @@ button:focus {
   border: 1px dotted black;
   /* border: none;  */
   padding: 7px;
-  flex: 0 0 12em;
+  /* flex: 0 0 12em; */
+}
+
+#wait-container-art {
+  position: relative;
+  text-align: center;
+  top:1px;
+
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;  */
+  
+}
+
+wait-container-art-1{
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; */
 }
 
 #game-text {
@@ -323,7 +343,7 @@ button:focus {
 
 #wait-container-c-1 {
   background: rgba(83, 83, 83, 0.2);
-  height: 405px;
+  height: 420px;
   overflow-y: auto;
   margin-left: 2vw;
   margin-right: 2vw;
