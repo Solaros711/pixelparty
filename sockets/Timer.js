@@ -1,5 +1,5 @@
 class Timer {
-  constructor (numOfRounds, room = null, roundLength = 10, postRoundLength = 6) {
+  constructor (numOfRounds, room = null, roundLength = 30, postRoundLength = 15) {
     // room is timer.to(gameID), you can emit to the room w/ it
     this.numOfRounds = numOfRounds
     this.room = room
