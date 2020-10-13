@@ -1,15 +1,12 @@
 const mongoose = require('mongoose')
 const colors = require('colors')
+
 const Word = require('./Word')
 const Art = require('./Art')
 const { Schema } = mongoose
-// const { ObjectId } = mongoose.Schema.Types
 
 if (colors) {}
 const verbose = false
-
-// const wordsArray = ['doctor', 'moon', 'bear', 'tornado', 'waterfall', 'castle', 'knight', 'king', 'queen', 'movie', 'fire', 'volcano', 'dog', 'cat', 'horse', 'ocean', 'mountain', 'television']
-// const wordsArray = ['doctor', 'moon', 'bear']
 
 const roundSchema = new Schema({
   word: {
@@ -183,8 +180,6 @@ gameSchema.methods.timesUp = async function () {
   const round = this.rounds[this.currentRound]
   round.roundOver = true
   if (this.currentRound === this.rounds.length - 1) this.gameOver = true
-  // this.currentRound++
-  // if (this.currentRound >= this.rounds.length) this.gameOver = true
   await this.save()
   if (verbose) console.log('time\'s up: '.rainbow, this)
   return this
