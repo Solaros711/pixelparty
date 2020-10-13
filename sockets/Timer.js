@@ -6,7 +6,7 @@ class Timer {
     this.numOfRounds = numOfRounds
     this.room = room
     this.roundLength = roundLength
-    this.postRoundLength = postRoundLength
+    this.postRoundLength = postRoundLength + 1
     this.fullRoundLength = this.roundLength + this.postRoundLength
     this.time = numOfRounds * this.fullRoundLength
     this.state = 'START ROUND'
@@ -41,18 +41,18 @@ class Timer {
     }
 
     else if (this.state === 'START POST ROUND') {
-      this.room.emit('timer', this.postRoundLength)
+      this.room.emit('timer', this.postRoundLength - 1)
       console.log({
         state: this.state,
         time: this.time,
-        post: this.postRoundLength
+        post: this.postRoundLength - 1
       })
       this.state = 'POST ROUND'
     }
     
     else if (this.state === 'POST ROUND') {
       const postRoundTime = this.time % this.fullRoundLength
-      this.room.emit('timer', postRoundTime)
+      this.room.emit('timer', postRoundTime )
       console.log({
         state: this.state,
         time: this.time,
@@ -60,7 +60,7 @@ class Timer {
       })
       if (postRoundTime === 0) {
         this.state = 'START ROUND'
-        nextRound()
+        setTimeout(nextRound, 1000)
       }
     }
   }
