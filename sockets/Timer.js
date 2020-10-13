@@ -5,23 +5,20 @@ class Timer {
     // room is timer.to(gameID), you can emit to the room w/ it
     this.numOfRounds = numOfRounds
     this.room = room
-    this.roundLength = roundLength
+    this.roundLength = roundLength + 1
     this.postRoundLength = postRoundLength + 1
     this.fullRoundLength = this.roundLength + this.postRoundLength
     this.time = numOfRounds * this.fullRoundLength
     this.state = 'START ROUND'
-    // this.fullTime = numOfRounds * (roundLength + postRoundLength)
-    // this.roundTime = 0
-    // this.postRoundTime = 0 
   }
 
   keepTime = (timesUp, nextRound, gameOver = null) => {
     if (this.state === 'START ROUND') {
-      this.room.emit('timer', this.roundLength)
+      this.room.emit('timer', this.roundLength - 1)
       console.log({
         state: this.state,
         time: this.time,
-        round: this.roundLength
+        round: this.roundLength - 1
       })
       this.state = 'ROUND'
     }
