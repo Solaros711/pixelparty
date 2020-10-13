@@ -11,7 +11,6 @@ export default class Lobby extends React.Component {
       word: '',
       pixels: '',
       games: [],
-      by: 'by'
     }
   }
 
@@ -72,21 +71,18 @@ export default class Lobby extends React.Component {
               </div>
             </div>
 
-            {/* <div style={{ display: "flex", flexDirection: "row", marginTop: "10px" }}> */}
             <div id='wait-container-1'>
               <text id='emphatic-text'>Join a Game</text>
               <div id='wait-sub-container-1'>
                 {this.props.loggedIn
                   ? this.state.games.map(game =>
                     <div key={game._id}>
-                      {/* <text id="emphatic-text">Join a game:  </text> */}
                       <button onClick={() => this.handleJoinGame(game._id)}>
                          Join {game.host}'s game!  {game.players.length} of {game.numOfPlayers} joined!
                       </button>
                     </div>)
                   : this.state.games.map(game =>
                     <div key={game._id}>
-                      {/* <text id="emphatic-text">Join a game:  </text> */}
                       <button onClick={() => this.handleJoinGame(game._id)}>
                         Log in to join {game.host}'s game!  {game.players.length} of {game.numOfPlayers} joined!
                       </button>
@@ -97,13 +93,12 @@ export default class Lobby extends React.Component {
           </div>
 
           <div id='wait-container-b'>
-              {/* <text id='emphatic-text' style={{postion: "absolute"}}>Featured Masterpiece</text> */}
               <div id='wait-container-art'>
                 <div id='emphatic-text' style={{fontSize: "20px", textShadow:"2px 2px black", position: "absolute", left: "32%", top:"0.5%"}}>
                   Featured Masterpiece
                 </div>
-                <div style={{position: "absolute", textAlign: "center", color: "whitesmoke", left: "42%", top: "6.5%" }}>
-                  <span style={{fontSize: "15px", fontWeight: "bold"}}><i>{this.state.word}</i></span> by {this.state.artist}
+                <div style={{position: "absolute", textShadow:"2px 2px black", textAlign: "center", color: "whitesmoke", left: "39%", bottom: "4%" }}>
+                  <span style={{fontSize: "18px", fontWeight: "bold"}}><i>"{this.state.word}"</i></span> by {this.state.artist}
                 </div>
                 <div>
                   {this.state.pixels
@@ -128,4 +123,4 @@ export default class Lobby extends React.Component {
   }
 }
 
-{/* // old orange color:"rgb(179, 67, 2)" */}
+// old orange color:"rgb(179, 67, 2)" 
