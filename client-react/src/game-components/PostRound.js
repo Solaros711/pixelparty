@@ -13,33 +13,27 @@ export default function PostRound (props) {
     //   <Canvas displayMode canvasSocket={props.canvasSocket} pixels={round.masterpiece} />
     // </div>
 
-
     <div id="results-left-container">
 
-    <div className="round-container-1-2">
-      <div id='emphatic-text' style={{fontSize:"25px"}}>Winner: ________!</div>
-      <div><Timer timer={props.timer} /></div>
-      <div><button onClick={props.onNextRound} style={{ backgroundColor: 'firebrick' }}>Next Round</button></div>
-    </div>
-
-
-    <div id="score-gallery">
-      <div id="score-box">
-        <div id="emphatic-text" style={{marginTop:"10%", fontSize:"25px"}}> Score: {JSON.stringify(props.score)}</div>
+      <div className="round-container-1-2">
+        <div id='emphatic-text' style={{fontSize:"25px"}}>Winner: ________!</div>
+        <div><Timer timer={props.timer} /></div>
+        <div><button onClick={props.onNextRound} style={{ backgroundColor: 'firebrick' }}>Next Round</button></div>
       </div>
 
-      <div id='gallery' style={{ display: 'flex' }}>
-        {props.gameState.rounds.map((round, i) => {
-          return (
-            <div key={i} style={{margin:"1%"}}>
-              <div style={{fontSize:"12px"}}>"{round.word}" by {round.artist}</div>
-              {/* <Canvas displayMode res={4} canvasSocket={props.canvasSocket} pixels={round.masterpiece} /> */}
-            </div>
-          )
-        }
-        )}
+
+      <div id="score-gallery">
+        <div id="score-box">
+          <div id="emphatic-text" style={{marginTop:"10%", fontSize:"25px"}}> Score: {JSON.stringify(props.score)}</div>
+        </div>
+
+        <div id='gallery' style={{ display: 'flex' }}>
+              <div>
+                <div>"{round.word}" by {round.artist}</div>
+                <Canvas displayMode res={5} canvasSocket={props.canvasSocket} pixels={round.masterpiece} />
+              </div>
+        </div> 
       </div>
-    </div>
 
     </div>
 
