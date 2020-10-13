@@ -3,18 +3,17 @@ import Canvas from './Canvas'
 
 export default function GameOver (props) {
   return (
-    // <div id="results-container-0">
-      // <h5>Game Over!</h5>
-
-      // <div style={{display: "flex", marginRight: "1%"}}>
-      <div id="results-left-container">
+      <div style={{display: "flex"}}>
 
         <div className="round-container-1-2">
           <div id='emphatic-text' style={{fontSize:"25px"}}>Game Over!</div>
           <div id='emphatic-text'>Winner: _________!</div>
-          <div id="play-again-btn"><button style={{backgroundColor: "firebrick"}}>Play Again</button></div>
+          {/* <div><button onClick={props.onLeaveGame} style={{backgroundColor: "darkgreen"}}>Start Over</button></div> */}
+          <div id="play-again-btn">
+            <button style={{backgroundColor: "darkgreen"}}>Play Again</button>
+            <button onClick={props.onLeaveGame} style={{backgroundColor: "firebrick"}}>Lobby</button>
+          </div>
         </div>
-
 
         <div id="score-gallery">
           <div id="score-box">
@@ -25,7 +24,10 @@ export default function GameOver (props) {
             {props.gameState.rounds.map((round, i) => {
               return (
                 <div key={i} style={{margin:"1%"}}>
-                  <div style={{fontSize:"12px"}}>"{round.word}" by {round.artist}</div>
+                  <div style={{fontSize:"12px"}}>
+                    <div>"{round.word}"</div> 
+                    <div>by {round.artist}</div>
+                  </div>
                   <Canvas displayMode res={2} pixels={round.masterpiece} dynamic />
                 </div>
               )
@@ -33,9 +35,8 @@ export default function GameOver (props) {
             )}
           </div>
         </div>
-        <button onClick={props.onLeaveGame}>Back to Lobby</button>
+        
       </div>
 
-    // </div>
   )
 }
