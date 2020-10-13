@@ -47,9 +47,10 @@ module.exports = io => { // this takes in the io from the main app.js
           Game.findOne({ _id: gameID }, async (err, gameState) => {
             if (err) return console.log(err)
             const canvas = canvases.filter(canvas => (canvas.gameID === gameState._id.toString() && canvas.username === gameState.rounds[gameState.currentRound].artist))[0]
-            await gameState.saveArt(canvas.pixels)
-            await Art.sendArt(canvas)
-            await gameState.timesUp()
+            await gameState.endRound(canvas)
+            // await gameState.saveArt(canvas.pixels)
+            // await Art.sendArt(canvas)
+            // await gameState.timesUp()
             game.to(gameID).emit('game state', gameState)
           })
         }, () => {

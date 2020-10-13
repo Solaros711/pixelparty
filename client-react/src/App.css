@@ -95,8 +95,11 @@ canvas {
 }
 
 #timer {
-  font-size: 2rem;
+  font-size: 3rem;
   text-align: center;
+  color: whitesmoke;
+  font-family: 'Share Tech Mono', monospace;
+  /* font-family: 'VT323', monospace; */
 }
 
 .round-container-1 {

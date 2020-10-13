@@ -8,7 +8,11 @@ export default function GameOver (props) {
         <div className="round-container-1-2">
           <div id='emphatic-text' style={{fontSize:"25px"}}>Game Over!</div>
           <div id='emphatic-text'>Winner: _________!</div>
-          <div id="play-again-btn"><button style={{backgroundColor: "firebrick"}}>Play Again</button></div>
+          {/* <div><button onClick={props.onLeaveGame} style={{backgroundColor: "darkgreen"}}>Start Over</button></div> */}
+          <div id="play-again-btn">
+            <button style={{backgroundColor: "darkgreen"}}>Play Again</button>
+            <button onClick={props.onLeaveGame} style={{backgroundColor: "firebrick"}}>Lobby</button>
+          </div>
         </div>
 
         <div id="score-gallery">
@@ -31,7 +35,7 @@ export default function GameOver (props) {
             )}
           </div>
         </div>
-
+        
       </div>
 
   )

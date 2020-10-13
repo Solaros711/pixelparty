@@ -1,8 +1,5 @@
 import React from 'react'
-import * as Tone from 'tone'
-import io from 'socket.io-client'
-
-// const socket = io('/timer')
+// import * as Tone from 'tone'
 
 export default class Timer extends React.Component {
   constructor (props) {
@@ -14,31 +11,15 @@ export default class Timer extends React.Component {
     }
   }
 
-  playTone () {
-    Tone.start()
-    // console.log('audio is ready')
-    const synth = new Tone.Synth().toDestination()
-    return synth.triggerAttackRelease('C4', '8n')
-  }
-
-  // componentDidMount () {
-  //   this.props.timerSocket.emit('round join', this.props.gameID)
-  //   if (this.props.isHost) {
-  //     this.props.timerSocket.emit('round start', this.props.gameID)
-  //   }
-  //   this.props.timerSocket.on('time\'s up', gameID => {
-  //     console.log('time\'s up')
-  //     this.props.onTimesUp(gameID)
-  //   })
-  //   this.props.timerSocket.on('timer', timer => {
-  //     this.setState({ timer }, () => { if (timer <= 5) { this.playTone() } })
-  //   })
+  // playTone () {
+  //   Tone.start()
+  //   // console.log('audio is ready')
+  //   const synth = new Tone.Synth().toDestination()
+  //   return synth.triggerAttackRelease('C4', '8n')
   // }
 
-  // handleTimesUp = () => this.props.onTimesUp(this.props.gameID)
-
   render () {
-    if (this.props.timer <= 5) this.playTone()
+    // if (this.props.timer <= 5) this.playTone()
     return (
       <div>
         <span id='timer'>00:{this.props.timer.toString().padStart(2, '0')}</span>
