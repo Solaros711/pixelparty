@@ -1,43 +1,67 @@
+const colors = require('colors')
+
 class Timer {
-  constructor (numOfRounds, room = null, roundLength = 30, postRoundLength = 15) {
+  constructor (numOfRounds, room = null, roundLength = 10, postRoundLength = 5) {
     // room is timer.to(gameID), you can emit to the room w/ it
     this.numOfRounds = numOfRounds
     this.room = room
     this.roundLength = roundLength
     this.postRoundLength = postRoundLength
-    this.fullRoundLength = roundLength + postRoundLength
-    this.fullTime = numOfRounds * (roundLength + postRoundLength)
-    this.time = this.fullTime
-    this.roundTime = 0
-    this.postRoundTime = 0 
+    this.fullRoundLength = this.roundLength + this.postRoundLength
+    this.time = numOfRounds * this.fullRoundLength
+    this.state = 'START ROUND'
+    // this.fullTime = numOfRounds * (roundLength + postRoundLength)
+    // this.roundTime = 0
+    // this.postRoundTime = 0 
   }
 
   keepTime = (timesUp, nextRound, gameOver = null) => {
-    const remainder = this.time % this.fullRoundLength
-    // if (this.time === 0) return
-    if (!remainder) {
-      console.log('\nif')
+    if (this.state === 'START ROUND') {
+      this.room.emit('timer', this.roundLength)
       console.log({
+        state: this.state,
         time: this.time,
         round: this.roundLength
       })
-      this.room.emit('timer', this.roundLength)
-    } else if (remainder >= this.postRoundLength) {
-      console.log('\nelse if')
+      this.state = 'ROUND'
+    }
+
+    else if (this.state === 'ROUND') {
+      const roundTime = this.time % this.fullRoundLength - this.postRoundLength
+      this.room.emit('timer', roundTime)
       console.log({
+        state: this.state,
         time: this.time,
-        round: remainder - this.postRoundLength
+        round: roundTime
       })
-      this.room.emit('timer', remainder - this.postRoundLength)
-      if (remainder - this.postRoundLength === 0) timesUp()
-    } else {
-      console.log('\nelse')
+      if (roundTime === 0) {
+        this.state = 'START POST ROUND'
+        timesUp()
+      }
+    }
+
+    else if (this.state === 'START POST ROUND') {
+      this.room.emit('timer', this.postRoundLength)
       console.log({
+        state: this.state,
         time: this.time,
-        post: remainder
+        post: this.postRoundLength
       })
-      this.room.emit('timer', remainder)
-      if (remainder === 1 && this.time > 1) nextRound()
+      this.state = 'POST ROUND'
+    }
+    
+    else if (this.state === 'POST ROUND') {
+      const postRoundTime = this.time % this.fullRoundLength
+      this.room.emit('timer', postRoundTime)
+      console.log({
+        state: this.state,
+        time: this.time,
+        post: postRoundTime
+      })
+      if (postRoundTime === 0) {
+        this.state = 'START ROUND'
+        nextRound()
+      }
     }
   }
 

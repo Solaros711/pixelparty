@@ -64,4 +64,9 @@ artSchema.statics.sendArt = async function (canvas) {
 
 const Art = mongoose.model('Art', artSchema)
 
+// // comment in below to delete empty ArtWork
+// Art.deleteMany({ picture: Array(50).fill(Array(50)) }, err => {
+//   if (err) return console.log(err)
+// })
+
 module.exports = Art
