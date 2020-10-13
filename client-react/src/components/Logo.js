@@ -5,9 +5,7 @@ export default class Logo extends React.Component {
     super(props)
     this.state = {
       colors: {
-        // white: '#f5ffe0',
         white: 'rgba(0, 0, 0, 0)',
-        // black: '#1b1926',
         black: 'darkgrey',
         darkblue: '#262157',
         lightblue: '#323da1',
