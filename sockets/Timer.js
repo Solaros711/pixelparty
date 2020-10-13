@@ -5,8 +5,8 @@ class Timer {
     // room is timer.to(gameID), you can emit to the room w/ it
     this.numOfRounds = numOfRounds
     this.room = room
-    this.roundLength = roundLength + 1
-    this.postRoundLength = postRoundLength + 1
+    this.roundLength = roundLength
+    this.postRoundLength = postRoundLength
     this.fullRoundLength = this.roundLength + this.postRoundLength
     this.time = numOfRounds * this.fullRoundLength
     this.state = 'START ROUND'
