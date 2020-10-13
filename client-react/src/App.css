@@ -70,7 +70,7 @@ canvas {
   background: rgb(143, 121, 121); */
   background: rgba(39, 39, 39, 0.2);
   /* height: 80vh; */
-  margin-top: 3vh;
+  /* margin-top: 3vh; */
   height: 475px;
   overflow-y: auto;
   border-radius: 2%;
@@ -83,7 +83,7 @@ canvas {
 }
 
 #messages-container {
-  margin-left: 4vw;
+  margin: 1%;
 }
 
 /* * {
@@ -111,6 +111,12 @@ canvas {
   margin-top: 3vh;
 }
 
+.round-container-1 {
+  margin: 2%;
+}
+
+
+
 .round-container-1-2 {
   display: flex;
   flex-direction: column;
@@ -120,15 +126,16 @@ canvas {
   /* margin-top: 3vh; */
   height: 500px;
   overflow-y: auto;
-  margin-right: 20px;
+  margin: 1%;
   border-radius: 2%;
   border: 2px solid black;
-  padding: 7px;
+  padding: 5px;
   flex: 0 0 12em;
 }
 
 .play-container-1{
   display: flex;
+  margin: 2%;
 }
 
 ul {
@@ -231,6 +238,76 @@ button:focus {
 
 #message-btn {
   height: 30px;
+}
+
+#score-box {
+  text-align: justify;
+  margin-top: 3vh;
+  margin-left: 2vw;
+  margin-right: 2vw;
+  margin-bottom: 2%;
+  padding: 5px;
+  box-sizing: border-box;
+  background: rgba(39, 39, 39, 0.2);
+  /* position: relative;
+  left: 3vw; */
+  bottom: 0;
+  width: 40vw;
+  border-radius: 5%;
+  overflow-y: auto;
+  height: 25vh;
+  border-style: solid;
+  border-color: black;
+  border-width: 2px;
+  text-align: center;
+  
+}
+
+#results-left-container {
+  display: flex; 
+  margin-right: 1%;
+  
+}
+
+#score-gallery {
+  display: flex; 
+  flex-direction: column; 
+  width: 60vw;
+  /* justify-content: center; */
+  align-items: center;
+
+  background: rgba(39, 39, 39, 0.2);
+  /* background: rgba(83, 83, 83, 0.2); */
+  /* height: 500px; */
+  overflow-y: auto;
+  margin: 1%;
+  border-radius: 2%;
+  border: 2px solid black;
+  /* border: 1px dotted black; */
+  padding: 7px;
+}
+
+#gallery {
+  justify-content: center;
+  align-items: center;
+}
+
+#results-center-container {
+  display: flex;
+  flex-direction: column;
+
+}
+#left-side {
+  display: flex;
+  flex-direction: column;
+  left: 3vw;
+  background: rgba(39, 39, 39, 0.2);
+  /* height: 80vh; */
+  margin-top: 3vh;
+  height: 475px;
+  overflow-y: auto;
+  border-radius: 2%;
+  border: 2px solid black;
 }
 
 #login-container {
@@ -405,10 +482,10 @@ wait-container-art-1{
   border-width: 10px;
   text-align: center;
 
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
 }
 
 .container-1{
@@ -551,7 +628,7 @@ h10{
 input {
   margin: 2px;
   border-color: rgba(39, 39, 39, 0.2);
-  border-width: 5px;
+  /* border-width: 5px; */
   border-width: 1px;
   background-color: darkgrey;
 }

@@ -6,7 +6,7 @@ import PostRound from './PostRound'
 import GameOver from './GameOver'
 
 export default class Game extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     console.log('game', props)
     this.state = {
@@ -69,55 +69,57 @@ export default class Game extends React.Component {
     return (
       this.state.gameState
         ? <div id='game-container'>
-          <div className='play-container-1' id='round-and-chat'>
-            <div className='play-container-1-1'>
-              {!this.state.gameState.isReady
-                ? <Canvas
-                  isArtist={false}
-                  gameID={this.props.gameID}
-                  canvasSocket={this.props.canvasSocket}
-                />
-                : <div>
-                  {this.state.gameState.gameOver
-                    ? <GameOver score={this.state.score} gameState={this.state.gameState} />
-                    : this.state.betweenRounds
-                      ? <PostRound
-                        onNextRound={this.handleNextRound}
-                        score={this.state.score}
-                        gameState={this.state.gameState}
-                        canvasSocket={this.props.canvasSocket}
-                        timer={this.state.timer}
-                      />
-                      : (
-                        <Round
+            {/* <div className='play-container-1' id='round-and-chat'> */}
+            <div className='play-container-1'>
+              {/* <div className='play-container-1-1'> */}
+                {!this.state.gameState.isReady
+                  ? <Canvas
+                    isArtist={false}
+                    gameID={this.props.gameID}
+                    canvasSocket={this.props.canvasSocket}
+                  />
+                  : <div>
+                    {this.state.gameState.gameOver
+                      ? <GameOver score={this.state.score} gameState={this.state.gameState} />
+                      : this.state.betweenRounds
+                        ? <PostRound
+                          onNextRound={this.handleNextRound}
+                          score={this.state.score}
                           gameState={this.state.gameState}
-                          username={this.props.username}
-                          isHost={this.state.isHost}
-                          onTimesUp={this.handleTimesUp}
-                          timerSocket={this.props.timerSocket}
                           canvasSocket={this.props.canvasSocket}
-                          gameSocket={this.props.gameSocket}
-                          isArtist={isArtist || false}
                           timer={this.state.timer}
                         />
-                      )}
+                        : (
+                          <Round
+                            gameState={this.state.gameState}
+                            username={this.props.username}
+                            isHost={this.state.isHost}
+                            onTimesUp={this.handleTimesUp}
+                            timerSocket={this.props.timerSocket}
+                            canvasSocket={this.props.canvasSocket}
+                            gameSocket={this.props.gameSocket}
+                            isArtist={isArtist || false}
+                            timer={this.state.timer}
+                          />
+                        )}
 
-                </div>}
+                  </div>}
+
+              {/* </div> */}
+
+              {/* <div className='play-container-1-2'> */}
+                <Chat
+                  gameState={this.state.gameState}
+                  username={this.props.username}
+                  gameSocket={this.props.gameSocket}
+                  betweenRounds={this.state.betweenRounds}
+                />
+              {/* </div> */}
+
+              {this.state.debug
+                ? <div>{this.state.gameStateStr}</div>
+                : null}
             </div>
-
-            <div className='play-container-1-2'>
-              <Chat
-                gameState={this.state.gameState}
-                username={this.props.username}
-                gameSocket={this.props.gameSocket}
-                betweenRounds={this.state.betweenRounds}
-              />
-            </div>
-
-            {this.state.debug
-              ? <div>{this.state.gameStateStr}</div>
-              : null}
-          </div>
           </div>
         : null
     )

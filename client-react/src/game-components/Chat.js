@@ -31,18 +31,20 @@ class NewMessage extends React.Component {
   render () {
     const disabled = this.props.betweenRounds ? false : this.props.isArtist ? true : false
     return (
-      <form onSubmit={this.handleSubmit}>
-        <input
-          onChange={this.handleChange}
-          value={this.state.text}
-          disabled={disabled}
-          placeholder="Take a guess..."
-        />
-        <button
-        disabled={disabled}>
-          Send
-        </button>
-      </form>
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <input style={{width:"65%"}}
+            onChange={this.handleChange}
+            value={this.state.text}
+            disabled={disabled}
+            placeholder="Chat..."
+          />
+          <button
+          disabled={disabled}>
+            Send
+          </button>
+        </form>
+      </div>
     )
   }
 }
