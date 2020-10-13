@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
-const { Schema } = mongoose
 const colors = require('colors')
 
 const Word = require('./Word')
 const Art = require('./Art')
+const { Schema } = mongoose
 
 if (colors) {}
 const verbose = false
