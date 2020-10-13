@@ -1,15 +1,12 @@
 const colors = {
     white: '#f5ffe0',
     black: '#1b1926',
-    // darkblue: '#262157',
     darkblue: 'indigo',
     orange: 'darkorange',
-    // lightblue: '#323da1',
     lightblue: 'lightblue',
     red: '#bd2f40',
     yellow: '#f0e143',
     lightgreen: '#6ca84d',
-    // darkgreen: '#23574d',
     darkgreen: 'turquoise',
     pink: 'hotpink',
   }

@@ -65,6 +65,17 @@
         {"word":"UFO","difficulty": 2},
         {"word":"Ghost","difficulty": 1},
         {"word":"Idea","difficulty": 3},
-        {"word":"Coffee","difficulty": 3}
+        {"word":"Coffee","difficulty": 3},
+        {"word":"Bridge","difficulty": 2},
+        {"word":"Train","difficulty": 2},
+        {"word":"Castle","difficulty": 1},
+        {"word":"King","difficulty": 2},
+        {"word":"Volcano","difficulty": 1},
+        {"word":"Tornado","difficulty": 2},
+        {"word":"Waterfall","difficulty": 2},
+        {"word":"TV","difficulty": 2},
+        {"word":"Moon","difficulty": 2},
+        {"word":"Knight","difficulty": 2},
+        {"word":"Bear","difficulty": 2}
     ]
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import Palette from './Palette'
-import io from 'socket.io-client'
+// import io from 'socket.io-client'
 
 export default class Canvas extends React.Component {
   constructor (props) {

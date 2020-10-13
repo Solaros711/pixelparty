@@ -10,7 +10,7 @@ export default class Lobby extends React.Component {
       artist: '',
       word: '',
       pixels: '',
-      games: []
+      games: [],
     }
   }
 
@@ -46,7 +46,7 @@ export default class Lobby extends React.Component {
           : <h5>Welcome to the <span id='header-stress'>game lobby...</span></h5>}
         <div id='wait-container-flex'>
           <div id='wait-container-a'>
-            <div id='wait-container-1'>
+            <div id='wait-container-1' style={{marginBottom:"20px"}}>
               <text id='emphatic-text'>Host a Game</text>
               <div id='wait-sub-container-1'>
                 {this.props.loggedIn
@@ -71,21 +71,18 @@ export default class Lobby extends React.Component {
               </div>
             </div>
 
-            {/* <div style={{ display: "flex", flexDirection: "row", marginTop: "10px" }}> */}
             <div id='wait-container-1'>
               <text id='emphatic-text'>Join a Game</text>
               <div id='wait-sub-container-1'>
                 {this.props.loggedIn
                   ? this.state.games.map(game =>
                     <div key={game._id}>
-                      {/* <text id="emphatic-text">Join a game:  </text> */}
                       <button onClick={() => this.handleJoinGame(game._id)}>
                          Join {game.host}'s game!  {game.players.length} of {game.numOfPlayers} joined!
                       </button>
                     </div>)
                   : this.state.games.map(game =>
                     <div key={game._id}>
-                      {/* <text id="emphatic-text">Join a game:  </text> */}
                       <button onClick={() => this.handleJoinGame(game._id)}>
                         Log in to join {game.host}'s game!  {game.players.length} of {game.numOfPlayers} joined!
                       </button>
@@ -96,13 +93,19 @@ export default class Lobby extends React.Component {
           </div>
 
           <div id='wait-container-b'>
-            <div id='wait-container-art'>
-              <p id='emphatic-text'>Featured Masterpiece</p>
-              <div>"{this.state.word}" by {this.state.artist}</div>
-              {this.state.pixels
-                ? <Canvas displayMode dynamic pixels={this.state.pixels} />
-                : null}
-            </div>
+              <div id='wait-container-art'>
+                <div id='emphatic-text' style={{fontSize: "20px", textShadow:"2px 2px black", position: "absolute", left: "32%", top:"0.5%"}}>
+                  Featured Masterpiece
+                </div>
+                <div style={{position: "absolute", textShadow:"2px 2px black", textAlign: "center", color: "whitesmoke", left: "39%", bottom: "4%" }}>
+                  <span style={{fontSize: "18px", fontWeight: "bold"}}><i>"{this.state.word}"</i></span> by {this.state.artist}
+                </div>
+                <div>
+                  {this.state.pixels
+                    ? <Canvas displayMode dynamic pixels={this.state.pixels} res={8} />
+                    : null}
+                </div>
+              </div>
           </div>
 
           <div id='wait-container-c'>
@@ -120,4 +123,4 @@ export default class Lobby extends React.Component {
   }
 }
 
-// old orange color:"rgb(179, 67, 2)"
+// old orange color:"rgb(179, 67, 2)" 

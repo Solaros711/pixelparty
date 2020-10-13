@@ -14,7 +14,7 @@ import ThemeUp from './components/ThemeUp'
 import Main from './Main'
 
 import './App.css'
-import logo from './pix_logo_50.png'
+// import logo from './pix_logo_50.png'
 import Logo from './components/Logo'
 
 /* globals fetch */
@@ -90,58 +90,52 @@ class App extends React.Component {
   render () {
     return (
       <Router>
-        {/* <button onClick={this.signUp}>Sign Up or Whatever</button> */}
         <div>
           <div className='navbar'>
             <div className='container-0' id='menu-outer'>
               <div className='container-0-1' id='logo-1'>
                 <div>
                   {/* <img src={logo} alt='logo' /> */}
-                  <Logo />
+                  <Link to='/'>
+                    <Logo />
+                  </Link>
                 </div>
               </div>
               <div className='container-0-3'>
-                {/* <div id="themeup">
-              <ThemeUp />
-            </div>  */}
               </div>
-              {/* <div id="themeup">
-          <ThemeUp />
-          </div> */}
+              
               <div className='container-0-2' id='table'>
-
                 <ul id='horizontal-list'>
-                  {/* {this.state.loggedIn
-                ?
-                <li>
-                  <Link to="/">Lobby</Link>
-                </li>
-                : ''} */}
+                  
                   <li>
                     <Link to='/'>Lobby</Link>
-
                   </li>
+
                   {this.state.loggedIn
                     ? ''
                     : <li>
                       <Link to='/login'>Log In</Link>
                       </li>}
+
                   {this.state.loggedIn
                     ? ''
                     : <li>
                       <Link to='/signup' onClick={this.playTone}>Sign Up</Link>
                       </li>}
+
                   {this.state.loggedIn
                     ? <li>
                       {/* <Link to="/logout" onClick={this.logMeOut.bind(this)}>Log <span style={{color:"firebrick"}}>'{this.state.nick}'</span> Out</Link> */}
                       <Link to='/logout' onClick={this.logMeOut.bind(this)}>Log Out</Link>
                     </li>
                     : ''}
+
                   {this.state.loggedIn
                     ? <li>
                       <Link to='/profile/user'>Profile</Link>
                       </li>
                     : ''}
+
                 </ul>
               </div>
             </div>
@@ -157,7 +151,7 @@ class App extends React.Component {
             </Route>
 
             <Route path='/logout'>
-              <Redirect to='/login' />
+              <Redirect to='/' />
             </Route>
 
             <Route path='/login'>
@@ -170,18 +164,9 @@ class App extends React.Component {
               <Profile formValue={this.state.nick} />
             </Route>
 
-            {/* <Route path="/guest" >
-              <GuestLobby/>
-            </Route> */}
-
             <Route path='/'>
               {this.state.loggedIn
-              // ? <Lobby
-              // rooms={this.getRooms()}
-              // handleAddRoom={this.handleAddRoom.bind(this)}
-              // />
                 ? <Main nick={this.state.nick} loggedIn={this.state.loggedIn} userID={this.state.userId} />
-              // : <Redirect to="/guest"/>}
                 : <Main />}
             </Route>
           </Switch>

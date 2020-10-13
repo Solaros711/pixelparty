@@ -32,7 +32,10 @@ class Main extends React.Component {
     gameSocket.on('left game', () => this.setState({ joinedGame: false, gameID: '' }))
   }
 
+  handleLeaveGame = () => this.setState({ joinedGame: false, gameID: '' })
+
   render () {
+    console.log(this.state)
     return (
       <main>
         {this.state.joinedGame
@@ -43,6 +46,7 @@ class Main extends React.Component {
             gameSocket={gameSocket}
             timerSocket={timerSocket}
             canvasSocket={canvasSocket}
+            onLeaveGame={this.handleLeaveGame}
           />
           : <Lobby
             gameID={this.state.gameID}
