@@ -1,7 +1,7 @@
 const colors = require('colors')
 
 class Timer {
-  constructor (numOfRounds, room = null, roundLength = 10, postRoundLength = 5) {
+  constructor (numOfRounds, room = null, roundLength = 60, postRoundLength = 15) {
     // room is timer.to(gameID), you can emit to the room w/ it
     this.numOfRounds = numOfRounds
     this.room = room
