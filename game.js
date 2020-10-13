@@ -7,7 +7,6 @@ const AuthController = require('./controllers/auth')
 
 const gameIO = require('./sockets/game-io')
 const canvasIO = require('./sockets/canvas-io')
-const timerIo = require('./sockets/timer-io')
 const lobbyIO = require('./sockets/lobby-io')
 const getWords = require('./word-script')
 
@@ -26,7 +25,6 @@ app.use(express.json())
 app.use('/', AuthController)
 gameIO(io)
 canvasIO(io)
-// timerIo(io)
 lobbyIO(io)
 
 const connectDatabase = async (dbName = 'pixel-party', hostname = 'localhost') => {

@@ -38,7 +38,6 @@ module.exports = io => { // this takes in the io from the main app.js
 
       game.to(data.gameID).emit('game state', gameState)
 
-      // new stuff vv
       if (gameState.rounds.length === gameState.numOfPlayers) {
         const timer = new Timer(gameState.rounds.length, game.to(data.gameID))
         timer.start(() => {
@@ -48,9 +47,6 @@ module.exports = io => { // this takes in the io from the main app.js
             if (err) return console.log(err)
             const canvas = canvases.filter(canvas => (canvas.gameID === gameState._id.toString() && canvas.username === gameState.rounds[gameState.currentRound].artist))[0]
             await gameState.endRound(canvas)
-            // await gameState.saveArt(canvas.pixels)
-            // await Art.sendArt(canvas)
-            // await gameState.timesUp()
             game.to(gameID).emit('game state', gameState)
           })
         }, () => {
@@ -63,7 +59,6 @@ module.exports = io => { // this takes in the io from the main app.js
           })
         })
       }
-      // new stuff ^^
     })
 
     socket.on('message', async data => {
@@ -83,33 +78,6 @@ module.exports = io => { // this takes in the io from the main app.js
         game.to(data.gameID).emit('game state', gameState)
       })
     })
-
-    // old stuff vv keep for now
-
-    // socket.on('time\'s up', gameID => {
-    //   // data = { gameID, currentRound }
-    //   console.log(`\n'time's up' gameID: ${gameID}`.magenta)
-
-    //   Game.findOne({ _id: gameID }, async (err, gameState) => {
-    //     if (err) return console.log(err)
-    //     const canvas = canvases.filter(canvas => (canvas.gameID === gameState._id.toString() && canvas.username === gameState.rounds[gameState.currentRound].artist))[0]
-    //     await gameState.saveArt(canvas.pixels)
-    //     await Art.sendArt(canvas)
-    //     await gameState.timesUp()
-    //     game.to(gameID).emit('game state', gameState)
-    //   })
-    // })
-
-    // socket.on('next round', gameID => {
-    //   console.log(`'next round' gameID: ${gameID}`.magenta)
-    //   Game.findOne({ _id: gameID }, async (err, gameState) => {
-    //     if (err) return console.log(err)
-    //     await gameState.nextRound()
-    //     game.to(gameID).emit('game state', gameState)
-    //   })
-    // })
-
-    // old stuff ^^ keep for now
 
     socket.on('masterpiece', data => {
       // data = { gameID, username, pixels, word }
