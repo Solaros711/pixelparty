@@ -33,7 +33,7 @@ export default function GameOver (props) {
             )}
           </div>
         </div>
-
+        <button onClick={props.onLeaveGame}>Back to Lobby</button>
       </div>
 
     // </div>
