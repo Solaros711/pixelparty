@@ -119,6 +119,9 @@ export default class Lobby extends React.Component {
               <p id='emphatic-text'>Gameplay</p>
               <div id='game-text'>
                 <p>Welcome to Pixel Party!</p>
+                <div>You Have 60 Seconds to Draw Your Masterpiece</div>
+                <div>Everyone Else Tries to Guess What It Is</div>
+                <div>If Someone Guesses Right, You Each Get a Point</div>
               </div>
             </div>
           </div>
