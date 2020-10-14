@@ -20,9 +20,15 @@ export default class Lobby extends React.Component {
         this.setState({ games: data.games },)
     })
     this.props.lobbySocket.emit('random artwork')
+    const intervalID = setInterval(() => this.props.lobbySocket.emit('random artwork'), 5000)
+    this.setState({ intervalID })
     this.props.lobbySocket.on('random artwork', data => {
       this.setState({ artist: data.username, word: data.word, pixels: data.pixels })
     })
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.state.intervalID)
   }
 
   handleHostGame = _evt => {
