@@ -190,8 +190,22 @@ gameSchema.methods.timesUp = async function () {
 }
 
 gameSchema.methods.awardPixels = async function () {
-  await this.points.map(async username => await User.givePixel(username))
-  await this.players.map(async username => await User.givePixel(username))
+  const score = this.points.reduce((pointsObject, name) => {
+    if (name in pointsObject) pointsObject[name]++
+    else pointsObject[name] = 1
+    return pointsObject
+  }, {})
+  User.awardPixels(score)
+  // const pixelsToBeAwarded = this.points.concat(this.players)
+  // pixelsToBeAwarded.forEach(async username => {
+  //   await User.awardPixel(username)
+  // })
+  // pixelsToBeAwarded.map(async username => {
+  //   console.log(username)
+  //   await User.awardPixel(username)
+  // })
+  // await this.points.map(async username => await User.givePixel(username))
+  // await this.players.map(async username => await User.givePixel(username))
 }
 
 gameSchema.methods.saveArt = async function (pixels) {

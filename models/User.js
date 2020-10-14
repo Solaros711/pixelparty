@@ -56,12 +56,21 @@ userSchema.methods.addPic = async function (picID) {
   return user
 }
 
-userSchema.statics.givePixel = function (username) {
-  this.findOne({ username: username }, async (err, user) => {
-    if (err) return console.log(err)
-    user.pixelPoints += 1
-    await user.save()
-  })
+userSchema.statics.awardPixels = function (score) {
+  console.log(score)
+  for (const username in score) {
+    this.findOne({ username: username }, (err, user) => {
+      if (err) return console.log(err)
+      user.pixelPoints += score[username] + 1
+      user.save()
+    })
+  }
+  // this.findOne({ username: username }, async (err, user) => {
+  //   if (err) return console.log(err)
+  //   user.pixelPoints += pixelPoints + 1
+  //   await user.save()
+  //   console.log(username, 'save')
+  // })
 }
 
 const User = mongoose.model('User', userSchema)
