@@ -15,7 +15,7 @@ export default class Game extends React.Component {
       consoleLogs: false,
       gameStart: false,
       debug: false,
-      gameState: {players:[]},
+      gameState: { players: [] },
       score: '',
       betweenRounds: false,
       timer: 0
@@ -72,38 +72,38 @@ export default class Game extends React.Component {
     return (
       this.state.gameState
         ? <div id='game-container'>
-            <div className='play-container-1'>
-                {!this.state.gameState.isReady
-                  ? <div id="results-left-container">
-              
-                      <div className="round-container-1-2">
-                        <div id='emphatic-text' style={{fontSize:"20px"}}>Enjoy our canvas while you wait for your game.</div>
-                        <div>
-                          <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
-                        </div>
-                        <div><b>{this.state.gameState.host}'s game: {this.state.gameState.players.length} of {this.state.gameState.numOfPlayers} joined!</b></div>
-                      </div>
-                    
-                      <div id="canvas-container-1-a">
-                        <Canvas
-                          isArtist={false}
-                          gameID={this.props.gameID}
-                          canvasSocket={this.props.canvasSocket}
-                        />
-                      </div>
+          <div className='play-container-1'>
+            {!this.state.gameState.isReady
+              ? <div id='results-left-container'>
 
-                    </div>
-                  : <div id="results-left-container">
-                    {this.state.gameState.gameOver
-                      ? <GameOver score={this.state.score} gameState={this.state.gameState} onLeaveGame={this.props.onLeaveGame}/>
-                      : this.state.betweenRounds
-                        ? <PostRound
-                          onNextRound={this.handleNextRound}
-                          score={this.state.score}
-                          gameState={this.state.gameState}
-                          canvasSocket={this.props.canvasSocket}
-                          timer={this.state.timer}
-                        />
+                <div className='round-container-1-2'>
+                  <div id='emphatic-text' style={{ fontSize: '20px' }}>Enjoy our canvas while you wait for your game.</div>
+                  <div>
+                    <div class='lds-ellipsis'><div /><div /><div /><div /></div>
+                  </div>
+                  <div><b>{this.state.gameState.host}'s game: {this.state.gameState.players.length} of {this.state.gameState.numOfPlayers} joined!</b></div>
+                </div>
+
+                <div id='canvas-container-1-a'>
+                  <Canvas
+                    isArtist
+                    gameID={this.props.gameID}
+                    canvasSocket={this.props.canvasSocket}
+                  />
+                </div>
+
+              </div>
+              : <div id='results-left-container'>
+                {this.state.gameState.gameOver
+                  ? <GameOver score={this.state.score} gameState={this.state.gameState} onLeaveGame={this.props.onLeaveGame} />
+                  : this.state.betweenRounds
+                    ? <PostRound
+                      onNextRound={this.handleNextRound}
+                      score={this.state.score}
+                      gameState={this.state.gameState}
+                      canvasSocket={this.props.canvasSocket}
+                      timer={this.state.timer}
+                    />
                     : (
                       <Round
                         gameState={this.state.gameState}
@@ -118,24 +118,23 @@ export default class Game extends React.Component {
                       />
                     )}
 
-              </div>}
+                </div>}
 
-                <Chat
-                  gameState={this.state.gameState}
-                  username={this.props.username}
-                  gameSocket={this.props.gameSocket}
-                  betweenRounds={this.state.betweenRounds}
-                />
+            <Chat
+              gameState={this.state.gameState}
+              username={this.props.username}
+              gameSocket={this.props.gameSocket}
+              betweenRounds={this.state.betweenRounds}
+            />
 
             {this.state.debug
               ? <div>{this.state.gameStateStr}</div>
               : null}
           </div>
-        </div>
+          </div>
         : null
     )
   }
 }
-
 
 // Status ellipsis. "spinrs" by Jay (https://codepen.io/jsamra/pen/MNmJWL).
