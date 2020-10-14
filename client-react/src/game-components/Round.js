@@ -11,7 +11,7 @@ export default class Round extends React.Component {
     }
   }
 
-  setPixels = pixels => this.setState({ pixels})
+  // setPixels = pixels => this.setState({ pixels})
 
   render () {
     const gameState = this.props.gameState
@@ -47,7 +47,6 @@ export default class Round extends React.Component {
             isArtist={isArtist}
             gameID={gameState._id}
             canvasSocket={this.props.canvasSocket}
-            onSendPixelsUp={this.setPixels}
             username={this.props.username}
             word={roundState.word}
             />
