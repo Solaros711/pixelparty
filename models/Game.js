@@ -3,6 +3,7 @@ const colors = require('colors')
 
 const Word = require('./Word')
 const Art = require('./Art')
+const User = require('./User')
 const { Schema } = mongoose
 
 if (colors) {}
@@ -179,10 +180,18 @@ gameSchema.methods.nextRound = async function () {
 gameSchema.methods.timesUp = async function () {
   const round = this.rounds[this.currentRound]
   round.roundOver = true
-  if (this.currentRound === this.rounds.length - 1) this.gameOver = true
+  if (this.currentRound === this.rounds.length - 1) {
+    this.gameOver = true
+    this.awardPixels()
+  }
   await this.save()
   if (verbose) console.log('time\'s up: '.rainbow, this)
   return this
+}
+
+gameSchema.methods.awardPixels = async function () {
+  await this.points.map(async username => await User.givePixel(username))
+  await this.players.map(async username => await User.givePixel(username))
 }
 
 gameSchema.methods.saveArt = async function (pixels) {

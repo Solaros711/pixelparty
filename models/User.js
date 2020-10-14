@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'Art',
     required: false
+  },
+  pixelPoints: {
+    type: Number,
+    default: 0
   }
 })
 
@@ -50,6 +54,14 @@ userSchema.methods.addPic = async function (picID) {
   user.picture = picID
   await user.save()
   return user
+}
+
+userSchema.statics.givePixel = function (username) {
+  this.findOne({ username: username }, async (err, user) => {
+    if (err) return console.log(err)
+    user.pixelPoints += 1
+    await user.save()
+  })
 }
 
 const User = mongoose.model('User', userSchema)
