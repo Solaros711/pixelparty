@@ -98,7 +98,6 @@ export default class Canvas extends React.Component {
         pixels
       }, () => {
         this.drawPixels()
-        this.sendPixelsUp()
       })
       const data = { gameID: this.props.gameID, username: this.props.username, word: this.props.word, pixels}
 
@@ -110,7 +109,6 @@ export default class Canvas extends React.Component {
   }
 
   // this Canvas method handles drawing multiple pixels for a click and drag
-  // ask Evan about try... catch here
   handleDrawPixelMoving = _evt => {
     if (!this.props.isArtist) return
     try {
@@ -124,7 +122,6 @@ export default class Canvas extends React.Component {
         pixels
       }, () => {
         this.drawPixels()
-        this.sendPixelsUp()
       })
       const data = { gameID: this.props.gameID, username: this.props.username, word: this.props.word, pixels }
 
@@ -161,10 +158,6 @@ export default class Canvas extends React.Component {
         x--
       }
     requestAnimationFrame(() => this.drawPixelsDynamic(++i))
-  }
-
-  sendPixelsUp = () => {
-    this.props.onSendPixelsUp(this.state.pixels)
   }
 
   render () {
