@@ -7,7 +7,7 @@ const colors = require('colors')
 if (colors) console.log('gameIO'.rainbow)
 
 Game.clean() // comment in to clean db
-const verbose = true
+const verbose = false
 
 module.exports = io => { // this takes in the io from the main app.js
   const game = io.of('/game') // the game namespace of the io

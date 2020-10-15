@@ -20,9 +20,15 @@ export default class Lobby extends React.Component {
         this.setState({ games: data.games },)
     })
     this.props.lobbySocket.emit('random artwork')
+    const intervalID = setInterval(() => this.props.lobbySocket.emit('random artwork'), 5000)
+    this.setState({ intervalID })
     this.props.lobbySocket.on('random artwork', data => {
       this.setState({ artist: data.username, word: data.word, pixels: data.pixels })
     })
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.state.intervalID)
   }
 
   handleHostGame = _evt => {
@@ -112,7 +118,11 @@ export default class Lobby extends React.Component {
             <div id='wait-container-c-1'>
               <p id='emphatic-text'>Gameplay</p>
               <div id='game-text'>
-                <p>Welcome to Pixel Party!</p>
+                <p style={{textShadow: "2px 2px black", color: "whitesmoke"}}>Welcome to Pixel Party!</p>
+                <div id="rules">
+                  <p>You have 60 seconds to draw your masterpiece...as everyone else tries to guess what it is!</p>
+                  <p>If someone guesses right, you both get a point!</p>
+                </div>
               </div>
             </div>
           </div>

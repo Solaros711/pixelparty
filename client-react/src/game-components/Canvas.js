@@ -98,7 +98,6 @@ export default class Canvas extends React.Component {
         pixels
       }, () => {
         this.drawPixels()
-        this.sendPixelsUp()
       })
       const data = { gameID: this.props.gameID, username: this.props.username, word: this.props.word, pixels}
 
@@ -110,7 +109,6 @@ export default class Canvas extends React.Component {
   }
 
   // this Canvas method handles drawing multiple pixels for a click and drag
-  // ask Evan about try... catch here
   handleDrawPixelMoving = _evt => {
     if (!this.props.isArtist) return
     try {
@@ -124,7 +122,6 @@ export default class Canvas extends React.Component {
         pixels
       }, () => {
         this.drawPixels()
-        this.sendPixelsUp()
       })
       const data = { gameID: this.props.gameID, username: this.props.username, word: this.props.word, pixels }
 
@@ -149,7 +146,8 @@ export default class Canvas extends React.Component {
     if (!this.state.displayMode) this.drawGrid()
   }
 
-  drawPixelsDynamic = (i, pixels = this.state.pixels, res = this.state.res, w = this.state.w, h = this.state.h) => {
+  drawPixelsDynamic = (i, res = this.state.res, w = this.state.w, h = this.state.h) => {
+    const pixels = this.props.pixels
     if (i === 0) this.state.ctx.clearRect(0, 0, w, h)
     let x = i
       for (let y = 0; y <= i; y++) {
@@ -162,11 +160,8 @@ export default class Canvas extends React.Component {
     requestAnimationFrame(() => this.drawPixelsDynamic(++i))
   }
 
-  sendPixelsUp = () => {
-    this.props.onSendPixelsUp(this.state.pixels)
-  }
-
   render () {
+    if (this.state.ctx && this.state.displayMode && this.state.dynamic) this.drawPixelsDynamic(0)
     return (
       <div className="canvas-container-1">
 
