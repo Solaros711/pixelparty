@@ -79,7 +79,7 @@ export default class Chat extends React.Component {
       const artist = gameState.rounds[gameState.currentRound].artist
       isArtist = artist === this.props.username
     }
-    const messages = this.props.gameState.messages || []
+    const messages = this.props.gameState.messages.slice() || []
     return (
       <div id='messages-container'>
         <div id='messages' style={{ scrollSnapType: 'y mandatory', display: 'flex', flexDirection: 'column-reverse' }}>
