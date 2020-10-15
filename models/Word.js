@@ -21,15 +21,19 @@ wordSchema.statics.addWord = async function (newWord, newDifficulty) {
 }
 
 wordSchema.statics.getWords = async function () {
-  let wordsArray = []
-  await Word.find({}, function (err, result) {
-    if (err) {
-      console.log(err)
-    }else {
-      wordsArray = result.map(word => word.word)
-    }
-  })
-  return wordsArray
+  // let wordsArray = []
+  try {
+    const words = await Word.find({})//, function (err, result) {
+    //   if (err) return console.log(err)
+    //   const wordsArray = result.map(word => word.word)
+    //   console.log(wordsArray)
+    //   return wordsArray
+    // })
+    const wordsArray = words.map(word => word.word)
+    return wordsArray
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 const Word = mongoose.model('Word', wordSchema)

@@ -1,10 +1,11 @@
 const mongoose = require('mongoose')
 const colors = require('colors')
 
+const { Schema } = mongoose
+
 const Word = require('./Word')
 const Art = require('./Art')
 const User = require('./User')
-const { Schema } = mongoose
 
 if (colors) {}
 const verbose = false
@@ -132,18 +133,23 @@ gameSchema.statics.clean = async function () {
 }
 
 gameSchema.methods.randomize = async function () {
-  const players = this.players.slice()
-  let artist
-  let words = await Word.getWords()
-  words = words.slice()
-  let word
-  while (players.length) {
-    artist = players.sort((_a, _b) => Math.random() - 0.5).splice(0, 1)[0]
-    word = words.sort((_a, _b) => Math.random() - 0.5).splice(0, 1)[0]
-    this.rounds.push({ word, artist })
+  try {
+    const players = this.players.slice()
+    let artist
+    let words = await Word.getWords()
+    console.log(words)
+    words = words.slice()
+    let word
+    while (players.length) {
+      artist = players.sort((_a, _b) => Math.random() - 0.5).splice(0, 1)[0]
+      word = words.sort((_a, _b) => Math.random() - 0.5).splice(0, 1)[0]
+      this.rounds.push({ word, artist })
+    }
+    await this.save()
+    return this
+  } catch (err) {
+    console.log(err)
   }
-  await this.save()
-  return this
 }
 
 gameSchema.methods.logMessage = async function (message) {
