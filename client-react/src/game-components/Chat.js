@@ -55,7 +55,7 @@ function WinningMessage (props) {
     <div>
       {message.split('').map((char, i) => {
         const color = scale(i / (message.length - 1))
-        return <span key={i} style={{ color }}>{char}</span>
+        return <span key={i} style={{ color, scrollSnapAlign: 'end' }}>{char}</span>
       })}
     </div>
   )
@@ -82,10 +82,16 @@ export default class Chat extends React.Component {
     const messages = this.props.gameState.messages || []
     return (
       <div id='messages-container'>
-        <div id='messages'>
-          {messages.map((msg, i) => msg.winner
-            ? <WinningMessage msg={msg} />
-            : <div key={i} style={{textAlign: this.props.username === msg.username ?"right": "left"}}>{msg.username}: {msg.text}</div>)}
+        <div id='messages' style={{ scrollSnapType: 'y mandatory', display: 'flex', flexDirection: 'column-reverse' }}>
+          {messages.reverse().map((msg, i) => msg.winner
+            ? <WinningMessage msg={msg} last={i === messages.length - 1} />
+            : <div key={i} style={{
+              textAlign: this.props.username === msg.username ?"right": "left",
+              scrollSnapAlign: 'end'
+            }}>
+              {msg.username}: {msg.text}
+              </div>
+          )}
         </div>
         <NewMessage
           onSubmit={this.handleSubmit}
