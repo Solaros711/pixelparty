@@ -39,15 +39,19 @@ class Main extends React.Component {
     return (
       <main>
         {this.state.joinedGame
-          ? <Game
-            gameID={this.state.gameID}
-            isHost={this.state.isHost}
-            username={this.state.username}
-            gameSocket={gameSocket}
-            timerSocket={timerSocket}
-            canvasSocket={canvasSocket}
+          ? <ErrorBoundary
             onLeaveGame={this.handleLeaveGame}
-          />
+          >
+            <Game
+              gameID={this.state.gameID}
+              isHost={this.state.isHost}
+              username={this.state.username}
+              gameSocket={gameSocket}
+              timerSocket={timerSocket}
+              canvasSocket={canvasSocket}
+              onLeaveGame={this.handleLeaveGame}
+            />
+          </ErrorBoundary>
           : <Lobby
             gameID={this.state.gameID}
             userID={this.state.userID}
@@ -58,6 +62,37 @@ class Main extends React.Component {
           />}
       </main>
     )
+  }
+}
+
+class ErrorBoundary extends React.Component { // Thanks Austen! --Pete
+  constructor (props) {
+    super(props)
+    this.state = {
+      err: null,
+      errInfo: null
+    }
+  }
+
+  componentDidCatch (err, errInfo) {
+    this.setState({
+      err,
+      errInfo
+    })
+  }
+
+  render () {
+    if (this.state.errInfo) {
+      console.log(this.state.err)
+      console.log(this.state.errInfo)
+      return (
+        <div>
+          <div>We're sorry something went wrong.</div>
+          <button onClick={this.props.onLeaveGame}>Take me back to the Lobby</button>
+        </div>
+      )
+    }
+    return this.props.children
   }
 }
 

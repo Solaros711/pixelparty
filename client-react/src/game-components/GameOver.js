@@ -1,5 +1,6 @@
 import React from 'react'
 import Canvas from './Canvas'
+import ScoreChart from './ScoreChart'
 
 export default function GameOver (props) {
   return (
@@ -10,16 +11,17 @@ export default function GameOver (props) {
           <div id='emphatic-text'>Winner: _________!</div>
           {/* <div><button onClick={props.onLeaveGame} style={{backgroundColor: "darkgreen"}}>Start Over</button></div> */}
           <div id="play-again-btn">
-            <button style={{backgroundColor: "darkgreen"}}>Play Again</button>
-            <button onClick={props.onLeaveGame} style={{backgroundColor: "firebrick"}}>Lobby</button>
+            {/* <button style={{backgroundColor: "darkgreen"}}>Play Again</button> */}
+            <button onClick={props.onLeaveGame}>Lobby</button>
           </div>
         </div>
 
+        
+        
         <div id="score-gallery">
-          <div id="score-box">
-            <div id="emphatic-text" style={{marginTop:"10%", fontSize:"25px"}}> Score: {JSON.stringify(props.score)}</div>
-          </div>
-      
+          <text id='emphatic-text'>Game Scores</text>
+          <ScoreChart score={props.score}/>
+        
           <div id='gallery' style={{ display: 'flex' }}>
             {props.gameState.rounds.map((round, i) => {
               return (
@@ -35,6 +37,7 @@ export default function GameOver (props) {
             )}
           </div>
         </div>
+        
         
       </div>
 

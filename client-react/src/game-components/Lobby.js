@@ -103,7 +103,7 @@ export default class Lobby extends React.Component {
                 <div id='emphatic-text' style={{fontSize: "20px", textShadow:"2px 2px black", position: "absolute", left: "32%", top:"0.5%"}}>
                   Featured Masterpiece
                 </div>
-                <div style={{position: "absolute", textShadow:"2px 2px black", textAlign: "center", color: "whitesmoke", left: "39%", bottom: "4%" }}>
+                <div style={{position: "absolute", textShadow:"2px 2px black", textAlign: "center", color: "whitesmoke", right: "20%", bottom: "4%" }}>
                   <span style={{fontSize: "18px", fontWeight: "bold"}}><i>"{this.state.word}"</i></span> by {this.state.artist}
                 </div>
                 <div>
@@ -118,10 +118,11 @@ export default class Lobby extends React.Component {
             <div id='wait-container-c-1'>
               <p id='emphatic-text'>Gameplay</p>
               <div id='game-text'>
-                <p>Welcome to Pixel Party!</p>
-                <div>You Have 60 Seconds to Draw Your Masterpiece</div>
-                <div>Everyone Else Tries to Guess What It Is</div>
-                <div>If Someone Guesses Right, You Each Get a Point</div>
+                <p style={{textShadow: "2px 2px black", color: "whitesmoke"}}>Welcome to Pixel Party!</p>
+                <div id="rules">
+                  <p>You have 60 seconds to draw your masterpiece...as everyone else tries to guess what it is!</p>
+                  <p>If someone guesses right, you both get a point!</p>
+                </div>
               </div>
             </div>
           </div>
