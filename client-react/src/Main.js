@@ -3,7 +3,6 @@ import io from 'socket.io-client'
 import Game from './game-components/Game'
 import Lobby from './game-components/Lobby'
 import { withRouter } from 'react-router-dom' // allows routing to /login
-import { ErrorBoundary } from 'react-error-boundary'
 
 const lobbySocket = io('/lobby')
 const gameSocket = io('/game')
@@ -41,9 +40,7 @@ class Main extends React.Component {
       <main>
         {this.state.joinedGame
           ? <ErrorBoundary
-            FallbackComponent={ErrorFallback}
-            onReset={this.handleLeaveGame}
-            onError={err => console.log(err)}
+            onLeaveGame={this.handleLeaveGame}
           >
             <Game
               gameID={this.state.gameID}
@@ -68,14 +65,35 @@ class Main extends React.Component {
   }
 }
 
-function ErrorFallback (props) {
-  console.log(props.error)
-  return (
-    <div>
-      <div>We're sorry something went wrong.</div>
-      <button onClick={props.resetErrorBoundary}>Take me back to the Lobby</button>
-    </div>
-  )
+class ErrorBoundary extends React.Component { // Thanks Austen! --Pete
+  constructor (props) {
+    super(props)
+    this.state = {
+      err: null,
+      errInfo: null
+    }
+  }
+
+  componentDidCatch (err, errInfo) {
+    this.setState({
+      err,
+      errInfo
+    })
+  }
+
+  render () {
+    if (this.state.errInfo) {
+      console.log(this.state.err)
+      console.log(this.state.errInfo)
+      return (
+        <div>
+          <div>We're sorry something went wrong.</div>
+          <button onClick={this.props.onLeaveGame}>Take me back to the Lobby</button>
+        </div>
+      )
+    }
+    return this.props.children
+  }
 }
 
 export default withRouter(Main)
