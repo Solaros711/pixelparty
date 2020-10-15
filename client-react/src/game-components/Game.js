@@ -86,7 +86,7 @@ export default class Game extends React.Component {
 
                 <div id='canvas-container-1-a'>
                   <Canvas
-                    isArtist
+                    isArtist={false}
                     gameID={this.props.gameID}
                     canvasSocket={this.props.canvasSocket}
                   />
