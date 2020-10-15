@@ -89,7 +89,7 @@ canvas {
 
 #messages-container {
   margin: 1%;
-  width: 20%;
+  width: 20vw;
   padding-left: 1%;
   padding-right: 1%;
 }
@@ -97,7 +97,9 @@ canvas {
 #timer {
   font-size: 3rem;
   text-align: center;
-  color: whitesmoke;
+  /* color: whitesmoke; */
+  color: darkkhaki;
+  text-shadow: 2px 2px black;
   font-family: 'Share Tech Mono', monospace;
   /* font-family: 'VT323', monospace; */
 }
@@ -114,7 +116,7 @@ canvas {
   background: rgba(39, 39, 39, 0.2);
   /* height: 80vh; */
   /* margin-top: 3vh; */
-  height: 505px;
+  height: 510px;
   overflow-y: auto;
   margin: 1%;
   margin-right:3%;
@@ -245,7 +247,12 @@ button:focus {
 #results-left-container {
   display: flex; 
   margin-right: 2%;
-  width: 75%
+  width: 75%;
+}
+
+#postround-left{
+  display: flex;
+  width: 102%;
 }
 
 #score-gallery {
@@ -254,11 +261,28 @@ button:focus {
   width: 60vw;
   align-items: center;
   background: rgba(39, 39, 39, 0.2);
-  overflow-y: auto;
+  /* overflow-y: auto; */
   margin: 1%;
   border-radius: 2%;
   border: 2px solid black;
   padding: 7px;
+  /* border-style: none */
+}
+
+#score-chart {
+  width: 45vw;
+  height: 30vh;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.chartjs-render-monitor {
+  border-style: none;
+  width: 45vw;
+  height: 30vh;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding: 5px;
 }
 
 #gallery {
@@ -271,6 +295,7 @@ button:focus {
   flex-direction: column;
 
 }
+
 #left-side {
   display: flex;
   flex-direction: column;
@@ -350,7 +375,7 @@ button:focus {
   width: 60vw;
   background: rgba(83, 83, 83, 0.2);
   height: 420px;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   margin-top: 1vh;
   border-radius: 5%;
   border: 1px dotted black;
@@ -426,7 +451,7 @@ button:focus {
   bottom: 0; 
   width: 95%;
   border-radius: 5%;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   height: 590px;
   border-style: solid;
   border-color: rgba(244, 245, 240, 0.3);

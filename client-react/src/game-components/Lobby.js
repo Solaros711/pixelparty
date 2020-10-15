@@ -97,7 +97,7 @@ export default class Lobby extends React.Component {
                 <div id='emphatic-text' style={{fontSize: "20px", textShadow:"2px 2px black", position: "absolute", left: "32%", top:"0.5%"}}>
                   Featured Masterpiece
                 </div>
-                <div style={{position: "absolute", textShadow:"2px 2px black", textAlign: "center", color: "whitesmoke", left: "39%", bottom: "4%" }}>
+                <div style={{position: "absolute", textShadow:"2px 2px black", textAlign: "center", color: "whitesmoke", right: "20%", bottom: "4%" }}>
                   <span style={{fontSize: "18px", fontWeight: "bold"}}><i>"{this.state.word}"</i></span> by {this.state.artist}
                 </div>
                 <div>
