@@ -23,7 +23,7 @@ module.exports = io => { // this takes in the io from game.js
             const checkedResults = results.filter(result => result.task != null && result.user != null)
             // await User.populate(result, 'user')
             await Word.populate(checkedResults, 'task')
-            // console.log(checkedResults)
+            console.log(checkedResults)
             const gallery = checkedResults.map(result => {
               const artwork = {
                 username: username,
