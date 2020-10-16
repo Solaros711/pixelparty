@@ -17,6 +17,7 @@ module.exports = io => { // this takes in the io from game.js
         // console.log(user)
         await Art.find({ user: user._id })
           .exec(async (err, result) => {
+            console.log(result)
             if (err) return console.log(err)
             // await User.populate(result, 'user')
             await Word.populate(result, 'task')
@@ -30,7 +31,7 @@ module.exports = io => { // this takes in the io from game.js
               return artwork
             })
             // console.log(gallery)
-            socket.emit('user gallery', gallery)
+            if (gallery.length) socket.emit('user gallery', gallery)
           })
       } catch (err) {
         console.log(err)
