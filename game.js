@@ -8,6 +8,7 @@ const AuthController = require('./controllers/auth')
 const gameIO = require('./sockets/game-io')
 const canvasIO = require('./sockets/canvas-io')
 const lobbyIO = require('./sockets/lobby-io')
+const profileIO = require('./sockets/profile-io')
 const getWords = require('./word-script')
 
 const app = express()
@@ -26,6 +27,7 @@ app.use('/', AuthController)
 gameIO(io)
 canvasIO(io)
 lobbyIO(io)
+profileIO(io)
 
 const connectDatabase = async (dbName = 'pixel-party', hostname = 'localhost') => {
   console.log('Connecting to database...')
