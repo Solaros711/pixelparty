@@ -15,7 +15,7 @@ export default class Game extends React.Component {
       consoleLogs: false,
       gameStart: false,
       debug: false,
-      gameState: { players: [] },
+      gameState: { players: [], messages: [] },
       score: '',
       betweenRounds: false,
       timer: 0

@@ -7,7 +7,7 @@ const colors = require('colors')
 if (colors) console.log('gameIO'.rainbow)
 
 Game.clean() // comment in to clean db
-const verbose = true
+const verbose = false
 
 module.exports = io => { // this takes in the io from the main app.js
   const game = io.of('/game') // the game namespace of the io
@@ -55,6 +55,14 @@ module.exports = io => { // this takes in the io from the main app.js
           Game.findOne({ _id: gameID }, async (err, gameState) => {
             if (err) return console.log(err)
             await gameState.nextRound()
+            game.to(gameID).emit('game state', gameState)
+          })
+        }, () => {
+          console.log(`'game over' gameID: ${gameID}`)
+
+          Game.findOne({ _id: gameID }, async (err, gameState) => {
+            if (err) return console.log(err)
+            await gameState.endGame()
             game.to(gameID).emit('game state', gameState)
           })
         })
