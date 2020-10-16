@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const Schema = mongoose.Schema
+const Art = require('./Art')
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -72,6 +73,10 @@ userSchema.statics.awardPixels = function (score) {
   //   console.log(username, 'save')
   // })
 }
+
+// userSchema.methods.gallery = async function (username) {
+//   const gallery = Art.find({})
+// }
 
 const User = mongoose.model('User', userSchema)
 
