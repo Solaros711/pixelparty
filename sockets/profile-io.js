@@ -16,13 +16,15 @@ module.exports = io => { // this takes in the io from game.js
         const user = await User.findOne({ username })
         // console.log(user)
         await Art.find({ user: user._id })
-          .exec(async (err, result) => {
-            console.log(result)
+          .exec(async (err, results) => {
+            console.log(results)
             if (err) return console.log(err)
+
+            const checkedResults = results.filter(result => result.word != null && result.user != null)
             // await User.populate(result, 'user')
-            await Word.populate(result, 'task')
-            // console.log(result)
-            const gallery = result.map(result => {
+            await Word.populate(checkedResults, 'task')
+            // console.log(checkedResults)
+            const gallery = checkedResults.map(result => {
               const artwork = {
                 username: username,
                 word: result.task.word,
