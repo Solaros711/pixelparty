@@ -6,7 +6,7 @@ import {
   Link,
   Redirect
 } from 'react-router-dom'
-import * as Tone from 'tone'
+// import * as Tone from 'tone'
 import Profile from './components/Profile'
 import LoginForm from './components/LoginForm'
 import Signup from './components/Signup'
@@ -18,6 +18,9 @@ import './App.css'
 import Logo from './components/Logo'
 
 /* globals fetch */
+
+import io from 'socket.io-client'
+const profileSocket = io('/profile')
 
 class App extends React.Component {
   constructor (props) {
@@ -80,12 +83,12 @@ class App extends React.Component {
     this.setState({ nick: null, loggedIn: false })
   }
 
-  playTone () {
-    Tone.start()
-    // console.log('audio is ready')
-    const synth = new Tone.Synth().toDestination()
-    return synth.triggerAttackRelease('C4', '8n')
-  }
+  // playTone () {
+  //   Tone.start()
+  //   // console.log('audio is ready')
+  //   const synth = new Tone.Synth().toDestination()
+  //   return synth.triggerAttackRelease('C4', '8n')
+  // }
 
   render () {
     return (
@@ -120,7 +123,7 @@ class App extends React.Component {
                   {this.state.loggedIn
                     ? ''
                     : <li>
-                      <Link to='/signup' onClick={this.playTone}>Sign Up</Link>
+                      <Link to='/signup'>Sign Up</Link>
                       </li>}
 
                   {this.state.loggedIn
@@ -161,7 +164,7 @@ class App extends React.Component {
             </Route>
 
             <Route path='/profile/user'>
-              <Profile nick={this.state.nick} />
+              <Profile username={this.state.nick} profileSocket={profileSocket} />
             </Route>
 
             <Route path='/'>

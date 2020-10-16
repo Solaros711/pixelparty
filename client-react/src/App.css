@@ -408,8 +408,15 @@ button:focus {
   font-style: italic;
 }
 
-#profile-gallery{
+#profile-gallery {
   margin-top: 3vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+#profile-gallery > div {
+  margin: 5px;
 }
 
 #wait-container {
@@ -821,4 +828,11 @@ select:focus {
     }
 }
 
+.gallery-item:hover {
+  background-color: rgba(102, 100, 100, 0.5);
+  cursor: pointer;
+} 
 
+.gallery-item {
+  border-radius: 5%;
+}
