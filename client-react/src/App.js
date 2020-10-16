@@ -161,7 +161,7 @@ class App extends React.Component {
             </Route>
 
             <Route path='/profile/user'>
-              <Profile formValue={this.state.nick} />
+              <Profile nick={this.state.nick} />
             </Route>
 
             <Route path='/'>

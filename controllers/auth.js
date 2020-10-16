@@ -33,8 +33,8 @@ router.post('/login', (req, res) => {
 
     res.send({
       username: req.body.username,
-      token 
-})
+      token
+    })
   })
 })
 
