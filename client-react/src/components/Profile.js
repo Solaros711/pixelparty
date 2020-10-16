@@ -9,6 +9,7 @@ class Profile extends React.Component {
   }
 
   componentDidMount () {
+    console.log(this.state, this.props)
     this.props.profileSocket.emit('user gallery', this.state.username)
     this.props.profileSocket.on('user gallery', gallery => console.log(gallery))
   }
