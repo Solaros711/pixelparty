@@ -104,7 +104,7 @@ export default class Lobby extends React.Component {
                   Featured Masterpiece
                 </div>
                 {this.state.word
-                ? <div style={{position: "absolute", textShadow:"2px 2px black", textAlign: "center", color: "whitesmoke", right: "20%", bottom: "4%" }}>
+                ? <div style={{position: "absolute", textShadow:"2px 2px black", textAlign: "center", color: "whitesmoke", right: "41%", bottom: "4%" }}>
                   <span style={{fontSize: "18px", fontWeight: "bold"}}><i>"{this.state.word}"</i></span> by {this.state.artist}
                 </div>
                 : null
