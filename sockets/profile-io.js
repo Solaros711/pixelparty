@@ -20,7 +20,7 @@ module.exports = io => { // this takes in the io from game.js
             console.log(results)
             if (err) return console.log(err)
 
-            const checkedResults = results.filter(result => result.word != null && result.user != null)
+            const checkedResults = results.filter(result => result.task != null && result.user != null)
             // await User.populate(result, 'user')
             await Word.populate(checkedResults, 'task')
             // console.log(checkedResults)
