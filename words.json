@@ -95,6 +95,7 @@
         {"word":"Saw","difficulty": 2},
         {"word":"Door","difficulty": 2},
         {"word":"Book","difficulty": 2},
-        {"word":"Keyboard","difficulty": 3}
+        {"word":"Keyboard","difficulty": 3},
+        {"word":"boat","difficulty": 2}
     ]
 }
