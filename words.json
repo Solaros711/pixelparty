@@ -122,7 +122,14 @@
         {"word":"Sombrero","difficulty": 2},
         {"word":"Hammer","difficulty": 2},
         {"word":"Saw","difficulty": 2},
+        {"word":"Socks","difficulty": 2},
+        {"word":"Shirt","difficulty": 2},
+        {"word":"Gate","difficulty": 2},
+        {"word":"Saw","difficulty": 2},
+        {"word":"Door","difficulty": 2},
+        {"word":"Book","difficulty": 2},
+        {"word":"Keyboard","difficulty": 3},
+        {"word":"boat","difficulty": 2},
         {"word":"Rain","difficulty": 3}
-        
     ]
 }
