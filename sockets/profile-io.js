@@ -11,6 +11,11 @@ module.exports = io => { // this takes in the io from game.js
   profile.on('connection', socket => {
     console.log('\nconneciton on \'profile\' namespace'.magenta)
 
+    socket.on('points', async username => {
+      const user = await User.findOne({ username })
+      socket.emit('points', user.pixelPoints)
+    })
+
     socket.on('user gallery', async username => {
       try {
         const user = await User.findOne({ username })
