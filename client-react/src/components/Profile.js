@@ -1,41 +1,57 @@
 import React from 'react'
 
+
 class Profile extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { formValue: this.props.formValue }
+    this.state = { username: props.nick
+                  
+    }
   }
 
-  handleSubmit (evt) {
-    evt.preventDefault()
-    //   this.props.sendMessage(this.state.formValue, this.props.room)
-    this.setState({ formValue: '' })
-  }
+  
 
-  handleChange (event) {
-    this.setState({ formValue: event.target.value })
-  }
+  // handleSubmit (evt) {
+  //   evt.preventDefault()
+  //   //   this.props.sendMessage(this.state.formValue, this.props.room)
+  //   this.setState({ formValue: '' })
+  // }
+
+  // handleChange (event) {
+  //   this.setState({ formValue: event.target.value })
+  // }
 
   render () {
     return (
-      <div>
-        <h5>Welcome to your <span style={{ color: 'firebrick', textTransform: 'uppercase' }}>profile page</span>!</h5>
-        <div id='wait-container'>
-          <form id='send-message' onSubmit={this.handleSubmit.bind(this)}>
-            <label for='profile-name'>Nickname</label>
-            <input id='profile-name' type='text' placeholder='' value={this.state.formValue} onChange={this.handleChange.bind(this)} />
-            <button id='edit-btn' type='submit'>Edit</button>
-          </form>
-          <form>
-            <label for='password'>Password</label>
-            <input id='password' type='password' value='eXaMpLe' />
-            <button id='edit-btn' type='submit'>Edit</button>
-          </form>
+      <div id="profile-container-0">
+        <h5>Welcome to the <span id='header-stress'>profile page...</span></h5>
+
+       <div style={{display:"flex"}}>   
+        <div id='profile-container-1'>
+          <h5>Art...</h5>
+        </div>
+        <div id="profile-name">
+          username
+        </div>
+        </div>
+       
+        <div id="profile-stats">
+          <h5>My Stats...</h5>
           <div>
-            <label for='high-score'>High Score</label>
+            <label for='total-points'>Total Points</label>
             <input id='high-score' type='text' value='100' />
           </div>
         </div>
+
+        <div id="profile-gallery">
+          <h5>My Art Gallery...</h5>
+          <h></h>
+          <div>
+            
+          </div>
+        </div>
+
+
       </div>
     )
   }
