@@ -91,7 +91,7 @@
         {"word":"Plastic","difficulty": 3},
         {"word":"Bear","difficulty": 2},
         {"word":"Drumstick","difficulty": 3},
-        {"word":"Star","difficulty": 1},
+        {"word":"Alabama","difficulty": 1},
         {"word":"Droopy","difficulty": 3},
         {"word":"Ellipsis","difficulty": 3},
         {"word":"Braces","difficulty": 3},
@@ -109,7 +109,20 @@
         {"word":"Burrito","difficulty": 3},
         {"word":"Ironman","difficulty": 2},
         {"word":"Flower","difficulty": 2},
-        {"word":"Pimple","difficulty": 3}
-
+        {"word":"Pimple","difficulty": 3},
+        {"word":"Cross","difficulty": 2},
+        {"word":"Baseball","difficulty": 2},
+        {"word":"Soccer","difficulty": 2},
+        {"word":"Umbrella","difficulty": 2},
+        {"word":"Sun","difficulty": 2},
+        {"word":"Star","difficulty": 2},
+        {"word":"Truck","difficulty": 2},
+        {"word":"Fish","difficulty": 2},
+        {"word":"Hook","difficulty": 2},
+        {"word":"Sombrero","difficulty": 2},
+        {"word":"Hammer","difficulty": 2},
+        {"word":"Saw","difficulty": 2},
+        {"word":"Rain","difficulty": 3}
+        
     ]
 }
