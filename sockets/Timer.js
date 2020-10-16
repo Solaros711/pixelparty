@@ -1,7 +1,7 @@
 const colors = require('colors')
 
 class Timer {
-  constructor (numOfRounds, room = null, roundLength = 60, postRoundLength = 15) {
+  constructor (numOfRounds, room = null, roundLength = 60, postRoundLength = 10) {
     // room is timer.to(gameID), you can emit to the room w/ it
     this.numOfRounds = numOfRounds
     this.room = room
@@ -62,13 +62,16 @@ class Timer {
     }
   }
 
-  start = (timesUp, nextRound, gameOver = null) => {
+  start = (timesUp, nextRound, gameOver) => {
     // timesUp: cb to end round
     // nextRound: cb to go to next round
     this.keepTime(timesUp, nextRound)
     const timerID = setInterval(() => {
       this.time--
-      if (this.time === 0) return clearInterval(timerID)
+      if (this.time === 0) {
+        gameOver()
+        return clearInterval(timerID)
+      }
       this.keepTime(timesUp, nextRound)
     }, 1000)
   }

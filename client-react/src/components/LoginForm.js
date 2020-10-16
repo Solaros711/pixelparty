@@ -32,10 +32,22 @@ class loginForm extends React.Component {
         <h5>Log In...</h5>
         <form id='send-message' onSubmit={this.handleSubmit.bind(this)}>
           <div>
-            <input id='nickname' type='text' placeholder='Enter nickname...' value={this.state.nick} onChange={this.handleLoginChange.bind(this)} />
+            <input
+              id='nickname'
+              type='text'
+              placeholder='Enter username...'
+              value={this.state.nick}
+              onChange={this.handleLoginChange.bind(this)}
+            />
           </div>
           <div>
-            <input id='password' type='password' placeholder='Enter password...' value={this.state.password} onChange={this.handlePasswordChange.bind(this)} />
+            <input
+              id='password'
+              type='password'
+              placeholder='Enter password...'
+              value={this.state.password}
+              onChange={this.handlePasswordChange.bind(this)}
+            />
           </div>
           <div>
             <button type='submit'>Log In</button>
