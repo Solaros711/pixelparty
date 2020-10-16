@@ -125,6 +125,7 @@ export default class Lobby extends React.Component {
                 <div id="rules">
                   <p>You have 60 seconds to draw your masterpiece...as everyone else tries to guess what it is!</p>
                   <p>If someone guesses right, you both get a point!</p>
+                  <p style={{fontSize:"15px"}}>Get ready to pixel!</p>
                 </div>
               </div>
             </div>

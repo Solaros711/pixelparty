@@ -55,6 +55,8 @@ canvas {
 #rules {
   font-size: 13px;
   color: darkkhaki;
+  padding: 10px;
+  text-align: center;
 }
 
 #tentative-text {
@@ -392,8 +394,9 @@ button:focus {
   align-items: center;
 }
 
-#profie-stats {
+#profile-stats {
   margin-top: 3vh;
+  margin-bottom: 5vh;
 }
 
 #profile-name {
@@ -465,6 +468,8 @@ button:focus {
   border: 1px dotted black;
   padding: 7px;
   /* flex: 0 0 12em; */
+  /* border: 10px solid rgba(244, 245, 240, 0.3); */
+  border: 2px solid rgba(244, 245, 240, 0.3);
 }
 
 #wait-container-art {
@@ -472,11 +477,9 @@ button:focus {
   text-align: center;
   top:1px;
 
-  border-style: solid;
+  /* border-style: solid;
   border-color: rgba(244, 245, 240, 0.3);
-  border-width: 10px;
-  
-
+  border-width: 10px; */
   
 }
 
