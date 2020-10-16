@@ -13,6 +13,7 @@ class Profile extends React.Component {
         word: '',
         pixels: []
       },
+      points: '',
       containerRef
     }
   }
@@ -22,6 +23,9 @@ class Profile extends React.Component {
       this.props.profileSocket.open()
       this.props.profileSocket.emit('user gallery', this.props.username)
       this.props.profileSocket.on('user gallery', gallery => this.setState({ gallery, feature: gallery[0] }))
+
+      this.props.profileSocket.emit('points', this.props.username)
+      this.props.profileSocket.on('points', points => this.setState({ points }))
     }
   }
 
@@ -53,7 +57,7 @@ class Profile extends React.Component {
           <h5>My Stats...</h5>
           <div>
             <label for='total-points'>Total Points</label>
-            <input id='high-score' type='text' value='100' />
+            <input id='high-score' type='text' value={this.state.points} />
           </div>
         </div>
 
