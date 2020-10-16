@@ -178,10 +178,9 @@ gameSchema.methods.endRound = async function (canvas) {
 gameSchema.methods.nextRound = async function () {
   // trigger game state data for starting the next round
   this.currentRound++
-  if (this.currentRound === this.rounds.length) {
-    this.gameOver = true
-    this.awardPixels()
-  }
+  // if (this.currentRound === this.rounds.length) {
+  //   this.gameOver = true
+  // }
   await this.save()
   if (verbose) console.log('next round: '.rainbow, this)
   return this
@@ -192,6 +191,13 @@ gameSchema.methods.timesUp = async function () {
   round.roundOver = true
   await this.save()
   if (verbose) console.log('time\'s up: '.rainbow, this)
+  return this
+}
+
+gameSchema.methods.endGame = async function () {
+  this.gameOver = true
+  this.awardPixels()
+  await this.save()
   return this
 }
 
