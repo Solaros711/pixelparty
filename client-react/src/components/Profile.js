@@ -42,7 +42,7 @@ class Profile extends React.Component {
         <div style={{ display: 'flex' }}>
           <div id='profile-container-1'>
             <Canvas displayMode dynamic pixels={this.state.feature.pixels} res={7} />
-            <div>"{this.state.feature.word}"</div>
+            <div style={{fontWeight:"bold"}}>"{this.state.feature.word}"</div>
           </div>
           <div id='profile-name'>
             {this.props.username}
