@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const Schema = mongoose.Schema
-const Art = require('./Art')
+// const Art = require('./Art')
 
 const userSchema = new mongoose.Schema({
   username: {
