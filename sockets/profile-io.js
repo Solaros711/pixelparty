@@ -12,25 +12,29 @@ module.exports = io => { // this takes in the io from game.js
     console.log('\nconneciton on \'profile\' namespace'.magenta)
 
     socket.on('user gallery', async username => {
-      const user = await User.findOne({ username })
-      // console.log(user)
-      await Art.find({ user: user._id })
-        .exec(async (err, result) => {
-          if (err) return console.log(err)
-          await User.populate(result, 'user')
-          await Word.populate(result, 'task')
-          // console.log(result)
-          const gallery = result.map(result => {
-            const artwork = {
-              username: result.user.username,
-              word: result.task.word,
-              pixels: result.picture
-            }
-            return artwork
+      try {
+        const user = await User.findOne({ username })
+        // console.log(user)
+        await Art.find({ user: user._id })
+          .exec(async (err, result) => {
+            if (err) return console.log(err)
+            // await User.populate(result, 'user')
+            await Word.populate(result, 'task')
+            // console.log(result)
+            const gallery = result.map(result => {
+              const artwork = {
+                username: username,
+                word: result.task.word,
+                pixels: result.picture
+              }
+              return artwork
+            })
+            // console.log(gallery)
+            socket.emit('user gallery', gallery)
           })
-          // console.log(gallery)
-          socket.emit('user gallery', gallery)
-        })
+      } catch (err) {
+        console.log(err)
+      }
     })
   })
 }
