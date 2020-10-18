@@ -13,7 +13,7 @@ class Main extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      username: props.nick || null,
+      username: props.username || null,
       userID: props.userID,
       isHost: false,
       joinedGame: false,

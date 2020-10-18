@@ -8,6 +8,7 @@ const key = process.env.JWT_KEY || 'CHANGEME!'
 const router = express.Router()
 
 router.post('/signup', (req, res) => {
+  console.log(req.body)
   User.findOne({ username: req.body.username }, async (err, userExists) => {
     if (err) return res.status(500).send({ error: err })
     if (userExists) return res.status(400).send({ error: 'username already exists' })
@@ -18,7 +19,7 @@ router.post('/signup', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-  // console.log(req.body)
+  console.log(req.body)
   User.findOne({ username: req.body.username }, async (err, user) => {
     if (err) return res.status(500).send(err)
     if (!user) return res.status(400).send({ error: 'username invalid' })

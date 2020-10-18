@@ -1,43 +1,43 @@
 import React from 'react'
 
-class loginForm extends React.Component {
+class LogIn extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      nick: '',
+      username: '',
       password: ''
     }
   }
 
-  handleSubmit (evt) {
+  handleSubmit = evt => {
     evt.preventDefault()
     const data = {
-      username: this.state.nick,
+      username: this.state.username,
       password: this.state.password
     }
-    this.props.loginFunc(data)
+    this.props.logIn(data)
   }
 
-  handleLoginChange (event) {
-    this.setState({ nick: event.target.value })
+  handleLoginChange = evt => {
+    this.setState({ username: evt.target.value })
   }
 
-  handlePasswordChange (event) {
-    this.setState({ password: event.target.value })
+  handlePasswordChange = evt => {
+    this.setState({ password: evt.target.value })
   }
 
   render () {
     return (
       <div id='login-container'>
         <h5>Log In...</h5>
-        <form id='send-message' onSubmit={this.handleSubmit.bind(this)}>
+        <form id='send-message' onSubmit={this.handleSubmit}>
           <div>
             <input
-              id='nickname'
+              id='username'
               type='text'
               placeholder='Enter username...'
-              value={this.state.nick}
-              onChange={this.handleLoginChange.bind(this)}
+              value={this.state.username}
+              onChange={this.handleLoginChange}
             />
           </div>
           <div>
@@ -46,7 +46,7 @@ class loginForm extends React.Component {
               type='password'
               placeholder='Enter password...'
               value={this.state.password}
-              onChange={this.handlePasswordChange.bind(this)}
+              onChange={this.handlePasswordChange}
             />
           </div>
           <div>
@@ -58,7 +58,7 @@ class loginForm extends React.Component {
   }
 }
 
-export default loginForm
+export default LogIn
 
 // this.props means it is somewhere else
 
