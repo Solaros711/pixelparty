@@ -3,7 +3,7 @@ const express = require('express')
 const jwt = require('jsonwebtoken')
 
 // CHANGE THIS BELOW!!!!
-const key = 'CHANGEME' || process.env.JWT_KEY
+const key = process.env.JWT_KEY || 'CHANGEME!'
 
 const router = express.Router()
 
