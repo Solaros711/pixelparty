@@ -4,60 +4,47 @@ class Signup extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      nick: '',
+      username: '',
       password: '',
-      // email: '',
       password2: '',
       errors: []
     }
-    this.handleChange = this.handleChange.bind(this)
+  }
+  
+  handleChange = (evt, key) => {
+    this.setState({ [key]: evt.target.value })
   }
 
-  handleSubmit (evt) {
+  handleSubmit = evt => {
     evt.preventDefault()
     if (this.validate()) {
       const data = {
-        username: this.state.nick,
+        username: this.state.username,
         password: this.state.password
       }
-      this.props.register(data)
+      this.props.signUp(data)
     }
-    // this.props.loginFunc(this.state.nick, this.state.password)
   }
 
-  validate () {
-    const nick = this.state.nick
-    // const email = this.state.email
+  validate = () => {
+    const username = this.state.username
     const password = this.state.password
     const verifyPassword = this.state.password2
     const errors = []
     let isValid = true
 
-    if (!nick) {
+    if (!username) {
       isValid = false
       errors.push('Please enter your username.')
     }
 
-    if (typeof nick !== 'undefined') {
-      const nickVerification = /^\S*$/
-      if (!nickVerification.test(nick)) {
+    if (typeof username !== 'undefined') {
+      const usernameVerification = /^\S*$/
+      if (!usernameVerification.test(username)) {
         isValid = false
         errors.push('Please enter valid username.')
       }
     }
-
-    // if (!email) {
-    //   isValid = false
-    //   errors.push('Please enter your email Address.')
-    // }
-
-    // if (typeof email !== 'undefined') {
-    //   const emailVerification = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i)
-    //   if (!emailVerification.test(email)) {
-    //     isValid = false
-    //     errors.push('Please enter a valid email address.')
-    //   }
-    // }
 
     if (!password) {
       isValid = false
@@ -68,14 +55,6 @@ class Signup extends React.Component {
       isValid = false
       errors.push('Please enter your password verification.')
     }
-
-    // if (typeof password !== 'undefined') {
-    //   const passwordVerification = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,15}$/
-    //   if (password.match(passwordVerification)) {
-    //     isValid = false
-    //     errors.push('passwords must be between 6-15 characters and contain at least one numeric digit and a special character')
-    //   }
-    // }
 
     if (typeof password !== 'undefined' && typeof verifyPassword !== 'undefined') {
       if (password !== verifyPassword) {
@@ -91,54 +70,52 @@ class Signup extends React.Component {
     return isValid
   }
 
-  handleChange (evt, key) {
-    this.setState({ [key]: evt.target.value })
-  }
-
   render () {
     const errors = this.state.errors
     return (
       <div id='login-container'>
         <h5>Register...</h5>
-        <form id='signup' onSubmit={this.handleSubmit.bind(this)}>
+        <form id='signup' onSubmit={this.handleSubmit}>
           <div>
-            {/* <div for='username'>username:</div> */}
             <input
-              id='nickname'
+              id='username'
               type='text'
               placeholder='Enter username...'
-              value={this.state.nick}
-              onChange={(evt) => { this.handleChange(evt, 'nick') }}
+              value={this.state.username}
+              onChange={evt => { this.handleChange(evt, 'username') }}
             />
           </div>
-          {/* <div>
-            <input
-              id='email' type='text' placeholder='Enter e-mail...' value={this.state.email} onChange={(evt) => { this.handleChange(evt, 'email') }}
-            />
-          </div> */}
+
           <div>
-            {/* <div for='password'>password:</div> */}
             <input
               id='password'
               type='password'
               placeholder='Enter password...'
               value={this.state.password}
-              onChange={(evt) => { this.handleChange(evt, 'password') }}
+              onChange={evt => { this.handleChange(evt, 'password') }}
             />
           </div>
           <div>
-            {/* <div for='password2'>password again:</div> */}
-            <input id='password2' type='password' placeholder='Verify password...' value={this.state.password2} onChange={(evt) => { this.handleChange(evt, 'password2') }} />
+            <input
+              id='password2'
+              type='password'
+              placeholder='Verify password...'
+              value={this.state.password2}
+              onChange={evt => { this.handleChange(evt, 'password2') }}
+            />
           </div>
+
           <div>
             <button type='submit'>Submit</button>
           </div>
         </form>
+
         <ul id='errors'>
           {errors
             ? errors.map((error, i) => <li key={i}>{error}</li>)
-            : ''}
+            : null}
         </ul>
+
       </div>
     )
   }

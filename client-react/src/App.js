@@ -6,10 +6,10 @@ import {
   Link,
   Redirect
 } from 'react-router-dom'
-// import * as Tone from 'tone'
+
 import Profile from './components/Profile'
-import LoginForm from './components/LoginForm'
-import Signup from './components/Signup'
+import LogIn from './components/LogIn'
+import SignUp from './components/SignUp'
 import ThemeUp from './components/ThemeUp'
 import Main from './Main'
 
@@ -25,11 +25,17 @@ const profileSocket = io('/profile')
 class App extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { messages: [], nick: null, loggedIn: false, errorMessage: '', room: 'Pixel Party (Room 1)', userId: '' }
-    this.register = this.register.bind(this)
+    this.state = {
+      messages: [],
+      username: null,
+      loggedIn: false,
+      errorMessage: '',
+      room: 'Pixel Party (Room 1)',
+      userID: ''
+    }
   }
 
-  register (data) {
+  signUp = data => {
     // const data={ username: "Johnny", password: "321" }
     // Default options are marked with *
     fetch('/signup', {
@@ -40,12 +46,17 @@ class App extends React.Component {
       body: JSON.stringify(data) // body data type must match "Content-Type" header
     })
       .then(res => res.json())
-      .then(data => this.setState({ errorMessage: data.error, registered: !data.error }))
+      .then(resData => {
+        this.setState({
+          errorMessage: resData.error,
+          registered: !resData.error
+        }, () => { if (!resData.error) this.loginFunc(data) })
+      })
       .catch(err => console.log(err))
     // return response.json(); // parses JSON response into native JavaScript objects
   }
 
-  loginFunc (data) {
+  logIn = data => {
     fetch('/login', {
       method: 'POST',
       headers: {
@@ -58,8 +69,8 @@ class App extends React.Component {
         this.setState({
           errorMessage: data.error,
           loggedIn: !data.error,
-          nick: data.username,
-          userId: data.token
+          username: data.username,
+          userID: data.token
 
         })
       })
@@ -67,28 +78,7 @@ class App extends React.Component {
       .catch(err => console.log(err))// when exception is thrown it will end up here - so error message ain't here
   }
 
-  handleAddRoom () {
-    const room = prompt('Enter a room name')
-    this.setState({ room: room })
-  }
-
-  getRooms () {
-    const rooms = this.state.messages.map(msg => msg.room)
-    rooms.push(this.state.room) // we have to add the currentRoom to the list, otherwise it won't be an option if there isn't already a message with that room
-    const filtered = rooms.filter(room => room) // filter out undefined or empty string
-    return Array.from(new Set(filtered)) // filters out the duplicates
-  }
-
-  logMeOut () {
-    this.setState({ nick: null, loggedIn: false })
-  }
-
-  // playTone () {
-  //   Tone.start()
-  //   // console.log('audio is ready')
-  //   const synth = new Tone.Synth().toDestination()
-  //   return synth.triggerAttackRelease('C4', '8n')
-  // }
+  logOut = () => this.setState({ username: null, loggedIn: false, registered: false })
 
   render () {
     return (
@@ -104,40 +94,25 @@ class App extends React.Component {
                   </Link>
                 </div>
               </div>
-              <div className='container-0-3'>
-              </div>
-              
+              <div className='container-0-3' />
+
               <div className='container-0-2' id='table'>
                 <ul id='horizontal-list'>
-                  
+
                   <li>
                     <Link to='/'>Lobby</Link>
                   </li>
 
                   {this.state.loggedIn
-                    ? ''
-                    : <li>
-                      <Link to='/login'>Log In</Link>
-                      </li>}
-
-                  {this.state.loggedIn
-                    ? ''
-                    : <li>
-                      <Link to='/signup'>Sign Up</Link>
-                      </li>}
-
-                  {this.state.loggedIn
-                    ? <li>
-                      {/* <Link to="/logout" onClick={this.logMeOut.bind(this)}>Log <span style={{color:"firebrick"}}>'{this.state.nick}'</span> Out</Link> */}
-                      <Link to='/logout' onClick={this.logMeOut.bind(this)}>Log Out</Link>
-                    </li>
-                    : ''}
-
-                  {this.state.loggedIn
-                    ? <li>
-                      <Link to='/profile/user'>Profile</Link>
-                      </li>
-                    : ''}
+                    ? [
+                      <li key={0}><Link to='/logout' onClick={this.logOut}>Log Out</Link></li>,
+                      <li key={1}><Link to='/profile'>Profile</Link></li>
+                    ]
+                    : [
+                      <li key={0}><Link to='/login'>Log In</Link></li>,
+                      <li key={1}><Link to='/signup'>Sign Up</Link></li>
+                    ]
+                  }
 
                 </ul>
               </div>
@@ -150,7 +125,7 @@ class App extends React.Component {
                 ? <Redirect to='/' />
                 : this.state.registered
                   ? <Redirect to='/login' />
-                  : [<Signup register={this.register.bind(this)} />, <div>{this.state.errorMessage}</div>]}
+                  : [<SignUp key={0} signUp={this.signUp} />, <div key={1}>{this.state.errorMessage}</div>]}
             </Route>
 
             <Route path='/logout'>
@@ -160,16 +135,16 @@ class App extends React.Component {
             <Route path='/login'>
               {this.state.loggedIn
                 ? <Redirect to='/' />
-                : [<LoginForm loginFunc={this.loginFunc.bind(this)} />, <div>{this.state.errorMessage}</div>]}
+                : [<LogIn key={0} logIn={this.logIn} />, <div key={1}>{this.state.errorMessage}</div>]}
             </Route>
 
-            <Route path='/profile/user'>
-              <Profile username={this.state.nick} profileSocket={profileSocket} />
+            <Route path='/profile'>
+              <Profile username={this.state.username} profileSocket={profileSocket} />
             </Route>
 
             <Route path='/'>
               {this.state.loggedIn
-                ? <Main nick={this.state.nick} loggedIn={this.state.loggedIn} userID={this.state.userId} />
+                ? <Main username={this.state.username} loggedIn={this.state.loggedIn} userID={this.state.userID} />
                 : <Main />}
             </Route>
           </Switch>
@@ -181,7 +156,6 @@ class App extends React.Component {
 }
 
 export default App
-
 
 // assignment. make ternaries from rooms - sensei dustino
 // theme toggle. https://css-tricks.com/a-dark-mode-toggle-with-react-and-themeprovider/ - maks akymenko
