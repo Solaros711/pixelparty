@@ -63,27 +63,33 @@ artSchema.statics.sendArt = async function (canvas) {
 
 const Art = mongoose.model('Art', artSchema)
 
+// const art = Art({
+//   pixels: Array(50).fill(Array(50).fill('black')),
+//   user: ObjectId('')
+// })
+
+// {"_id":{"$oid":"5f89fced8f2da3000459692a"},"pixelPoints":3,"username":"banana3","password":"$2b$10$L/Hi6GFGmronCHNCmF5JE.GtL9DRaGl2eE3CnY9NUgcpspWjKrIt.","__v":0}
 // // comment in below to delete empty ArtWork
 Art.deleteMany({ picture: Array(50).fill(Array(50)) }, err => {
   if (err) return console.log(err)
 })
 
 // comment in to delete all artwork w/ deleted word
-Art.find({}, (err, res) => {
-  if (err) return console.log(err)
-  res.map(async artwork => {
-    await Word.populate(artwork, 'word')
-    console.log(!artwork.word)
-    // if (!artwork.word) {
-    //   Art.deleteOne({ _id: artwork._id }, err => console.log(err))
-    // }
-    // console.log(artwork.word.word)
-  })
-})
-
-// // comment in to update Art model field names
-// Art.updateMany({}, { $rename: { picture: 'pixels', task: 'word' } }, (err, raw) => {
+// Art.find({}, (err, res) => {
 //   if (err) return console.log(err)
+//   res.map(async artwork => {
+//     await Word.populate(artwork, 'word')
+//     console.log(!artwork.word)
+//     // if (!artwork.word) {
+//     //   Art.deleteOne({ _id: artwork._id }, err => console.log(err))
+//     // }
+//     // console.log(artwork.word.word)
+//   })
 // })
+
+// // // comment in to update Art model field names
+// // Art.updateMany({}, { $rename: { picture: 'pixels', task: 'word' } }, (err, raw) => {
+// //   if (err) return console.log(err)
+// // })
 
 module.exports = Art

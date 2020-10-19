@@ -170,9 +170,13 @@ gameSchema.methods.logMessage = async function (message) {
 }
 
 gameSchema.methods.endRound = async function (canvas) {
-  await this.saveArt(canvas.pixels)
-  await Art.sendArt(canvas)
-  await this.timesUp()
+  try {
+    await this.saveArt(canvas.pixels)
+    await Art.sendArt(canvas)
+    await this.timesUp()
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 gameSchema.methods.nextRound = async function () {
