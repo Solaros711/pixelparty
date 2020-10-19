@@ -30,7 +30,6 @@ class App extends React.Component {
       username: null,
       loggedIn: false,
       errorMessage: '',
-      room: 'Pixel Party (Room 1)',
       userID: ''
     }
   }

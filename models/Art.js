@@ -10,14 +10,13 @@ const artSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  task: {
+  word: {
     type: Schema.Types.ObjectId,
     ref: 'Word',
     required: true
   },
-  // Allows for an array of objects of mixed types. This lets us use two dimensional arrays in mongoose.
-  picture: {
-    type: [Schema.Types.Mixed],
+  pixels: {
+    type: Array,
     required: true
   }
 })
@@ -27,8 +26,8 @@ artSchema.statics.getRandom = async function (cb) {
     .exec(async (err, result) => {
       if (err) return console.log(err)
       await User.populate(result[0], 'user')
-      await Word.populate(result[0], 'task')
-      const data = { username: result[0].user.username, pixels: result[0].picture, word: result[0].task.word }
+      await Word.populate(result[0], 'word')
+      const data = { username: result[0].user.username, pixels: result[0].pixels, word: result[0].word.word }
       cb(data)
     })
 }
@@ -69,4 +68,36 @@ Art.deleteMany({ picture: Array(50).fill(Array(50)) }, err => {
   if (err) return console.log(err)
 })
 
+// method to rename task to word; picture to pixels
+// try {
+// Art.find({}, (err, art) => {
+//   if (err) return console.log(err)
+//   console.log(art)
+//   art.map(async artwork => {
+//     try {
+//       artwork.pixels = artwork.picture
+//       artwork.word = artwork.task
+//       await artwork.save()
+//     } catch (err) {
+//       console.log(err)
+//     }
+//   })
+// })
+// Art.updateMany({}, { $rename: { 'task': 'word', 'picture': 'pixels' } }, (err, raw) => {
+//   if (err) return console.log(err)
+//   console.log(raw)
+// })
+// Art.save()
+
+// Art.find({}, (err, art) => {
+//   if (err) return console.log(err)
+//   art.map(artwork => {
+//     artwork.update({ $rename: { task: 'word', picture: 'pixels' } })
+//     console.log(artwork)
+//   })
+// })
+
+// Art.updateMany({}, { $rename: { picture: 'pixels', task: 'word' } }, (err, raw) => {
+//   if (err) return console.log(err)
+// })
 module.exports = Art
