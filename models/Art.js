@@ -32,11 +32,11 @@ artSchema.statics.getRandom = async function (cb) {
     })
 }
 
-artSchema.statics.addArt = async function (userID, taskID, newPic) {
+artSchema.statics.addArt = async function (userID, wordID, pixels) {
   const art = new this()
   art.user = userID
-  art.task = taskID
-  art.picture = newPic
+  art.word = wordID
+  art.pixels = pixels
   await art.save()
   return art
 }
