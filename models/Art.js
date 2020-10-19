@@ -69,18 +69,19 @@ Art.deleteMany({ picture: Array(50).fill(Array(50)) }, err => {
 })
 
 // comment in to delete all artwork w/ deleted word
-// Art.find({}, (err, res) => {
-//   if (err) return console.log(err)
-//   res.map(async artwork => {
-//     await Word.populate(artwork, 'word')
-//     // if (!artwork.word) {
-//     //   // Art.deleteOne({ _id: artwork._id }, err => console.log(err))
-//     // }
-//     console.log(artwork.word.word)
-//   })
-// })
+Art.find({}, (err, res) => {
+  if (err) return console.log(err)
+  res.map(async artwork => {
+    await Word.populate(artwork, 'word')
+    console.log(!artwork.word)
+    if (!artwork.word) {
+      Art.deleteOne({ _id: artwork._id }, err => console.log(err))
+    }
+    // console.log(artwork.word.word)
+  })
+})
 
-// comment in to update Art model field names
+// // comment in to update Art model field names
 // Art.updateMany({}, { $rename: { picture: 'pixels', task: 'word' } }, (err, raw) => {
 //   if (err) return console.log(err)
 // })
