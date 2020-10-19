@@ -74,9 +74,9 @@ Art.find({}, (err, res) => {
   res.map(async artwork => {
     await Word.populate(artwork, 'word')
     console.log(!artwork.word)
-    if (!artwork.word) {
-      Art.deleteOne({ _id: artwork._id }, err => console.log(err))
-    }
+    // if (!artwork.word) {
+    //   Art.deleteOne({ _id: artwork._id }, err => console.log(err))
+    // }
     // console.log(artwork.word.word)
   })
 })
