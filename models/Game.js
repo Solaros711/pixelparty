@@ -104,6 +104,11 @@ gameSchema.statics.create = async function (hostUsername, numOfPlayers) {
   // numOfPlayers = numOfRounds for now
   game.numOfPlayers = numOfPlayers
   game.numOfRounds = numOfPlayers
+  if (game.players.length === game.numOfPlayers) {
+    game.isReady = true
+    game.joinable = false
+    await game.randomize()
+  }
   await game.save()
   if (verbose) console.log('create end')
   return game
@@ -113,11 +118,11 @@ gameSchema.statics.join = async function (username, gameID) {
   if (verbose) console.log('join')
   const game = await this.findOne({ _id: gameID }, err => { if (err) { return console.log(err) } })
   game.players.push(username)
+  await game.save()
   if (game.players.length === game.numOfPlayers) {
     game.isReady = true
     game.joinable = false
   }
-  await game.save()
   return game
 }
 
