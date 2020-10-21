@@ -60,6 +60,7 @@ export default class Lobby extends React.Component {
                     <div>
                       <text id='tentative-text'><label htmlFor='num-of-players'>Number of players?</label></text>
                       <select value={this.state.numOfPlayers} onChange={evt => this.setState({ numOfPlayers: evt.target.value })}>
+                        <option value={1}>1</option>
                         <option value={2}>2</option>
                         <option value={3}>3</option>
                         <option value={4}>4</option>
