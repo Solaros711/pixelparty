@@ -81,9 +81,9 @@ Art.deleteMany({ picture: Array(50).fill(Array(50)) }, err => {
 //   })
 // })
 
-// // // comment in to update Art model field names
-// // Art.updateMany({}, { $rename: { picture: 'pixels', task: 'word' } }, (err, raw) => {
-// //   if (err) return console.log(err)
-// // })
+// // comment in to update Art model field names
+// Art.updateMany({}, { $rename: { picture: 'pixels', task: 'word' } }, (err, raw) => {
+//   if (err) return console.log(err)
+// })
 
 module.exports = Art
